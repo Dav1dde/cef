@@ -1,4 +1,4 @@
-module deimos.cef3.base;
+module deimos.cef3.internal.types_time;
 
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
@@ -29,46 +29,38 @@ module deimos.cef3.base;
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 extern(C) {
     import deimos.cef3.internal.export;
-    import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+    import core.stdc.time;
 
     ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
+    // Time information. Values should always be in UTC.
     ///
-    struct cef_base_t {
-        ///
-        // Size of the data structure.
-        ///
-        size_t size;
-
-        ///
-        // Increment the reference count.
-        ///
-        extern(System) int function(cef_base_t* self) add_ref;
-
-        ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
-        ///
-        extern(System) int function(cef_base_t* self) release;
-
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
+    struct cef_time_t {
+        int year;          // Four digit year "2007"
+        int month;         // 1-based month (values 1 = January, etc.)
+        int day_of_week;   // 0-based day of week (0 = Sunday, etc.)
+        int day_of_month;  // 1-based day of month (1-31)
+        int hour;          // Hour within the current day (0-23)
+        int minute;        // Minute within the current hour (0-59)
+        int second;        // Second within the current minute (0-59 plus leap
+                            //   seconds which may take it up to 60).
+        int millisecond;   // Milliseconds within the current second (0-999)
     }
 
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
+    ///
+    // Converts cef_time_t to/from time_t. Returns true (1) on success and false (0)
+    // on failure.
+    ///
+    int cef_time_to_timet(const(cef_time_t)* cef_time, time_t* time);
+    int cef_time_from_timet(time_t time, cef_time_t* cef_time);
+
+    ///
+    // Converts cef_time_t to/from a double which is the number of seconds since
+    // epoch (Jan 1, 1970). Webkit uses this format to represent time. A value of 0
+    // means "not initialized". Returns true (1) on success and false (0) on
+    // failure.
+    ///
+    int cef_time_to_doublet(const(cef_time_t)* cef_time, double* time);
+    int cef_time_from_doublet(double time, cef_time_t* cef_time);
 }

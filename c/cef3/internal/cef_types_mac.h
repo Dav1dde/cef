@@ -1,6 +1,4 @@
-module deimos.cef3.base;
-
-// Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2010 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -30,45 +28,69 @@ module deimos.cef3.base;
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-extern(C) {
-    import deimos.cef3.internal.export;
-    import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+#ifndef CEF_INCLUDE_INTERNAL_CEF_TYPES_MAC_H_
+#define CEF_INCLUDE_INTERNAL_CEF_TYPES_MAC_H_
+#pragma once
 
-    ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
-    ///
-    struct cef_base_t {
-        ///
-        // Size of the data structure.
-        ///
-        size_t size;
+#include "include/internal/cef_build.h"
 
-        ///
-        // Increment the reference count.
-        ///
-        extern(System) int function(cef_base_t* self) add_ref;
+#if defined(OS_MACOSX)
+#include "include/internal/cef_string.h"
 
-        ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
-        ///
-        extern(System) int function(cef_base_t* self) release;
+// Handle types.
+#ifdef __cplusplus
+#ifdef __OBJC__
+@class NSCursor;
+@class NSEvent;
+@class NSView;
+#else
+class NSCursor;
+class NSEvent;
+struct NSView;
+#endif
+#define cef_cursor_handle_t NSCursor*
+#define cef_event_handle_t NSEvent*
+#define cef_window_handle_t NSView*
+#else
+#define cef_cursor_handle_t void*
+#define cef_event_handle_t void*
+#define cef_window_handle_t void*
+#endif
 
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
-    }
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
+///
+// Structure representing CefExecuteProcess arguments.
+///
+typedef struct _cef_main_args_t {
+  int argc;
+  char** argv;
+} cef_main_args_t;
+
+///
+// Class representing window information.
+///
+typedef struct _cef_window_info_t {
+  cef_string_t window_name;
+  int x;
+  int y;
+  int width;
+  int height;
+  int hidden;
+
+  // NSView pointer for the parent view.
+  cef_window_handle_t parent_view;
+
+  // NSView pointer for the new browser view.
+  cef_window_handle_t view;
+} cef_window_info_t;
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif  // OS_MACOSX
+
+#endif  // CEF_INCLUDE_INTERNAL_CEF_TYPES_MAC_H_

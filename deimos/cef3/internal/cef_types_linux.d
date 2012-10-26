@@ -1,6 +1,6 @@
-module deimos.cef3.base;
+module deimos.cef3.internal.types_linux;
 
-// Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2010 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -30,45 +30,38 @@ module deimos.cef3.base;
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-extern(C) {
-    import deimos.cef3.internal.export;
-    import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+import deimos.cfe3.internal.build;
 
-    ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
-    ///
-    struct cef_base_t {
-        ///
-        // Size of the data structure.
-        ///
-        size_t size;
+version(Linux) {
+    //#include <gtk/gtk.h>
+    import deimos.cfe3.internal.string;
+
+    extern(C) {
+        // Handle types.
+        //#define cef_cursor_handle_t GtkCursor*
+        //#define cef_event_handle_t GdkEvent*
+        //#define cef_window_handle_t GtkWidget*
+        alias void* cef_cursor_handle_t;
+        alias void* cef_event_handle_t;
+        alias void* cef_window_handle_t;
 
         ///
-        // Increment the reference count.
+        // Structure representing CefExecuteProcess arguments.
         ///
-        extern(System) int function(cef_base_t* self) add_ref;
+        struct cef_main_args_t {
+            int argc;
+            char** argv;
+        }
 
         ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
+        // Class representing window information.
         ///
-        extern(System) int function(cef_base_t* self) release;
+        struct cef_window_info_t {
+            // Pointer for the parent GtkBox widget.
+            cef_window_handle_t parent_widget;
 
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
+            // Pointer for the new browser widget.
+            cef_window_handle_t widget;
+        }
     }
-
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
 }

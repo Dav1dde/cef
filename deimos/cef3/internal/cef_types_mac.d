@@ -1,6 +1,6 @@
-module deimos.cef3.base;
+module deimos.cef3.internal.types_mac;
 
-// Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2010 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -30,45 +30,39 @@ module deimos.cef3.base;
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-extern(C) {
-    import deimos.cef3.internal.export;
+import deimos.cef3.internal.build;
+
+version(OSX) {
     import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+    alias void* cef_cursor_handle_t;
+    alias void* cef_event_handle_t;
+    alias void* cef_window_handle_t;
 
-    ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
-    ///
-    struct cef_base_t {
+    extern(C) {
         ///
-        // Size of the data structure.
+        // Structure representing CefExecuteProcess arguments.
         ///
-        size_t size;
+        struct cef_main_args_t {
+            int argc;
+            char** argv;
+        }
 
         ///
-        // Increment the reference count.
+        // Class representing window information.
         ///
-        extern(System) int function(cef_base_t* self) add_ref;
+        struct cef_window_info_t {
+            cef_string_t window_name;
+            int x;
+            int y;
+            int width;
+            int height;
+            int hidden;
 
-        ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
-        ///
-        extern(System) int function(cef_base_t* self) release;
+            // NSView pointer for the parent view.
+            cef_window_handle_t parent_view;
 
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
+            // NSView pointer for the new browser view.
+            cef_window_handle_t view;
+        }
     }
-
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
 }

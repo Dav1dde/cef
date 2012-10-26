@@ -1,4 +1,4 @@
-module deimos.cef3.base;
+module deimos.cef3.internal.build;
 
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
@@ -30,45 +30,26 @@ module deimos.cef3.base;
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-extern(C) {
-    import deimos.cef3.internal.export;
-    import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+version(Windows) {
+    enum OS_WIN = 1;
+    enum OS_MACOSX = 0;
+    enum OS_LINUX = 0;
+} else version(OSX) {
+    enum OS_WIN = 0;
+    enum OS_MACOSX = 1;
+    enum OS_LINUX = 0;
+} else version(Linux) {
+    enum OS_WIN = 0;
+    enum OS_MACOSX = 0;
+    enum OS_LINUX = 1;
+} else {
+    static assert(false, "unsupported platform");
+}
 
-    ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
-    ///
-    struct cef_base_t {
-        ///
-        // Size of the data structure.
-        ///
-        size_t size;
-
-        ///
-        // Increment the reference count.
-        ///
-        extern(System) int function(cef_base_t* self) add_ref;
-
-        ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
-        ///
-        extern(System) int function(cef_base_t* self) release;
-
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
-    }
-
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
+// For access to standard POSIXish features, use OS_POSIX instead of a
+// more specific macro.
+static if(OS_MACOSX || OS_LINUX) {
+    enum OS_POSIX = 1;
+} else {
+    enum OS_POSIX = 0;
 }

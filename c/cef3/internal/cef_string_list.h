@@ -1,6 +1,4 @@
-module deimos.cef3.base;
-
-// Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2009 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -29,46 +27,62 @@ module deimos.cef3.base;
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#ifndef CEF_INCLUDE_INTERNAL_CEF_STRING_LIST_H_
+#define CEF_INCLUDE_INTERNAL_CEF_STRING_LIST_H_
+#pragma once
 
-extern(C) {
-    import deimos.cef3.internal.export;
-    import deimos.cef3.internal.string;
-    import deimos.cef3.internal.string_list;
-    import deimos.cef3.internal.string_map;
-    import deimos.cef3.internal.string_multimap;
-    import deimos.cef3.internal.types;
+#include "include/internal/cef_export.h"
+#include "include/internal/cef_string.h"
 
-    ///
-    // Structure defining the reference count implementation functions. All
-    // framework structures must include the cef_base_t structure first.
-    ///
-    struct cef_base_t {
-        ///
-        // Size of the data structure.
-        ///
-        size_t size;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-        ///
-        // Increment the reference count.
-        ///
-        extern(System) int function(cef_base_t* self) add_ref;
+///
+// CEF string maps are a set of key/value string pairs.
+///
+typedef void* cef_string_list_t;
 
-        ///
-        // Decrement the reference count.  Delete this object when no references
-        // remain.
-        ///
-        extern(System) int function(cef_base_t* self) release;
+///
+// Allocate a new string map.
+///
+CEF_EXPORT cef_string_list_t cef_string_list_alloc();
 
-        ///
-        // Returns the current number of references.
-        ///
-        extern(System) int function(cef_base_t* self) get_refct;
-    }
+///
+// Return the number of elements in the string list.
+///
+CEF_EXPORT int cef_string_list_size(cef_string_list_t list);
 
-    // Check that the structure |s|, which is defined with a cef_base_t member named
-    // |base|, is large enough to contain the specified member |f|.
-//     #define CEF_MEMBER_EXISTS(s, f)   \
-//     ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
-// 
-//     #define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
+///
+// Retrieve the value at the specified zero-based string list index. Returns
+// true (1) if the value was successfully retrieved.
+///
+CEF_EXPORT int cef_string_list_value(cef_string_list_t list,
+                                     int index, cef_string_t* value);
+
+///
+// Append a new value at the end of the string list.
+///
+CEF_EXPORT void cef_string_list_append(cef_string_list_t list,
+                                       const cef_string_t* value);
+
+///
+// Clear the string list.
+///
+CEF_EXPORT void cef_string_list_clear(cef_string_list_t list);
+
+///
+// Free the string list.
+///
+CEF_EXPORT void cef_string_list_free(cef_string_list_t list);
+
+///
+// Creates a copy of an existing string list.
+///
+CEF_EXPORT cef_string_list_t cef_string_list_copy(cef_string_list_t list);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif  // CEF_INCLUDE_INTERNAL_CEF_STRING_LIST_H_
