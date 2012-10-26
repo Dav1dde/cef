@@ -1,3 +1,5 @@
+module deimos.cef3.callback;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,40 +36,26 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_CALLBACK_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_CALLBACK_CAPI_H_
-#pragma once
+extern(C) {
+    import deimos.cef3.base;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+    ///
+    // Generic callback structure used for asynchronous continuation.
+    ///
+    struct cef_callback_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-#include "include/capi/cef_base_capi.h"
+        ///
+        // Continue processing.
+        ///
+        extern(System) void function(cef_callback_t* self) cont;
 
-
-///
-// Generic callback structure used for asynchronous continuation.
-///
-typedef struct _cef_callback_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
-
-  ///
-  // Continue processing.
-  ///
-  void (CEF_CALLBACK *cont)(struct _cef_callback_t* self);
-
-  ///
-  // Cancel processing.
-  ///
-  void (CEF_CALLBACK *cancel)(struct _cef_callback_t* self);
-} cef_callback_t;
-
-
-#ifdef __cplusplus
+        ///
+        // Cancel processing.
+        ///
+        extern(System) void function(cef_callback_t* self) cancel;
+    }
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_CALLBACK_CAPI_H_

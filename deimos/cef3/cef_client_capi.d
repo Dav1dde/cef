@@ -1,3 +1,5 @@
+module deimos.cef3.client;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,110 +36,85 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "include/capi/cef_base_capi.h"
+extern(C) {
+    import deimos.cef3.base;
 
 
-///
-// Implement this structure to provide handler implementations.
-///
-typedef struct _cef_client_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
+    ///
+    // Implement this structure to provide handler implementations.
+    ///
+    struct cef_client_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-  ///
-  // Return the handler for context menus. If no handler is provided the default
-  // implementation will be used.
-  ///
-  struct _cef_context_menu_handler_t* (CEF_CALLBACK *get_context_menu_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for context menus. If no handler is provided the default
+        // implementation will be used.
+        ///
+        extern(System) cef_context_menu_handler_t* function(cef_client_t* self) get_context_menu_handler;
+ 
+        ///
+        // Return the handler for dialogs. If no handler is provided the default
+        // implementation will be used.
+        ///
+        extern(System) cef_dialog_handler_t* function(cef_client_t* self) get_dialog_handler;
 
-  ///
-  // Return the handler for dialogs. If no handler is provided the default
-  // implementation will be used.
-  ///
-  struct _cef_dialog_handler_t* (CEF_CALLBACK *get_dialog_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for browser display state events.
+        ///
+        extern(System) cef_display_handler_t* function(cef_client_t* self) get_display_handler;
 
-  ///
-  // Return the handler for browser display state events.
-  ///
-  struct _cef_display_handler_t* (CEF_CALLBACK *get_display_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for download events. If no handler is returned downloads
+        // will not be allowed.
+        ///
+        extern(System) cef_download_handler_t* function(cef_client_t* self) get_download_handler;
 
-  ///
-  // Return the handler for download events. If no handler is returned downloads
-  // will not be allowed.
-  ///
-  struct _cef_download_handler_t* (CEF_CALLBACK *get_download_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for focus events.
+        ///
+        extern(System) cef_focus_handler_t* function(cef_client_t* self) get_focus_handler;
 
-  ///
-  // Return the handler for focus events.
-  ///
-  struct _cef_focus_handler_t* (CEF_CALLBACK *get_focus_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for geolocation permissions requests. If no handler is
+        // provided geolocation access will be denied by default.
+        ///
+        extern(System) cef_geolocation_handler_t* function(cef_client_t* self) get_geolocation_handler;
 
-  ///
-  // Return the handler for geolocation permissions requests. If no handler is
-  // provided geolocation access will be denied by default.
-  ///
-  struct _cef_geolocation_handler_t* (CEF_CALLBACK *get_geolocation_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for JavaScript dialogs. If no handler is provided the
+        // default implementation will be used.
+        ///
+        extern(System) cef_jsdialog_handler_t* function(cef_client_t* self) get_jsdialog_handler;
 
-  ///
-  // Return the handler for JavaScript dialogs. If no handler is provided the
-  // default implementation will be used.
-  ///
-  struct _cef_jsdialog_handler_t* (CEF_CALLBACK *get_jsdialog_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for keyboard events.
+        ///
+        extern(System) cef_keyboard_handler_t* function(cef_client_t* self) get_keyboard_handler;
 
-  ///
-  // Return the handler for keyboard events.
-  ///
-  struct _cef_keyboard_handler_t* (CEF_CALLBACK *get_keyboard_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for browser life span events.
+        ///
+        extern(System) cef_life_span_handler_t* function(cef_client_t* self) get_life_span_handler;
 
-  ///
-  // Return the handler for browser life span events.
-  ///
-  struct _cef_life_span_handler_t* (CEF_CALLBACK *get_life_span_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for browser load status events.
+        ///
+        extern(System) cef_load_handler_t* function(cef_client_t* self) get_load_handler;
 
-  ///
-  // Return the handler for browser load status events.
-  ///
-  struct _cef_load_handler_t* (CEF_CALLBACK *get_load_handler)(
-      struct _cef_client_t* self);
+        ///
+        // Return the handler for browser request events.
+        ///
+        extern(System) cef_request_handler_t* function(cef_client_t* self) get_request_handler;
 
-  ///
-  // Return the handler for browser request events.
-  ///
-  struct _cef_request_handler_t* (CEF_CALLBACK *get_request_handler)(
-      struct _cef_client_t* self);
-
-  ///
-  // Called when a new message is received from a different process. Return true
-  // (1) if the message was handled or false (0) otherwise. Do not keep a
-  // reference to or attempt to access the message outside of this callback.
-  ///
-  int (CEF_CALLBACK *on_process_message_received)(struct _cef_client_t* self,
-      struct _cef_browser_t* browser, enum cef_process_id_t source_process,
-      struct _cef_process_message_t* message);
-} cef_client_t;
-
-
-#ifdef __cplusplus
+        ///
+        // Called when a new message is received from a different process. Return true
+        // (1) if the message was handled or false (0) otherwise. Do not keep a
+        // reference to or attempt to access the message outside of this callback.
+        ///
+        extern(System) int function(cef_client_t* self, cef_browser_t* browser, enum cef_process_id_t source_process,
+                                    cef_process_message_t* message) on_process_message_received;
+    }
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_

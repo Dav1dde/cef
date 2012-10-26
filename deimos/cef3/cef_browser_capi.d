@@ -1,3 +1,5 @@
+module deimos.cef3.browser;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,287 +36,257 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
-#pragma once
+extern(C) {
+    import deimos.cef3.base;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+    ///
+    // Structure used to represent a browser window. When used in the browser
+    // process the functions of this structure may be called on any thread unless
+    // otherwise indicated in the comments. When used in the render process the
+    // functions of this structure may only be called on the main thread.
+    ///
+    struct cef_browser_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-#include "include/capi/cef_base_capi.h"
+        ///
+        // Returns the browser host object. This function can only be called in the
+        // browser process.
+        ///
+        extern(System) cef_browser_host_t* function(cef_browser_t* self) get_host;
 
+        ///
+        // Returns true (1) if the browser can navigate backwards.
+        ///
+        extern(System) int function(cef_browser_t* self) can_go_back;
 
-///
-// Structure used to represent a browser window. When used in the browser
-// process the functions of this structure may be called on any thread unless
-// otherwise indicated in the comments. When used in the render process the
-// functions of this structure may only be called on the main thread.
-///
-typedef struct _cef_browser_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
+        ///
+        // Navigate backwards.
+        ///
+        extern(System) void function(cef_browser_t* self) go_back;
 
-  ///
-  // Returns the browser host object. This function can only be called in the
-  // browser process.
-  ///
-  struct _cef_browser_host_t* (CEF_CALLBACK *get_host)(
-      struct _cef_browser_t* self);
+        ///
+        // Returns true (1) if the browser can navigate forwards.
+        ///
+        extern(System) int function(cef_browser_t* self) can_go_forward;
 
-  ///
-  // Returns true (1) if the browser can navigate backwards.
-  ///
-  int (CEF_CALLBACK *can_go_back)(struct _cef_browser_t* self);
+        ///
+        // Navigate forwards.
+        ///
+        extern(System) void function(cef_browser_t* self) go_forward;
 
-  ///
-  // Navigate backwards.
-  ///
-  void (CEF_CALLBACK *go_back)(struct _cef_browser_t* self);
+        ///
+        // Returns true (1) if the browser is currently loading.
+        ///
+        extern(System) int function(cef_browser_t* self) is_loading;
 
-  ///
-  // Returns true (1) if the browser can navigate forwards.
-  ///
-  int (CEF_CALLBACK *can_go_forward)(struct _cef_browser_t* self);
+        ///
+        // Reload the current page.
+        ///
+        extern(System) void function(cef_browser_t* self) reload;
 
-  ///
-  // Navigate forwards.
-  ///
-  void (CEF_CALLBACK *go_forward)(struct _cef_browser_t* self);
+        ///
+        // Reload the current page ignoring any cached data.
+        ///
+        extern(System) void function(cef_browser_t* self) reload_ignore_cache;
 
-  ///
-  // Returns true (1) if the browser is currently loading.
-  ///
-  int (CEF_CALLBACK *is_loading)(struct _cef_browser_t* self);
+        ///
+        // Stop loading the page.
+        ///
+        extern(System) void function(cef_browser_t* self) stop_load;
 
-  ///
-  // Reload the current page.
-  ///
-  void (CEF_CALLBACK *reload)(struct _cef_browser_t* self);
+        ///
+        // Returns the globally unique identifier for this browser.
+        ///
+        extern(System) int function(cef_browser_t* self) get_identifier;
 
-  ///
-  // Reload the current page ignoring any cached data.
-  ///
-  void (CEF_CALLBACK *reload_ignore_cache)(struct _cef_browser_t* self);
+        ///
+        // Returns true (1) if the window is a popup window.
+        ///
+        extern(System) int function(cef_browser_t* self) is_popup;
 
-  ///
-  // Stop loading the page.
-  ///
-  void (CEF_CALLBACK *stop_load)(struct _cef_browser_t* self);
+        ///
+        // Returns true (1) if a document has been loaded in the browser.
+        ///
+        extern(System) int function(cef_browser_t* self) has_document;
 
-  ///
-  // Returns the globally unique identifier for this browser.
-  ///
-  int (CEF_CALLBACK *get_identifier)(struct _cef_browser_t* self);
+        ///
+        // Returns the main (top-level) frame for the browser window.
+        ///
+        extern(System) cef_frame_t* function(cef_browser_t* self) get_main_frame;
 
-  ///
-  // Returns true (1) if the window is a popup window.
-  ///
-  int (CEF_CALLBACK *is_popup)(struct _cef_browser_t* self);
+        ///
+        // Returns the focused frame for the browser window.
+        ///
+        extern(System) cef_frame_t* function(cef_browser_t* self) get_focused_frame;
 
-  ///
-  // Returns true (1) if a document has been loaded in the browser.
-  ///
-  int (CEF_CALLBACK *has_document)(struct _cef_browser_t* self);
+        ///
+        // Returns the frame with the specified identifier, or NULL if not found.
+        ///
+        extern(System) cef_frame_t* function(cef_browser_t* self, int64 identifier) get_frame_byident;
 
-  ///
-  // Returns the main (top-level) frame for the browser window.
-  ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_main_frame)(
-      struct _cef_browser_t* self);
+        ///
+        // Returns the frame with the specified name, or NULL if not found.
+        ///
+        extern(System) cef_frame_t* function(cef_browser_t* self, const(cef_string_t)* name) get_frame;
 
-  ///
-  // Returns the focused frame for the browser window.
-  ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_focused_frame)(
-      struct _cef_browser_t* self);
+        ///
+        // Returns the number of frames that currently exist.
+        ///
+        extern(System) size_t function(cef_browser_t* self) get_frame_count;
 
-  ///
-  // Returns the frame with the specified identifier, or NULL if not found.
-  ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_frame_byident)(
-      struct _cef_browser_t* self, int64 identifier);
+        ///
+        // Returns the identifiers of all existing frames.
+        ///
+        extern(System) void function(cef_browser_t* self, size_t* identifiersCount, int64* identifiers) get_frame_identifiers;
 
-  ///
-  // Returns the frame with the specified name, or NULL if not found.
-  ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_frame)(struct _cef_browser_t* self,
-      const cef_string_t* name);
+        ///
+        // Returns the names of all existing frames.
+        ///
+        extern(System) void function(struct cef_browser_t* self, cef_string_list_t names) get_frame_names;
 
-  ///
-  // Returns the number of frames that currently exist.
-  ///
-  size_t (CEF_CALLBACK *get_frame_count)(struct _cef_browser_t* self);
-
-  ///
-  // Returns the identifiers of all existing frames.
-  ///
-  void (CEF_CALLBACK *get_frame_identifiers)(struct _cef_browser_t* self,
-      size_t* identifiersCount, int64* identifiers);
-
-  ///
-  // Returns the names of all existing frames.
-  ///
-  void (CEF_CALLBACK *get_frame_names)(struct _cef_browser_t* self,
-      cef_string_list_t names);
-
-  //
-  // Send a message to the specified |target_process|. Returns true (1) if the
-  // message was sent successfully.
-  ///
-  int (CEF_CALLBACK *send_process_message)(struct _cef_browser_t* self,
-      enum cef_process_id_t target_process,
-      struct _cef_process_message_t* message);
-} cef_browser_t;
+        //
+        // Send a message to the specified |target_process|. Returns true (1) if the
+        // message was sent successfully.
+        ///
+        extern(System) int function(cef_browser_t* self, enum cef_process_id_t target_process,
+                                    cef_process_message_t* message) send_process_message;
+    }
 
 
-///
-// Callback structure for cef_browser_host_t::RunFileDialog. The functions of
-// this structure will be called on the browser process UI thread.
-///
-typedef struct _cef_run_file_dialog_callback_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
+    ///
+    // Callback structure for cef_browser_host_t::RunFileDialog. The functions of
+    // this structure will be called on the browser process UI thread.
+    ///
+    struct cef_run_file_dialog_callback_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-  ///
-  // Called asynchronously after the file dialog is dismissed. If the selection
-  // was successful |file_paths| will be a single value or a list of values
-  // depending on the dialog mode. If the selection was cancelled |file_paths|
-  // will be NULL.
-  ///
-  void (CEF_CALLBACK *cont)(struct _cef_run_file_dialog_callback_t* self,
-      struct _cef_browser_host_t* browser_host, cef_string_list_t file_paths);
-} cef_run_file_dialog_callback_t;
-
-
-///
-// Structure used to represent the browser process aspects of a browser window.
-// The functions of this structure can only be called in the browser process.
-// They may be called on any thread in that process unless otherwise indicated
-// in the comments.
-///
-typedef struct _cef_browser_host_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
-
-  ///
-  // Returns the hosted browser object.
-  ///
-  struct _cef_browser_t* (CEF_CALLBACK *get_browser)(
-      struct _cef_browser_host_t* self);
-
-  ///
-  // Call this function before destroying a contained browser window. This
-  // function performs any internal cleanup that may be needed before the
-  // browser window is destroyed.
-  ///
-  void (CEF_CALLBACK *parent_window_will_close)(
-      struct _cef_browser_host_t* self);
-
-  ///
-  // Closes this browser window.
-  ///
-  void (CEF_CALLBACK *close_browser)(struct _cef_browser_host_t* self);
-
-  ///
-  // Set focus for the browser window. If |enable| is true (1) focus will be set
-  // to the window. Otherwise, focus will be removed.
-  ///
-  void (CEF_CALLBACK *set_focus)(struct _cef_browser_host_t* self, int enable);
-
-  ///
-  // Retrieve the window handle for this browser.
-  ///
-  cef_window_handle_t (CEF_CALLBACK *get_window_handle)(
-      struct _cef_browser_host_t* self);
-
-  ///
-  // Retrieve the window handle of the browser that opened this browser. Will
-  // return NULL for non-popup windows. This function can be used in combination
-  // with custom handling of modal windows.
-  ///
-  cef_window_handle_t (CEF_CALLBACK *get_opener_window_handle)(
-      struct _cef_browser_host_t* self);
-
-  ///
-  // Returns the client for this browser.
-  ///
-  struct _cef_client_t* (CEF_CALLBACK *get_client)(
-      struct _cef_browser_host_t* self);
-
-  ///
-  // Returns the DevTools URL for this browser. If |http_scheme| is true (1) the
-  // returned URL will use the http scheme instead of the chrome-devtools
-  // scheme. Remote debugging can be enabled by specifying the "remote-
-  // debugging-port" command-line flag or by setting the
-  // CefSettings.remote_debugging_port value. If remote debugging is not enabled
-  // this function will return an NULL string.
-  ///
-  // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_dev_tools_url)(
-      struct _cef_browser_host_t* self, int http_scheme);
-
-  ///
-  // Get the current zoom level. The default zoom level is 0.0. This function
-  // can only be called on the UI thread.
-  ///
-  double (CEF_CALLBACK *get_zoom_level)(struct _cef_browser_host_t* self);
-
-  ///
-  // Change the zoom level to the specified value. Specify 0.0 to reset the zoom
-  // level. If called on the UI thread the change will be applied immediately.
-  // Otherwise, the change will be applied asynchronously on the UI thread.
-  ///
-  void (CEF_CALLBACK *set_zoom_level)(struct _cef_browser_host_t* self,
-      double zoomLevel);
-
-  ///
-  // Call to run a file chooser dialog. Only a single file chooser dialog may be
-  // pending at any given time. |mode| represents the type of dialog to display.
-  // |title| to the title to be used for the dialog and may be NULL to show the
-  // default title ("Open" or "Save" depending on the mode). |default_file_name|
-  // is the default file name to select in the dialog. |accept_types| is a list
-  // of valid lower-cased MIME types or file extensions specified in an input
-  // element and is used to restrict selectable files to such types. |callback|
-  // will be executed after the dialog is dismissed or immediately if another
-  // dialog is already pending. The dialog will be initiated asynchronously on
-  // the UI thread.
-  ///
-  void (CEF_CALLBACK *run_file_dialog)(struct _cef_browser_host_t* self,
-      enum cef_file_dialog_mode_t mode, const cef_string_t* title,
-      const cef_string_t* default_file_name, cef_string_list_t accept_types,
-      struct _cef_run_file_dialog_callback_t* callback);
-} cef_browser_host_t;
+        ///
+        // Called asynchronously after the file dialog is dismissed. If the selection
+        // was successful |file_paths| will be a single value or a list of values
+        // depending on the dialog mode. If the selection was cancelled |file_paths|
+        // will be NULL.
+        ///
+        extern(System) void function(cef_run_file_dialog_callback_t* self, cef_browser_host_t* browser_host,
+                                    cef_string_list_t file_paths) cont;
+        };
 
 
-///
-// Create a new browser window using the window parameters specified by
-// |windowInfo|. All values will be copied internally and the actual window will
-// be created on the UI thread. This function can be called on any browser
-// process thread and will not block.
-///
-CEF_EXPORT int cef_browser_host_create_browser(
-    const cef_window_info_t* windowInfo, struct _cef_client_t* client,
-    const cef_string_t* url, const struct _cef_browser_settings_t* settings);
+        ///
+        // Structure used to represent the browser process aspects of a browser window.
+        // The functions of this structure can only be called in the browser process.
+        // They may be called on any thread in that process unless otherwise indicated
+        // in the comments.
+        ///
+        typedef struct cef_browser_host_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-///
-// Create a new browser window using the window parameters specified by
-// |windowInfo|. This function can only be called on the browser process UI
-// thread.
-///
-CEF_EXPORT cef_browser_t* cef_browser_host_create_browser_sync(
-    const cef_window_info_t* windowInfo, struct _cef_client_t* client,
-    const cef_string_t* url, const struct _cef_browser_settings_t* settings);
+        ///
+        // Returns the hosted browser object.
+        ///
+        extern(System) cef_browser_t* function(cef_browser_host_t* self) get_browser;
+
+        ///
+        // Call this function before destroying a contained browser window. This
+        // function performs any internal cleanup that may be needed before the
+        // browser window is destroyed.
+        ///
+        extern(System) void function(cef_browser_host_t* self) parent_window_will_close;
+
+        ///
+        // Closes this browser window.
+        ///
+        extern(System) void function(close_browser)(cef_browser_host_t* self);
+
+        ///
+        // Set focus for the browser window. If |enable| is true (1) focus will be set
+        // to the window. Otherwise, focus will be removed.
+        ///
+        extern(System) void function(cef_browser_host_t* self, int enable) set_focus;
+
+        ///
+        // Retrieve the window handle for this browser.
+        ///
+        extern(System) cef_window_handle_t function(cef_browser_host_t* self) get_window_handle;
+
+        ///
+        // Retrieve the window handle of the browser that opened this browser. Will
+        // return NULL for non-popup windows. This function can be used in combination
+        // with custom handling of modal windows.
+        ///
+        extern(System) cef_window_handle_t function(cef_browser_host_t* self) get_opener_window_handle;
+
+        ///
+        // Returns the client for this browser.
+        ///
+        extern(System) cef_client_t* function(cef_browser_host_t* self) get_client;
+
+        ///
+        // Returns the DevTools URL for this browser. If |http_scheme| is true (1) the
+        // returned URL will use the http scheme instead of the chrome-devtools
+        // scheme. Remote debugging can be enabled by specifying the "remote-
+        // debugging-port" command-line flag or by setting the
+        // CefSettings.remote_debugging_port value. If remote debugging is not enabled
+        // this function will return an NULL string.
+        ///
+        // The resulting string must be freed by calling cef_string_userfree_free().
+        extern(System) cef_string_userfree_t function(cef_browser_host_t* self, int http_scheme) get_dev_tools_url;
+
+        ///
+        // Get the current zoom level. The default zoom level is 0.0. This function
+        // can only be called on the UI thread.
+        ///
+        extern(System) double function(cef_browser_host_t* self) get_zoom_level;
+
+        ///
+        // Change the zoom level to the specified value. Specify 0.0 to reset the zoom
+        // level. If called on the UI thread the change will be applied immediately.
+        // Otherwise, the change will be applied asynchronously on the UI thread.
+        ///
+        extern(System) void function(cef_browser_host_t* self, double zoomLevel) set_zoom_level;
+
+        ///
+        // Call to run a file chooser dialog. Only a single file chooser dialog may be
+        // pending at any given time. |mode| represents the type of dialog to display.
+        // |title| to the title to be used for the dialog and may be NULL to show the
+        // default title ("Open" or "Save" depending on the mode). |default_file_name|
+        // is the default file name to select in the dialog. |accept_types| is a list
+        // of valid lower-cased MIME types or file extensions specified in an input
+        // element and is used to restrict selectable files to such types. |callback|
+        // will be executed after the dialog is dismissed or immediately if another
+        // dialog is already pending. The dialog will be initiated asynchronously on
+        // the UI thread.
+        ///
+        extern(System) void function(cef_browser_host_t* self, enum cef_file_dialog_mode_t mode,
+                                    const(cef_string_t)* title, const(cef_string_t)* default_file_name,
+                                    cef_string_list_t accept_types, cef_run_file_dialog_callback_t* callback) run_file_dialog;
+    }
 
 
-#ifdef __cplusplus
+    ///
+    // Create a new browser window using the window parameters specified by
+    // |windowInfo|. All values will be copied internally and the actual window will
+    // be created on the UI thread. This function can be called on any browser
+    // process thread and will not block.
+    ///
+    int cef_browser_host_create_browser(
+        const(cef_window_info_t)* windowInfo, cef_client_t* client,
+        const(cef_string_t)* url, const(cef_browser_settings_t)* settings);
+
+    ///
+    // Create a new browser window using the window parameters specified by
+    // |windowInfo|. This function can only be called on the browser process UI
+    // thread.
+    ///
+    cef_browser_t* cef_browser_host_create_browser_sync(
+        const(cef_window_info_t)* windowInfo, cef_client_t* client,
+        const(cef_string_t)* url, const(cef_browser_settings_t)* settings);
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_

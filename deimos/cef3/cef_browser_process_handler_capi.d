@@ -1,3 +1,5 @@
+module deimos.cef3.browser_process_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,55 +36,38 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_BROWSER_PROCESS_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_BROWSER_PROCESS_HANDLER_CAPI_H_
-#pragma once
+extern(C) {
+    import deimos.cef3.base;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+    ///
+    // Structure used to implement browser process callbacks. The functions of this
+    // structure will be called on the browser process main thread unless otherwise
+    // indicated.
+    ///
+    struct cef_browser_process_handler_t {
+        ///
+        // Base structure.
+        ///
+        cef_base_t base;
 
-#include "include/capi/cef_base_capi.h"
+        ///
+        // Return the handler for proxy events. If no handler is returned the default
+        // system handler will be used. This function is called on the browser process
+        // IO thread.
+        ///
+        extern(System) cef_proxy_handler_t* function(cef_browser_process_handler_t* self) get_proxy_handler;
 
+        ///
+        // Called on the browser process UI thread immediately after the CEF context
+        // has been initialized.
+        ///
+        extern(System) void function(cef_browser_process_handler_t* self) on_context_initialized;
 
-///
-// Structure used to implement browser process callbacks. The functions of this
-// structure will be called on the browser process main thread unless otherwise
-// indicated.
-///
-typedef struct _cef_browser_process_handler_t {
-  ///
-  // Base structure.
-  ///
-  cef_base_t base;
+        ///
+        // Called on the browser process IO thread before a child process is launched.
+        // Provides an opportunity to modify the child process command line.
+        ///
+        extern(System) void function(cef_browser_process_handler_t* self, cef_command_line_t* command_line) on_before_child_process_launch;
+    }
 
-  ///
-  // Return the handler for proxy events. If no handler is returned the default
-  // system handler will be used. This function is called on the browser process
-  // IO thread.
-  ///
-  struct _cef_proxy_handler_t* (CEF_CALLBACK *get_proxy_handler)(
-      struct _cef_browser_process_handler_t* self);
-
-  ///
-  // Called on the browser process UI thread immediately after the CEF context
-  // has been initialized.
-  ///
-  void (CEF_CALLBACK *on_context_initialized)(
-      struct _cef_browser_process_handler_t* self);
-
-  ///
-  // Called on the browser process IO thread before a child process is launched.
-  // Provides an opportunity to modify the child process command line.
-  ///
-  void (CEF_CALLBACK *on_before_child_process_launch)(
-      struct _cef_browser_process_handler_t* self,
-      struct _cef_command_line_t* command_line);
-} cef_browser_process_handler_t;
-
-
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_BROWSER_PROCESS_HANDLER_CAPI_H_
