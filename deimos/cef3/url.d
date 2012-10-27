@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -58,8 +52,4 @@ int cef_parse_url(const(cef_string_t)* url, cef_urlparts_t* parts);
 ///
 int cef_create_url(const(cef_urlparts_t)* parts, cef_string_t* url);
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_

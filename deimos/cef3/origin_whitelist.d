@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -94,8 +88,4 @@ int cef_remove_cross_origin_whitelist_entry(const(cef_string_t)* source_origin, 
 ///
 int cef_clear_cross_origin_whitelist();
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_

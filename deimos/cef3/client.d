@@ -114,7 +114,7 @@ extern(C) {
         // (1) if the message was handled or false (0) otherwise. Do not keep a
         // reference to or attempt to access the message outside of this callback.
         ///
-        extern(System) int function(cef_client_t* self, cef_browser_t* browser, enum cef_process_id_t source_process,
+        extern(System) int function(cef_client_t* self, cef_browser_t* browser, cef_process_id_t source_process,
                                     cef_process_message_t* message) on_process_message_received;
     }
 }

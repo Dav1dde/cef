@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_CONTEXT_MENU_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_CONTEXT_MENU_HANDLER_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -165,9 +159,7 @@ struct cef_context_menu_params_t {
   // Returns flags representing the actions supported by the media element, if
   // any, that the context menu was invoked on.
   ///
-  enum cef_context_menu_media_state_flags_t (
-      CEF_CALLBACK *get_media_state_flags)(
-      struct _cef_context_menu_params_t* self);
+  extern(System) cef_context_menu_media_state_flags_t function(cef_context_menu_params_t* self) get_media_state_flags;
 
   ///
   // Returns the text of the selection, if any, that the context menu was
@@ -194,9 +186,4 @@ struct cef_context_menu_params_t {
   extern(System)  cef_context_menu_edit_state_flags_t function(cef_context_menu_params_t* self) get_edit_state_flags;
 }
 
-
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_CONTEXT_MENU_HANDLER_CAPI_H_

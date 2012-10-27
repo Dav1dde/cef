@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_COMMAND_LINE_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_COMMAND_LINE_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -188,10 +182,4 @@ cef_command_line_t* cef_command_line_create();
 // will be read-only.
 ///
 cef_command_line_t* cef_command_line_get_global();
-
-
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_COMMAND_LINE_CAPI_H_

@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_PATH_UTIL_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_PATH_UTIL_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -51,8 +45,4 @@ import deimos.cef3.base;
 ///
 int cef_get_path( cef_path_key_t key, cef_string_t* path);
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_PATH_UTIL_CAPI_H_

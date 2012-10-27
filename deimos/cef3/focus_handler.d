@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -77,8 +71,4 @@ struct cef_focus_handler_t {
 }
 
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_

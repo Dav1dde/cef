@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_MENU_MODEL_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_MENU_MODEL_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -334,8 +328,4 @@ struct cef_menu_model_t {
 }
 
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_MENU_MODEL_CAPI_H_

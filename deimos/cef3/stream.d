@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -204,8 +198,4 @@ cef_stream_writer_t* cef_stream_writer_create_for_file(const(cef_string_t)* file
 cef_stream_writer_t* cef_stream_writer_create_for_handler(cef_write_handler_t* handler);
 
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_

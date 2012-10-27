@@ -34,13 +34,7 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_XML_READER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_XML_READER_CAPI_H_
-#pragma once
-
-#ifdef __cplusplus
 extern(C) {
-#endif
 
 import deimos.cef3.base;
 
@@ -251,8 +245,4 @@ struct cef_xml_reader_t {
 cef_xml_reader_t* cef_xml_reader_create(cef_stream_reader_t* stream,  cef_xml_encoding_type_t encodingType, const(cef_string_t)* URI);
 
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif  // CEF_INCLUDE_CAPI_CEF_XML_READER_CAPI_H_
