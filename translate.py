@@ -50,7 +50,7 @@ EXTERN_C_RE = re.compile('extern\s+"C"\s+')
 def extern_c_sub(match):
     return 'extern(C) '
 
-TYPEDEF_RE = re.compile(r'typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);')
+TYPEDEF_RE = re.compile(r'^typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);$')
 def typedef_sub(match):
     old, new = match.group('old', 'new')
 
@@ -98,8 +98,8 @@ def replace_all(s):
     s = EXTERN_C_RE.sub(extern_c_sub, s)
     s = INCLUDE_RE.sub(include_sub, s)
     s = PREPROCESS_RE.sub(preprocess_sub, s)
-    s = TYPEDEF_RE.sub(typedef_sub, s)
     s = STRUCT_RE.sub(struct_sub, s)
+    s = TYPEDEF_RE.sub(typedef_sub, s)
     s = FUNC_RE.sub(func_sub, s)
     s = CALLBACK_RE.sub(callback_sub, s)
     s = CONST_RE.sub(const_sub, s)
