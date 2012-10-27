@@ -109,6 +109,8 @@ def replace_all(s):
 
 
 def main():
+    global CEF_VER
+    
     from argparse import ArgumentParser
     from os.path import isdir, split as path_split, splitext
     from glob import glob
@@ -116,7 +118,18 @@ def main():
     parser = ArgumentParser()
     parser.add_argument('path', metavar='PATH')
     parser.add_argument('-i', '--inplace', dest='inplace', action='store_true')
+    parser.add_argument('-c', '--cef-ver', dest='cef_ver', choices=['1', '3'], default='0')
     args = parser.parse_args()
+
+    if args.cef_ver == '0':
+        if 'cef1' in args.path:
+            CEF_VER = '1'
+        elif 'cef3' in args.path:
+            CEF_VER = '3'
+        else:
+            return parser.error('specify cef version')
+    else:
+        CEF_VER = args.cef_ver
 
     for path in glob(args.path):
         if isdir(path):
