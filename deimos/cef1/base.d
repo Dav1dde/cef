@@ -36,7 +36,7 @@ module deimos.cef1.base;
 extern(C) {
 // #endif
 
-import deimos.cef1.internal.xport;
+import deimos.cef1.internal.export;
 import deimos.cef1.internal.string;
 import deimos.cef1.internal.string_list;
 import deimos.cef1.internal.string_m;
@@ -73,7 +73,7 @@ struct cef_base_t {
 
 // Check that the structure |s|, which is defined with a cef_base_t member named
 // |base|, is large enough to contain the specified member |f|.
-  ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
+//   ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
 
 
 
