@@ -1,3 +1,5 @@
+module deimos.cef1.internal.time;
+
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,21 +29,20 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_TIME_H_
-#define CEF_INCLUDE_INTERNAL_CEF_TIME_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_TIME_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/internal/cef_export.h"
-#include <time.h>
+import deimos.cef1.internal.xport;
+import core.stdc.time;
 
 ///
 // Time information. Values should always be in UTC.
 ///
-typedef struct _cef_time_t {
+struct cef_time_t {
   int year;          // Four digit year "2007"
   int month;         // 1-based month (values 1 = January, etc.)
   int day_of_week;   // 0-based day of week (0 = Sunday, etc.)
@@ -51,14 +52,14 @@ typedef struct _cef_time_t {
   int second;        // Second within the current minute (0-59 plus leap
                      //   seconds which may take it up to 60).
   int millisecond;   // Milliseconds within the current second (0-999)
-} cef_time_t;
+}
 
 ///
 // Converts cef_time_t to/from time_t. Returns true (1) on success and false (0)
 // on failure.
 ///
-CEF_EXPORT int cef_time_to_timet(const cef_time_t* cef_time, time_t* time);
-CEF_EXPORT int cef_time_from_timet(time_t time, cef_time_t* cef_time);
+int cef_time_to_timet(const(cef_time_t)* cef_time, time_t* time);
+int cef_time_from_timet(time_t time, cef_time_t* cef_time);
 
 ///
 // Converts cef_time_t to/from a double which is the number of seconds since
@@ -66,11 +67,10 @@ CEF_EXPORT int cef_time_from_timet(time_t time, cef_time_t* cef_time);
 // means "not initialized". Returns true (1) on success and false (0) on
 // failure.
 ///
-CEF_EXPORT int cef_time_to_doublet(const cef_time_t* cef_time, double* time);
-CEF_EXPORT int cef_time_from_doublet(double time, cef_time_t* cef_time);
+int cef_time_to_doublet(const(cef_time_t)* cef_time, double* time);
+int cef_time_from_doublet(double time, cef_time_t* cef_time);
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_TIME_H_

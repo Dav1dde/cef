@@ -1,3 +1,5 @@
+module deimos.cef1.internal.export;
+
 // Copyright (c) 2009 The Chromium Embedded Framework Authors. All rights
 // reserved.
 //
@@ -28,28 +30,27 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
-#define CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
+// #pragma once
 
-#include "include/internal/cef_build.h"
+import deimos.cef1.internal.build;
 
-#if defined(COMPILER_MSVC)
+// #if defined(COMPILER_MSVC)
 
-#ifdef BUILDING_CEF_SHARED
-#define CEF_EXPORT __declspec(dllexport)
-#elif USING_CEF_SHARED
-#define CEF_EXPORT __declspec(dllimport)
-#else
-#define CEF_EXPORT
-#endif
-#define CEF_CALLBACK __stdcall
+// #ifdef BUILDING_CEF_SHARED
+// #define CEF_EXPORT __declspec(dllexport)
+// #elif USING_CEF_SHARED
+// #define CEF_EXPORT __declspec(dllimport)
+// #else
+// #define CEF_EXPORT
+// #endif
+// #define CEF_CALLBACK __stdcall
 
-#elif defined(COMPILER_GCC)
+// #elif defined(COMPILER_GCC)
 
-#define CEF_EXPORT __attribute__ ((visibility("default")))
-#define CEF_CALLBACK
+// #define CEF_EXPORT __attribute__ ((visibility("default")))
+// #define CEF_CALLBACK
 
-#endif  // COMPILER_GCC
+// #endif  // COMPILER_GCC
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
+// #endif  // CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_

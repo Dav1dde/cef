@@ -1,3 +1,5 @@
+module deimos.cef1.internal.string_types;
+
 // Copyright (c) 2010 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,35 +29,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_STRING_TYPES_H_
-#define CEF_INCLUDE_INTERNAL_CEF_STRING_TYPES_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_STRING_TYPES_H_
+// #pragma once
 
 // CEF provides functions for converting between UTF-8, -16 and -32 strings.
 // CEF string types are safe for reading from multiple threads but not for
 // modification. It is the user's responsibility to provide synchronization if
 // modifying CEF strings from multiple threads.
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/internal/cef_build.h"
-#include "include/internal/cef_export.h"
-#include <stddef.h>
+import deimos.cef1.internal.build;
+import deimos.cef1.internal.xport;
+import core.stdc.stddef;
 
 // CEF character type definitions. wchar_t is 2 bytes on Windows and 4 bytes on
 // most other platforms.
 
-#if defined(OS_WIN)
-typedef wchar_t char16;
-#else  // !OS_WIN
-typedef unsigned short char16;  // NOLINT (runtime/int)
-#ifndef WCHAR_T_IS_UTF32
-#define WCHAR_T_IS_UTF32
-#endif  // WCHAR_T_IS_UTF32
-#endif  // !OS_WIN
-
+alias wchar char16;
 
 // CEF string type definitions. Whomever allocates |str| is responsible for
 // providing an appropriate |dtor| implementation that will free the string in
@@ -64,24 +57,24 @@ typedef unsigned short char16;  // NOLINT (runtime/int)
 // values. Static strings will have a NULL |dtor| value. Using the below
 // functions if you want this managed for you.
 
-typedef struct _cef_string_wide_t {
-  wchar_t* str;
-  size_t length;
-  void (*dtor)(wchar_t* str);
-} cef_string_wide_t;
+struct cef_string_wide_t {
+    wchar_t* str;
+    size_t length;
+    alias void function(wchar_t* str) dtor;
+}
 
-typedef struct _cef_string_utf8_t {
-  char* str;
-  size_t length;
-  void (*dtor)(char* str);
-} cef_string_utf8_t;
+struct cef_string_utf8_t {
+    char* str;
+    size_t length;
+    alias void function(char* str) dtor;
+    void (*dtor)(char* str);
+}
 
-typedef struct _cef_string_utf16_t {
-  char16* str;
-  size_t length;
-  void (*dtor)(char16* str);
-} cef_string_utf16_t;
-
+struct cef_string_utf16_t {
+    char16* str;
+    size_t length;
+    alias void function(char16* str) dtor;
+}
 
 ///
 // These functions set string values. If |copy| is true (1) the value will be
@@ -89,45 +82,43 @@ typedef struct _cef_string_utf16_t {
 // the lifespan of references.
 ///
 
-CEF_EXPORT int cef_string_wide_set(const wchar_t* src, size_t src_len,
-                                   cef_string_wide_t* output, int copy);
-CEF_EXPORT int cef_string_utf8_set(const char* src, size_t src_len,
-                                   cef_string_utf8_t* output, int copy);
-CEF_EXPORT int cef_string_utf16_set(const char16* src, size_t src_len,
-                                    cef_string_utf16_t* output, int copy);
+int cef_string_wide_set(const(wchar_t)* src, size_t src_len, cef_string_wide_t* output, int copy);
+int cef_string_utf8_set(const(char)* src, size_t src_len, cef_string_utf8_t* output, int copy);
+int cef_string_utf16_set(const(char16)* src, size_t src_len, cef_string_utf16_t* output, int copy);
 
 
 ///
 // Convenience macros for copying values.
 ///
 
-#define cef_string_wide_copy(src, src_len, output)  \
-    cef_string_wide_set(src, src_len, output, true)
-#define cef_string_utf8_copy(src, src_len, output)  \
-    cef_string_utf8_set(src, src_len, output, true)
-#define cef_string_utf16_copy(src, src_len, output)  \
-    cef_string_utf16_set(src, src_len, output, true)
+void cef_string_wide_copy(src, src_len, output) {
+    cef_string_wide_set(src, src_len, output, true);
+}
 
+void cef_string_utf8_copy(src, src_len, output) {
+    cef_string_utf8_set(src, src_len, output, true);
+}
+
+void cef_string_utf16_copy(src, src_len, output) {
+    cef_string_utf16_set(src, src_len, output, true);
+}
 
 ///
 // These functions clear string values. The structure itself is not freed.
 ///
 
-CEF_EXPORT void cef_string_wide_clear(cef_string_wide_t* str);
-CEF_EXPORT void cef_string_utf8_clear(cef_string_utf8_t* str);
-CEF_EXPORT void cef_string_utf16_clear(cef_string_utf16_t* str);
+void cef_string_wide_clear(cef_string_wide_t* str);
+void cef_string_utf8_clear(cef_string_utf8_t* str);
+void cef_string_utf16_clear(cef_string_utf16_t* str);
 
 
 ///
 // These functions compare two string values with the same results as strcmp().
 ///
 
-CEF_EXPORT int cef_string_wide_cmp(const cef_string_wide_t* str1,
-                                   const cef_string_wide_t* str2);
-CEF_EXPORT int cef_string_utf8_cmp(const cef_string_utf8_t* str1,
-                                   const cef_string_utf8_t* str2);
-CEF_EXPORT int cef_string_utf16_cmp(const cef_string_utf16_t* str1,
-                                    const cef_string_utf16_t* str2);
+int cef_string_wide_cmp(const(cef_string_wide_t)* str1, const(cef_string_wide_t)* str2);
+int cef_string_utf8_cmp(const(cef_string_utf8_t)* str1, const(cef_string_utf8_t)* str2);
+int cef_string_utf16_cmp(const(cef_string_utf16_t)* str1, const(cef_string_utf16_t)* str2);
 
 
 ///
@@ -137,20 +128,14 @@ CEF_EXPORT int cef_string_utf16_cmp(const cef_string_utf16_t* str1,
 // value indicating whether the conversion is 100% valid.
 ///
 
-CEF_EXPORT int cef_string_wide_to_utf8(const wchar_t* src, size_t src_len,
-                                       cef_string_utf8_t* output);
-CEF_EXPORT int cef_string_utf8_to_wide(const char* src, size_t src_len,
-                                       cef_string_wide_t* output);
+int cef_string_wide_to_utf8(const(wchar_t)* src, size_t src_len, cef_string_utf8_t* output);
+int cef_string_utf8_to_wide(const(char)* src, size_t src_len, cef_string_wide_t* output);
 
-CEF_EXPORT int cef_string_wide_to_utf16(const wchar_t* src, size_t src_len,
-                                        cef_string_utf16_t* output);
-CEF_EXPORT int cef_string_utf16_to_wide(const char16* src, size_t src_len,
-                                        cef_string_wide_t* output);
+int cef_string_wide_to_utf16(const(wchar_t)* src, size_t src_len, cef_string_utf16_t* output);
+int cef_string_utf16_to_wide(const(char16)* src, size_t src_len, cef_string_wide_t* output);
 
-CEF_EXPORT int cef_string_utf8_to_utf16(const char* src, size_t src_len,
-                                        cef_string_utf16_t* output);
-CEF_EXPORT int cef_string_utf16_to_utf8(const char16* src, size_t src_len,
-                                        cef_string_utf8_t* output);
+int cef_string_utf8_to_utf16(const(char)* src, size_t src_len, cef_string_utf16_t* output);
+int cef_string_utf16_to_utf8(const(char16)* src, size_t src_len, cef_string_utf8_t* output);
 
 
 ///
@@ -159,10 +144,8 @@ CEF_EXPORT int cef_string_utf16_to_utf8(const char16* src, size_t src_len,
 // the string is ASCII.
 ///
 
-CEF_EXPORT int cef_string_ascii_to_wide(const char* src, size_t src_len,
-                                        cef_string_wide_t* output);
-CEF_EXPORT int cef_string_ascii_to_utf16(const char* src, size_t src_len,
-                                         cef_string_utf16_t* output);
+int cef_string_ascii_to_wide(const(char)* src, size_t src_len, cef_string_wide_t* output);
+int cef_string_ascii_to_utf16(const(char)* src, size_t src_len, cef_string_utf16_t* output);
 
 
 
@@ -172,9 +155,9 @@ CEF_EXPORT int cef_string_ascii_to_utf16(const char* src, size_t src_len,
 // hint that the user is responsible for freeing the structure.
 ///
 
-typedef cef_string_wide_t* cef_string_userfree_wide_t;
-typedef cef_string_utf8_t* cef_string_userfree_utf8_t;
-typedef cef_string_utf16_t* cef_string_userfree_utf16_t;
+alias cef_string_wide_t* cef_string_userfree_wide_t;
+alias cef_string_utf8_t* cef_string_userfree_utf8_t;
+alias cef_string_utf16_t* cef_string_userfree_utf16_t;
 
 
 ///
@@ -182,9 +165,9 @@ typedef cef_string_utf16_t* cef_string_userfree_utf16_t;
 // calling the associated free function.
 ///
 
-CEF_EXPORT cef_string_userfree_wide_t cef_string_userfree_wide_alloc();
-CEF_EXPORT cef_string_userfree_utf8_t cef_string_userfree_utf8_alloc();
-CEF_EXPORT cef_string_userfree_utf16_t cef_string_userfree_utf16_alloc();
+cef_string_userfree_wide_t cef_string_userfree_wide_alloc();
+cef_string_userfree_utf8_t cef_string_userfree_utf8_alloc();
+cef_string_userfree_utf16_t cef_string_userfree_utf16_alloc();
 
 
 ///
@@ -192,13 +175,12 @@ CEF_EXPORT cef_string_userfree_utf16_t cef_string_userfree_utf16_alloc();
 // alloc function. Any string contents will first be cleared.
 ///
 
-CEF_EXPORT void cef_string_userfree_wide_free(cef_string_userfree_wide_t str);
-CEF_EXPORT void cef_string_userfree_utf8_free(cef_string_userfree_utf8_t str);
-CEF_EXPORT void cef_string_userfree_utf16_free(cef_string_userfree_utf16_t str);
+void cef_string_userfree_wide_free(cef_string_userfree_wide_t str);
+void cef_string_userfree_utf8_free(cef_string_userfree_utf8_t str);
+void cef_string_userfree_utf16_free(cef_string_userfree_utf16_t str);
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_STRING_TYPES_H_

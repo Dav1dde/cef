@@ -1,3 +1,5 @@
+module deimos.cef1.internal.types_linux;
+
 // Copyright (c) 2010 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,23 +30,22 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_TYPES_LINUX_H_
-#define CEF_INCLUDE_INTERNAL_CEF_TYPES_LINUX_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_TYPES_LINUX_H_
+// #pragma once
 
-#include "include/internal/cef_build.h"
+import deimos.cef1.internal.build;
 
-#if defined(OS_LINUX)
-#include <gtk/gtk.h>
-#include "include/internal/cef_string.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+import deimos.cef1.internal.string;
+version(Linux) {
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
 // Window handle.
-#define cef_window_handle_t GtkWidget*
-#define cef_cursor_handle_t void*
+// #define cef_window_handle_t GtkWidget*
+alias void* cef_window_handle_t;
+// #define cef_cursor_handle_t void*
+alias void* cef_cursor_handle_t;
 
 ///
 // Supported graphics implementations.
@@ -52,37 +53,36 @@ extern "C" {
 enum cef_graphics_implementation_t {
   DESKTOP_IN_PROCESS = 0,
   DESKTOP_IN_PROCESS_COMMAND_BUFFER,
-};
+}
 
 ///
 // Class representing window information.
 ///
-typedef struct _cef_window_info_t {
+struct cef_window_info_t {
   // Pointer for the parent GtkBox widget.
   cef_window_handle_t m_ParentWidget;
 
   // Pointer for the new browser widget.
   cef_window_handle_t m_Widget;
-} cef_window_info_t;
+}
 
 ///
 // Class representing print context information.
 ///
-typedef struct _cef_print_info_t {
+struct cef_print_info_t {
   double m_Scale;
-} cef_print_info_t;
+}
 
 ///
 // Class representing key information.
 ///
-typedef struct _cef_key_info_t {
+struct cef_key_info_t {
   int key;
-} cef_key_info_t;
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif  // OS_LINUX
+// #ifdef __cplusplus
+}
+// #endif
+}
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_TYPES_LINUX_H_
+// #endif  // CEF_INCLUDE_INTERNAL_CEF_TYPES_LINUX_H_

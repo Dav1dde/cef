@@ -1,3 +1,5 @@
+module deimos.cef1.internal.string_multimap;
+
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,79 +29,69 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_STRING_MULTIMAP_H_
-#define CEF_INCLUDE_INTERNAL_CEF_STRING_MULTIMAP_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_STRING_MULTIMAP_H_
+// #pragma once
 
-#include "include/internal/cef_export.h"
-#include "include/internal/cef_string.h"
+import deimos.cef1.internal.export;
+import deimos.cef1.internal.string;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
 ///
 // CEF string multimaps are a set of key/value string pairs.
 // More than one value can be assigned to a single key.
 ///
-typedef void* cef_string_multimap_t;
+alias void* cef_string_multimap_t;
 
 ///
 // Allocate a new string multimap.
 ///
-CEF_EXPORT cef_string_multimap_t cef_string_multimap_alloc();
+cef_string_multimap_t cef_string_multimap_alloc();
 
 ///
 // Return the number of elements in the string multimap.
 ///
-CEF_EXPORT int cef_string_multimap_size(cef_string_multimap_t map);
+int cef_string_multimap_size(cef_string_multimap_t map);
 
 ///
 // Return the number of values with the specified key.
 ///
-CEF_EXPORT int cef_string_multimap_find_count(cef_string_multimap_t map,
-                                              const cef_string_t* key);
+int cef_string_multimap_find_count(cef_string_multimap_t map, const(cef_string_t)* key);
 
 ///
 // Return the value_index-th value with the specified key.
 ///
-CEF_EXPORT int cef_string_multimap_enumerate(cef_string_multimap_t map,
-                                             const cef_string_t* key,
-                                             int value_index,
-                                             cef_string_t* value);
+int cef_string_multimap_enumerate(cef_string_multimap_t map, const(cef_string_t)* key, int value_index, cef_string_t* value);
 
 ///
 // Return the key at the specified zero-based string multimap index.
 ///
-CEF_EXPORT int cef_string_multimap_key(cef_string_multimap_t map, int index,
-                                       cef_string_t* key);
+int cef_string_multimap_key(cef_string_multimap_t map, int index, cef_string_t* key);
 
 ///
 // Return the value at the specified zero-based string multimap index.
 ///
-CEF_EXPORT int cef_string_multimap_value(cef_string_multimap_t map, int index,
-                                         cef_string_t* value);
+int cef_string_multimap_value(cef_string_multimap_t map, int index, cef_string_t* value);
 
 ///
 // Append a new key/value pair at the end of the string multimap.
 ///
-CEF_EXPORT int cef_string_multimap_append(cef_string_multimap_t map,
-                                          const cef_string_t* key,
-                                          const cef_string_t* value);
+int cef_string_multimap_append(cef_string_multimap_t map, const(cef_string_t)* key, const(cef_string_t)* value);
 
 ///
 // Clear the string multimap.
 ///
-CEF_EXPORT void cef_string_multimap_clear(cef_string_multimap_t map);
+void cef_string_multimap_clear(cef_string_multimap_t map);
 
 ///
 // Free the string multimap.
 ///
-CEF_EXPORT void cef_string_multimap_free(cef_string_multimap_t map);
+void cef_string_multimap_free(cef_string_multimap_t map);
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_STRING_MULTIMAP_H_

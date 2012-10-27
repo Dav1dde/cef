@@ -50,7 +50,7 @@ EXTERN_C_RE = re.compile('extern\s+"C"\s+')
 def extern_c_sub(match):
     return 'extern(C) '
 
-TYPEDEF_RE = re.compile(r'^typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);$')
+TYPEDEF_RE = re.compile(r'typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);')
 def typedef_sub(match):
     old, new = match.group('old', 'new')
 

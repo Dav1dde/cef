@@ -1,3 +1,5 @@
+module deimos.cef1.internal.types_win;
+
 // Copyright (c) 2009 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,23 +30,24 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_TYPES_WIN_H_
-#define CEF_INCLUDE_INTERNAL_CEF_TYPES_WIN_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_TYPES_WIN_H_
+// #pragma once
 
-#include "include/internal/cef_build.h"
+import deimos.cef1.internal.build;
 
-#if defined(OS_WIN)
-#include <windows.h>
-#include "include/internal/cef_string.h"
+version(Windows) {
+import core.sys.windows.windows;
+import deimos.cef1.internal.string;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
 // Window handle.
-#define cef_window_handle_t HWND
-#define cef_cursor_handle_t HCURSOR
+// #define cef_window_handle_t HWND
+alias HWND cef_window_handle_t;
+// #define cef_cursor_handle_t HCURSOR
+alias HCURSOR cef_cursor_handle_t;
 
 ///
 // Supported graphics implementations.
@@ -54,12 +57,12 @@ enum cef_graphics_implementation_t {
   ANGLE_IN_PROCESS_COMMAND_BUFFER,
   DESKTOP_IN_PROCESS,
   DESKTOP_IN_PROCESS_COMMAND_BUFFER,
-};
+}
 
 ///
 // Class representing window information.
 ///
-typedef struct _cef_window_info_t {
+struct cef_window_info_t {
   // Standard parameters required by CreateWindowEx()
   DWORD m_dwExStyle;
   cef_string_t m_windowName;
@@ -81,30 +84,30 @@ typedef struct _cef_window_info_t {
 
   // Handle for the new browser window.
   cef_window_handle_t m_hWnd;
-} cef_window_info_t;
+}
 
 ///
 // Class representing print context information.
 ///
-typedef struct _cef_print_info_t {
+struct cef_print_info_t {
   HDC m_hDC;
   RECT m_Rect;
   double m_Scale;
-} cef_print_info_t;
+}
 
 ///
 // Class representing key information.
 ///
-typedef struct _cef_key_info_t {
+struct cef_key_info_t {
   int key;
   BOOL sysChar;
   BOOL imeChar;
-} cef_key_info_t;
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif  // OS_WIN
+// #ifdef __cplusplus
+}
+// #endif
 
-#endif  // CEF_INCLUDE_INTERNAL_CEF_TYPES_WIN_H_
+}
+
+// #endif  // CEF_INCLUDE_INTERNAL_CEF_TYPES_WIN_H_

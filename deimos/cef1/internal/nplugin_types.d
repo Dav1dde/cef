@@ -1,3 +1,5 @@
+module deimos.cef1.internal.nplugin_types;
+
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,18 +30,17 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#ifndef CEF_INCLUDE_INTERNAL_CEF_NPLUGIN_TYPES_H_
-#define CEF_INCLUDE_INTERNAL_CEF_NPLUGIN_TYPES_H_
-#pragma once
+// #ifndef CEF_INCLUDE_INTERNAL_CEF_NPLUGIN_TYPES_H_
+// #pragma once
 
-#include "include/internal/cef_export.h"
-#include "include/internal/cef_string.h"
+import deimos.cef1.internal.export;
+import deimos.cef1.internal.string;
 #include "third_party/npapi/bindings/npapi.h"
 #include "third_party/npapi/bindings/nphostapi.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
 // Netscape plugins are normally built at separate DLLs that are loaded by the
 // browser when needed.  This interface supports the creation of plugins that
@@ -50,7 +51,7 @@ extern "C" {
 
 // This structure provides attribute information and entry point functions for
 // a plugin.
-typedef struct _cef_plugin_info_t {
+struct cef_plugin_info_t {
   // The unique name that identifies the plugin.
   cef_string_t unique_name;
 
@@ -76,15 +77,11 @@ typedef struct _cef_plugin_info_t {
   cef_string_t type_descriptions;
 
   // Entry point function pointers.
-#if !defined(OS_POSIX) || defined(OS_MACOSX)
-  NP_GetEntryPointsFunc np_getentrypoints;
-#endif
-  NP_InitializeFunc np_initialize;
-  NP_ShutdownFunc np_shutdown;
-} cef_plugin_info_t;
-
-#ifdef __cplusplus
+  static if(!OS_POSIX || OS_MACOSX) {
+    extern(System) short function(void*) np_getentrypoints;
+  }
+  
+  extern(System) short function() np_initialize;
+  extern(System) short function() np_shutdown;
 }
-#endif
-
-#endif  // CEF_INCLUDE_INTERNAL_CEF_NPLUGIN_TYPES_H_
+}
