@@ -20,33 +20,37 @@ def include_sub(match):
 
     return 'import deimos.cef{}.{};'.format(CEF_VER, inc)
 
-PREPROCESS_RE = re.compile(r'\#(?P<instruction>ifndef|define|pragma|ifdef|endif|else|if|elif).*')
+PREPROCESS_RE = re.compile(r'\#(?P<instruction>ifndef|define|pragma|ifdef|endif|else|if|elif|error)\s*(?P<other>.*)\s?')
 def preprocess_sub(match):
-    all_, instruction = match.group(0, 'instruction')
+    all_, instruction, other = match.group(0, 'instruction', 'other')
 
     if instruction == 'define':
-        if 'defined(' in all_:
-            pass
-        elif 'CEF_INCLUDE' in all_:
+        if 'CEF_INCLUDE' in all_:
             return ''
         elif len(all_.split()) == 3:
             _, new, old = all_.split()
 
-            if not old[0] in ('"', '\'') and old[-1] in ('"', '\'') and not old.isdigit():
-                return '// {}\nalias {} {};'.format(all_, old, new)
+            if old[0] in ('"', '\'') and old[-1] in ('"', '\'') or old.isdigit():
+                return '// {}enum {} = {};\n'.format(all_, new, old)
             else:
-                return '// {}\nenum {} = {};'.format(all_, new, old)
+                return '// {}alias {} {};\n'.format(all_, old, new)
 
         print 'WARNING: #define preprocessor macro - Leaving it unmodified'
         return all_
+    elif 'if' in instruction:
+        if 'defined(' in all_:
+            print 'WARNING: #define preprocessor macro - Leaving it unmodified'
+            return all_
+    elif instruction == 'error':
+        return 'static assert(false, "{}")\n'.format(other)
 
-    return ''
+    return '// {}'.format(all_)
 
 EXTERN_C_RE = re.compile('extern\s+"C"\s+')
 def extern_c_sub(match):
     return 'extern(C) '
 
-TYPEDEF_RE = re.compile(r'typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);'
+TYPEDEF_RE = re.compile(r'typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);')
 def typedef_sub(match):
     old, new = match.group('old', 'new')
 
@@ -71,7 +75,7 @@ def func_sub(match):
 CALLBACK_RE = re.compile(r'(?P<indent>\s*)(?P<ret>[\w, \s, \*]+)\s+\(CEF_CALLBACK\s\*(?P<name>\w+)\)\((?P<args>[\w, \s, \*, \,, \), \(]*)\);')
 def callback_sub(match):
     indent, ret, name, args = match.group('indent', 'ret', 'name', 'args')
-    
+
     return '{}extern(System) {} function({}) {};'.format(indent, ret_cleanup(ret), arg_cleanup(args), name);
 
 CONST_RE = re.compile(r'const\s+(?P<name>\w+)+\*')
