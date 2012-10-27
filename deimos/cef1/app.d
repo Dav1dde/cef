@@ -103,8 +103,7 @@ struct cef_app_t {
   // If no handler is returned resources will be loaded from pack files. This
   // function is called on multiple threads.
   ///
-  struct _cef_resource_bundle_handler_t* (
-      CEF_CALLBACK *get_resource_bundle_handler)(struct _cef_app_t* self);
+  extern(System) cef_resource_bundle_handler_t* function(cef_app_t* self) get_resource_bundle_handler;
 
   ///
   // Return the handler for proxy events. If not handler is returned the default

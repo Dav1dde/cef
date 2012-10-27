@@ -56,13 +56,13 @@ size_t cef_get_web_plugin_count();
 // Returns information for web plugin at the specified zero-based index. This
 // function must be called on the UI thread.
 ///
-struct _cef_web_plugin_info_t* cef_get_web_plugin_info(int index);
+cef_web_plugin_info_t* cef_get_web_plugin_info(int index);
 
 ///
 // Returns information for web plugin with the specified name. This function
 // must be called on the UI thread.
 ///
-struct _cef_web_plugin_info_t* cef_get_web_plugin_info_byname(const(cef_string_t)* name);
+cef_web_plugin_info_t* cef_get_web_plugin_info_byname(const(cef_string_t)* name);
 
 ///
 // Information about a specific web plugin.
