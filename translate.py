@@ -20,9 +20,28 @@ def include_sub(match):
 
     return 'import deimos.cef{}.{};'.format(CEF_VER, inc)
 
+PREPROCESS_RE = re.compile(r'\#(?P<instruction>ifndef|define|pragma|ifdef|endif|else|if|elif).*')
+def preprocess_sub(match):
+    instruction = match.group('instruction')
+
+    if instruction == 'define':
+        if 'CEF_INCLUDE' in match.group(0):
+            return ''
+
+        print 'WARNING: #define preprocessor macro - Leaving it unmodified'
+        return match.group(0)
+
+    return ''
+
 EXTERN_C_RE = re.compile('extern\s+"C"\s+')
 def extern_c_sub(match):
     return 'extern(C) '
+
+TYPEDEF_RE = re.compile(r'typedef\s(?P<old>[^\s]+)\s+(?P<new>[^;]+);'
+def typedef_sub(match):
+    old, new = match.group('old', 'new')
+
+    return 'alias {} {};'.format(old, new)
 
 STRUCT_RE = re.compile(r'typedef\s+struct\s+(?P<name>\w+)')
 def struct_sub(match):
@@ -65,6 +84,8 @@ def bracket_sub(match):
 def replace_all(s):
     s = EXTERN_C_RE.sub(extern_c_sub, s)
     s = INCLUDE_RE.sub(include_sub, s)
+    s = PREPROCESS_RE.sub(preprocess_sub, s)
+    s = TYPEDEF_RE.sub(typedef_sub, s)
     s = STRUCT_RE.sub(struct_sub, s)
     s = FUNC_RE.sub(func_sub, s)
     s = CALLBACK_RE.sub(callback_sub, s)
