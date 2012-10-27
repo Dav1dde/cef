@@ -22,14 +22,14 @@ def include_sub(match):
 
 PREPROCESS_RE = re.compile(r'\#(?P<instruction>ifndef|define|pragma|ifdef|endif|else|if|elif).*')
 def preprocess_sub(match):
-    instruction = match.group('instruction')
+    all_, instruction = match.group(0, 'instruction')
 
     if instruction == 'define':
-        if 'CEF_INCLUDE' in match.group(0):
+        if 'CEF_INCLUDE' in all_ and not 'OS' in all_:
             return ''
 
         print 'WARNING: #define preprocessor macro - Leaving it unmodified'
-        return match.group(0)
+        return all_
 
     return ''
 
