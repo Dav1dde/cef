@@ -53,7 +53,7 @@ def const_sub(match):
 
 def arg_cleanup(args):
     args = ' '.join(args.split()) # a single space instead of multiple
-    args = args.replace('struct _', '').replace('enum', '');
+    args = args.replace('struct _', '').replace('enum ', '');
     return CONST_RE.sub(const_sub, args);
 
 ret_cleanup = arg_cleanup
@@ -76,7 +76,7 @@ def replace_all(s):
 
 def main():
     from argparse import ArgumentParser
-    from os.path import isdir
+    from os.path import isdir, split as path_split, splitext
     from glob import glob
 
     parser = ArgumentParser()
@@ -96,7 +96,15 @@ def main():
         if not args.inplace:
             path += '_new'
 
+        pre = ''
+        if not new_header.startswith('module'):
+            head, fname = path_split(path)
+            mname = splitext(fname)[0].lstrip('cef_').rstrip('_capi')
+            inc = '{}.{}'.format('internal', mname) if 'internal' in path else mname
+            pre = 'module deimos.cef{}.{};\n\n'.format(CEF_VER, inc)
+
         with open(path, 'w') as f:
+            f.write(pre)
             f.write(new_header)
 
 

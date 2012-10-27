@@ -1,3 +1,5 @@
+module deimos.cef3.web_plugin;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
