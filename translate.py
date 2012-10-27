@@ -25,8 +25,17 @@ def preprocess_sub(match):
     all_, instruction = match.group(0, 'instruction')
 
     if instruction == 'define':
-        if 'CEF_INCLUDE' in all_ and not 'defined(' in all_:
+        if 'defined(' in all_:
+            pass
+        elif 'CEF_INCLUDE' in all_:
             return ''
+        elif len(all_.split()) == 3:
+            _, new, old = all_.split()
+
+            if not old[0] in ('"', '\'') and old[-1] in ('"', '\'') and not old.isdigit():
+                return '// {}\nalias {} {};'.format(all_, old, new)
+            else:
+                return '// {}\nenum {} = {};'.format(all_, new, old)
 
         print 'WARNING: #define preprocessor macro - Leaving it unmodified'
         return all_
