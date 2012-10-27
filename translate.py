@@ -25,7 +25,7 @@ def preprocess_sub(match):
     all_, instruction = match.group(0, 'instruction')
 
     if instruction == 'define':
-        if 'CEF_INCLUDE' in all_ and not 'OS' in all_:
+        if 'CEF_INCLUDE' in all_ and not 'defined(' in all_:
             return ''
 
         print 'WARNING: #define preprocessor macro - Leaving it unmodified'
