@@ -1,3 +1,5 @@
+module deimos.cef1.zoom_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_ZOOM_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_ZOOM_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_ZOOM_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to customize zoom handling. The functions of this
 // structure will be called on the UI thread.
 ///
-typedef struct _cef_zoom_handler_t {
+struct cef_zoom_handler_t {
   ///
   // Base structure.
   ///
@@ -60,9 +61,7 @@ typedef struct _cef_zoom_handler_t {
   // |url|. Return true (1) if |zoomLevel| has been set to the custom zoom
   // level. Return false (0) for the browser's default zoom handling behavior.
   ///
-  int (CEF_CALLBACK *on_get_zoom_level)(struct _cef_zoom_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* url,
-      double* zoomLevel);
+  extern(System) int function(cef_zoom_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, double* zoomLevel) on_get_zoom_level;
 
   ///
   // Called when the browser's zoom level has been set to |zoomLevel| for the
@@ -70,14 +69,12 @@ typedef struct _cef_zoom_handler_t {
   // handled. Return false (0) to use the browser's default zoom handling
   // behavior.
   ///
-  int (CEF_CALLBACK *on_set_zoom_level)(struct _cef_zoom_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* url,
-      double zoomLevel);
-} cef_zoom_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_zoom_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, double zoomLevel) on_set_zoom_level;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_ZOOM_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_ZOOM_HANDLER_CAPI_H_

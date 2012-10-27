@@ -1,3 +1,5 @@
+module deimos.cef1.web_plugin;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,40 +36,38 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_WEB_PLUGIN_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_WEB_PLUGIN_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_WEB_PLUGIN_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Returns the number of installed web plugins. This function must be called on
 // the UI thread.
 ///
-CEF_EXPORT size_t cef_get_web_plugin_count();
+size_t cef_get_web_plugin_count();
 
 ///
 // Returns information for web plugin at the specified zero-based index. This
 // function must be called on the UI thread.
 ///
-CEF_EXPORT struct _cef_web_plugin_info_t* cef_get_web_plugin_info(int index);
+struct _cef_web_plugin_info_t* cef_get_web_plugin_info(int index);
 
 ///
 // Returns information for web plugin with the specified name. This function
 // must be called on the UI thread.
 ///
-CEF_EXPORT struct _cef_web_plugin_info_t* cef_get_web_plugin_info_byname(
-    const cef_string_t* name);
+struct _cef_web_plugin_info_t* cef_get_web_plugin_info_byname(const(cef_string_t)* name);
 
 ///
 // Information about a specific web plugin.
 ///
-typedef struct _cef_web_plugin_info_t {
+struct cef_web_plugin_info_t {
   ///
   // Base structure.
   ///
@@ -77,34 +77,30 @@ typedef struct _cef_web_plugin_info_t {
   // Returns the plugin name (i.e. Flash).
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_name)(
-      struct _cef_web_plugin_info_t* self);
+  extern(System) cef_string_userfree_t function(cef_web_plugin_info_t* self) get_name;
 
   ///
   // Returns the plugin file path (DLL/bundle/library).
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_path)(
-      struct _cef_web_plugin_info_t* self);
+  extern(System) cef_string_userfree_t function(cef_web_plugin_info_t* self) get_path;
 
   ///
   // Returns the version of the plugin (may be OS-specific).
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_version)(
-      struct _cef_web_plugin_info_t* self);
+  extern(System) cef_string_userfree_t function(cef_web_plugin_info_t* self) get_version;
 
   ///
   // Returns a description of the plugin from the version information.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_description)(
-      struct _cef_web_plugin_info_t* self);
-} cef_web_plugin_info_t;
-
-
-#ifdef __cplusplus
+  extern(System) cef_string_userfree_t function(cef_web_plugin_info_t* self) get_description;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_WEB_PLUGIN_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_WEB_PLUGIN_CAPI_H_

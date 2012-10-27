@@ -1,3 +1,5 @@
+module deimos.cef1.origin_whitelist;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -80,26 +81,22 @@ extern "C" {
 // This function may be called on any thread. Returns false (0) if
 // |source_origin| is invalid or the whitelist cannot be accessed.
 ///
-CEF_EXPORT int cef_add_cross_origin_whitelist_entry(
-    const cef_string_t* source_origin, const cef_string_t* target_protocol,
-    const cef_string_t* target_domain, int allow_target_subdomains);
+int cef_add_cross_origin_whitelist_entry(const(cef_string_t)* source_origin, const(cef_string_t)* target_protocol, const(cef_string_t)* target_domain, int allow_target_subdomains);
 
 ///
 // Remove an entry from the cross-origin access whitelist. Returns false (0) if
 // |source_origin| is invalid or the whitelist cannot be accessed.
 ///
-CEF_EXPORT int cef_remove_cross_origin_whitelist_entry(
-    const cef_string_t* source_origin, const cef_string_t* target_protocol,
-    const cef_string_t* target_domain, int allow_target_subdomains);
+int cef_remove_cross_origin_whitelist_entry(const(cef_string_t)* source_origin, const(cef_string_t)* target_protocol, const(cef_string_t)* target_domain, int allow_target_subdomains);
 
 ///
 // Remove all entries from the cross-origin access whitelist. Returns false (0)
 // if the whitelist cannot be accessed.
 ///
-CEF_EXPORT int cef_clear_cross_origin_whitelist();
+int cef_clear_cross_origin_whitelist();
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_ORIGIN_WHITELIST_CAPI_H_

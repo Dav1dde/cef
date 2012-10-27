@@ -1,3 +1,5 @@
+module deimos.cef1.request;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure used to represent a web request. The functions of this structure
 // may be called on any thread.
 ///
-typedef struct _cef_request_t {
+struct cef_request_t {
   ///
   // Base structure.
   ///
@@ -59,98 +60,86 @@ typedef struct _cef_request_t {
   // Get the fully qualified URL.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_url)(struct _cef_request_t* self);
+  extern(System) cef_string_userfree_t function(cef_request_t* self) get_url;
 
   ///
   // Set the fully qualified URL.
   ///
-  void (CEF_CALLBACK *set_url)(struct _cef_request_t* self,
-      const cef_string_t* url);
+  extern(System) void function(cef_request_t* self, const(cef_string_t)* url) set_url;
 
   ///
   // Get the request function type. The value will default to POST if post data
   // is provided and GET otherwise.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_method)(struct _cef_request_t* self);
+  extern(System) cef_string_userfree_t function(cef_request_t* self) get_method;
 
   ///
   // Set the request function type.
   ///
-  void (CEF_CALLBACK *set_method)(struct _cef_request_t* self,
-      const cef_string_t* method);
+  extern(System) void function(cef_request_t* self, const(cef_string_t)* method) set_method;
 
   ///
   // Get the post data.
   ///
-  struct _cef_post_data_t* (CEF_CALLBACK *get_post_data)(
-      struct _cef_request_t* self);
+  extern(System) cef_post_data_t* function(cef_request_t* self) get_post_data;
 
   ///
   // Set the post data.
   ///
-  void (CEF_CALLBACK *set_post_data)(struct _cef_request_t* self,
-      struct _cef_post_data_t* postData);
+  extern(System) void function(cef_request_t* self, cef_post_data_t* postData) set_post_data;
 
   ///
   // Get the header values.
   ///
-  void (CEF_CALLBACK *get_header_map)(struct _cef_request_t* self,
-      cef_string_multimap_t headerMap);
+  extern(System) void function(cef_request_t* self, cef_string_multimap_t headerMap) get_header_map;
 
   ///
   // Set the header values.
   ///
-  void (CEF_CALLBACK *set_header_map)(struct _cef_request_t* self,
-      cef_string_multimap_t headerMap);
+  extern(System) void function(cef_request_t* self, cef_string_multimap_t headerMap) set_header_map;
 
   ///
   // Set all values at one time.
   ///
-  void (CEF_CALLBACK *set)(struct _cef_request_t* self, const cef_string_t* url,
-      const cef_string_t* method, struct _cef_post_data_t* postData,
-      cef_string_multimap_t headerMap);
+  extern(System) void function(cef_request_t* self, const(cef_string_t)* url, const(cef_string_t)* method, cef_post_data_t* postData, cef_string_multimap_t headerMap) set;
 
   ///
   // Get the flags used in combination with cef_web_urlrequest_t.
   ///
-  enum cef_weburlrequest_flags_t (CEF_CALLBACK *get_flags)(
-      struct _cef_request_t* self);
+  extern(System) cef_weburlrequest_flags_t function(cef_request_t* self) get_flags;
 
   ///
   // Set the flags used in combination with cef_web_urlrequest_t.
   ///
-  void (CEF_CALLBACK *set_flags)(struct _cef_request_t* self,
-      enum cef_weburlrequest_flags_t flags);
+  extern(System) void function(cef_request_t* self, cef_weburlrequest_flags_t flags) set_flags;
 
   ///
   // Set the URL to the first party for cookies used in combination with
   // cef_web_urlrequest_t.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_first_party_for_cookies)(
-      struct _cef_request_t* self);
+  extern(System) cef_string_userfree_t function(cef_request_t* self) get_first_party_for_cookies;
 
   ///
   // Get the URL to the first party for cookies used in combination with
   // cef_web_urlrequest_t.
   ///
-  void (CEF_CALLBACK *set_first_party_for_cookies)(struct _cef_request_t* self,
-      const cef_string_t* url);
-} cef_request_t;
+  extern(System) void function(cef_request_t* self, const(cef_string_t)* url) set_first_party_for_cookies;
+}
 
 
 ///
 // Create a new cef_request_t object.
 ///
-CEF_EXPORT cef_request_t* cef_request_create();
+cef_request_t* cef_request_create();
 
 
 ///
 // Structure used to represent post data for a web request. The functions of
 // this structure may be called on any thread.
 ///
-typedef struct _cef_post_data_t {
+struct cef_post_data_t {
   ///
   // Base structure.
   ///
@@ -159,45 +148,42 @@ typedef struct _cef_post_data_t {
   ///
   // Returns the number of existing post data elements.
   ///
-  size_t (CEF_CALLBACK *get_element_count)(struct _cef_post_data_t* self);
+  extern(System) size_t function(cef_post_data_t* self) get_element_count;
 
   ///
   // Retrieve the post data elements.
   ///
-  void (CEF_CALLBACK *get_elements)(struct _cef_post_data_t* self,
-      size_t* elementsCount, struct _cef_post_data_element_t** elements);
+  extern(System) void function(cef_post_data_t* self, size_t* elementsCount, cef_post_data_element_t** elements) get_elements;
 
   ///
   // Remove the specified post data element.  Returns true (1) if the removal
   // succeeds.
   ///
-  int (CEF_CALLBACK *remove_element)(struct _cef_post_data_t* self,
-      struct _cef_post_data_element_t* element);
+  extern(System) int function(cef_post_data_t* self, cef_post_data_element_t* element) remove_element;
 
   ///
   // Add the specified post data element.  Returns true (1) if the add succeeds.
   ///
-  int (CEF_CALLBACK *add_element)(struct _cef_post_data_t* self,
-      struct _cef_post_data_element_t* element);
+  extern(System) int function(cef_post_data_t* self, cef_post_data_element_t* element) add_element;
 
   ///
   // Remove all existing post data elements.
   ///
-  void (CEF_CALLBACK *remove_elements)(struct _cef_post_data_t* self);
-} cef_post_data_t;
+  extern(System) void function(cef_post_data_t* self) remove_elements;
+}
 
 
 ///
 // Create a new cef_post_data_t object.
 ///
-CEF_EXPORT cef_post_data_t* cef_post_data_create();
+cef_post_data_t* cef_post_data_create();
 
 
 ///
 // Structure used to represent a single element in the request post data. The
 // functions of this structure may be called on any thread.
 ///
-typedef struct _cef_post_data_element_t {
+struct cef_post_data_element_t {
   ///
   // Base structure.
   ///
@@ -206,56 +192,51 @@ typedef struct _cef_post_data_element_t {
   ///
   // Remove all contents from the post data element.
   ///
-  void (CEF_CALLBACK *set_to_empty)(struct _cef_post_data_element_t* self);
+  extern(System) void function(cef_post_data_element_t* self) set_to_empty;
 
   ///
   // The post data element will represent a file.
   ///
-  void (CEF_CALLBACK *set_to_file)(struct _cef_post_data_element_t* self,
-      const cef_string_t* fileName);
+  extern(System) void function(cef_post_data_element_t* self, const(cef_string_t)* fileName) set_to_file;
 
   ///
   // The post data element will represent bytes.  The bytes passed in will be
   // copied.
   ///
-  void (CEF_CALLBACK *set_to_bytes)(struct _cef_post_data_element_t* self,
-      size_t size, const void* bytes);
+  extern(System) void function(cef_post_data_element_t* self, size_t size, const(void)* bytes) set_to_bytes;
 
   ///
   // Return the type of this post data element.
   ///
-  enum cef_postdataelement_type_t (CEF_CALLBACK *get_type)(
-      struct _cef_post_data_element_t* self);
+  extern(System) cef_postdataelement_type_t function(cef_post_data_element_t* self) get_type;
 
   ///
   // Return the file name.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_file)(
-      struct _cef_post_data_element_t* self);
+  extern(System) cef_string_userfree_t function(cef_post_data_element_t* self) get_file;
 
   ///
   // Return the number of bytes.
   ///
-  size_t (CEF_CALLBACK *get_bytes_count)(struct _cef_post_data_element_t* self);
+  extern(System) size_t function(cef_post_data_element_t* self) get_bytes_count;
 
   ///
   // Read up to |size| bytes into |bytes| and return the number of bytes
   // actually read.
   ///
-  size_t (CEF_CALLBACK *get_bytes)(struct _cef_post_data_element_t* self,
-      size_t size, void* bytes);
-} cef_post_data_element_t;
+  extern(System) size_t function(cef_post_data_element_t* self, size_t size, void* bytes) get_bytes;
+}
 
 
 ///
 // Create a new cef_post_data_element_t object.
 ///
-CEF_EXPORT cef_post_data_element_t* cef_post_data_element_create();
+cef_post_data_element_t* cef_post_data_element_create();
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_REQUEST_CAPI_H_

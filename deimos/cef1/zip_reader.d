@@ -1,3 +1,5 @@
+module deimos.cef1.zip_reader;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_ZIP_READER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_ZIP_READER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_ZIP_READER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -50,7 +51,7 @@ extern "C" {
 // The functions of this structure should only be called on the thread that
 // creates the object.
 ///
-typedef struct _cef_zip_reader_t {
+struct cef_zip_reader_t {
   ///
   // Base structure.
   ///
@@ -60,27 +61,26 @@ typedef struct _cef_zip_reader_t {
   // Moves the cursor to the first file in the archive. Returns true (1) if the
   // cursor position was set successfully.
   ///
-  int (CEF_CALLBACK *move_to_first_file)(struct _cef_zip_reader_t* self);
+  extern(System) int function(cef_zip_reader_t* self) move_to_first_file;
 
   ///
   // Moves the cursor to the next file in the archive. Returns true (1) if the
   // cursor position was set successfully.
   ///
-  int (CEF_CALLBACK *move_to_next_file)(struct _cef_zip_reader_t* self);
+  extern(System) int function(cef_zip_reader_t* self) move_to_next_file;
 
   ///
   // Moves the cursor to the specified file in the archive. If |caseSensitive|
   // is true (1) then the search will be case sensitive. Returns true (1) if the
   // cursor position was set successfully.
   ///
-  int (CEF_CALLBACK *move_to_file)(struct _cef_zip_reader_t* self,
-      const cef_string_t* fileName, int caseSensitive);
+  extern(System) int function(cef_zip_reader_t* self, const(cef_string_t)* fileName, int caseSensitive) move_to_file;
 
   ///
   // Closes the archive. This should be called directly to ensure that cleanup
   // occurs on the correct thread.
   ///
-  int (CEF_CALLBACK *close)(struct _cef_zip_reader_t* self);
+  extern(System) int function(cef_zip_reader_t* self) close;
 
 
   // The below functions act on the file at the current cursor position.
@@ -89,60 +89,56 @@ typedef struct _cef_zip_reader_t {
   // Returns the name of the file.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_file_name)(
-      struct _cef_zip_reader_t* self);
+  extern(System) cef_string_userfree_t function(cef_zip_reader_t* self) get_file_name;
 
   ///
   // Returns the uncompressed size of the file.
   ///
-  int64 (CEF_CALLBACK *get_file_size)(struct _cef_zip_reader_t* self);
+  extern(System) int64 function(cef_zip_reader_t* self) get_file_size;
 
   ///
   // Returns the last modified timestamp for the file.
   ///
-  time_t (CEF_CALLBACK *get_file_last_modified)(struct _cef_zip_reader_t* self);
+  extern(System) time_t function(cef_zip_reader_t* self) get_file_last_modified;
 
   ///
   // Opens the file for reading of uncompressed data. A read password may
   // optionally be specified.
   ///
-  int (CEF_CALLBACK *open_file)(struct _cef_zip_reader_t* self,
-      const cef_string_t* password);
+  extern(System) int function(cef_zip_reader_t* self, const(cef_string_t)* password) open_file;
 
   ///
   // Closes the file.
   ///
-  int (CEF_CALLBACK *close_file)(struct _cef_zip_reader_t* self);
+  extern(System) int function(cef_zip_reader_t* self) close_file;
 
   ///
   // Read uncompressed file contents into the specified buffer. Returns < 0 if
   // an error occurred, 0 if at the end of file, or the number of bytes read.
   ///
-  int (CEF_CALLBACK *read_file)(struct _cef_zip_reader_t* self, void* buffer,
-      size_t bufferSize);
+  extern(System) int function(cef_zip_reader_t* self, void* buffer, size_t bufferSize) read_file;
 
   ///
   // Returns the current offset in the uncompressed file contents.
   ///
-  int64 (CEF_CALLBACK *tell)(struct _cef_zip_reader_t* self);
+  extern(System) int64 function(cef_zip_reader_t* self) tell;
 
   ///
   // Returns true (1) if at end of the file contents.
   ///
-  int (CEF_CALLBACK *eof)(struct _cef_zip_reader_t* self);
-} cef_zip_reader_t;
+  extern(System) int function(cef_zip_reader_t* self) eof;
+}
 
 
 ///
 // Create a new cef_zip_reader_t object. The returned object's functions can
 // only be called from the thread that created the object.
 ///
-CEF_EXPORT cef_zip_reader_t* cef_zip_reader_create(
-    struct _cef_stream_reader_t* stream);
+cef_zip_reader_t* cef_zip_reader_create(cef_stream_reader_t* stream);
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_ZIP_READER_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_ZIP_READER_CAPI_H_

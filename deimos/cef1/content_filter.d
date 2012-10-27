@@ -1,3 +1,5 @@
+module deimos.cef1.ontent_filter;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_CONTENT_FILTER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_CONTENT_FILTER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_CONTENT_FILTER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure to implement for filtering response content. The functions of this
 // structure will always be called on the UI thread.
 ///
-typedef struct _cef_content_filter_t {
+struct cef_content_filter_t {
   ///
   // Base structure.
   ///
@@ -59,22 +60,19 @@ typedef struct _cef_content_filter_t {
   // Set |substitute_data| to the replacement for the data in |data| if data
   // should be modified.
   ///
-  void (CEF_CALLBACK *process_data)(struct _cef_content_filter_t* self,
-      const void* data, int data_size,
-      struct _cef_stream_reader_t** substitute_data);
+  extern(System) void function(cef_content_filter_t* self, const(void)* data, int data_size, cef_stream_reader_t** substitute_data) process_data;
 
   ///
   // Called when there is no more data to be processed. It is expected that
   // whatever data was retained in the last process_data() call, it should be
   // returned now by setting |remainder| if appropriate.
   ///
-  void (CEF_CALLBACK *drain)(struct _cef_content_filter_t* self,
-      struct _cef_stream_reader_t** remainder);
-} cef_content_filter_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_content_filter_t* self, cef_stream_reader_t** remainder) drain;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_CONTENT_FILTER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_CONTENT_FILTER_CAPI_H_

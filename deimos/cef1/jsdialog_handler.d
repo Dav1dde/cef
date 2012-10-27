@@ -1,3 +1,5 @@
+module deimos.cef1.jsdialog_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_JSDIALOG_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_JSDIALOG_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_JSDIALOG_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to JavaScript dialogs. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_jsdialog_handler_t {
+struct cef_jsdialog_handler_t {
   ///
   // Base structure.
   ///
@@ -59,18 +60,14 @@ typedef struct _cef_jsdialog_handler_t {
   // Called  to run a JavaScript alert message. Return false (0) to display the
   // default alert or true (1) if you displayed a custom alert.
   ///
-  int (CEF_CALLBACK *on_jsalert)(struct _cef_jsdialog_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* message);
+  extern(System) int function(cef_jsdialog_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* message) on_jsalert;
 
   ///
   // Called to run a JavaScript confirm request. Return false (0) to display the
   // default alert or true (1) if you displayed a custom alert. If you handled
   // the alert set |retval| to true (1) if the user accepted the confirmation.
   ///
-  int (CEF_CALLBACK *on_jsconfirm)(struct _cef_jsdialog_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* message, int* retval);
+  extern(System) int function(cef_jsdialog_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* message, int* retval) on_jsconfirm;
 
   ///
   // Called to run a JavaScript prompt request. Return false (0) to display the
@@ -78,15 +75,12 @@ typedef struct _cef_jsdialog_handler_t {
   // the prompt set |retval| to true (1) if the user accepted the prompt and
   // request and |result| to the resulting value.
   ///
-  int (CEF_CALLBACK *on_jsprompt)(struct _cef_jsdialog_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* message, const cef_string_t* defaultValue,
-      int* retval, cef_string_t* result);
-} cef_jsdialog_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_jsdialog_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* message, const(cef_string_t)* defaultValue, int* retval, cef_string_t* result) on_jsprompt;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_JSDIALOG_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_JSDIALOG_HANDLER_CAPI_H_

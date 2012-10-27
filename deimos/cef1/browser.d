@@ -1,3 +1,5 @@
+module deimos.cef1.browser;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure used to represent a browser window. The functions of this structure
 // may be called on any thread unless otherwise indicated in the comments.
 ///
-typedef struct _cef_browser_t {
+struct cef_browser_t {
   ///
   // Base structure.
   ///
@@ -60,107 +61,101 @@ typedef struct _cef_browser_t {
   // function performs any internal cleanup that may be needed before the
   // browser window is destroyed.
   ///
-  void (CEF_CALLBACK *parent_window_will_close)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) parent_window_will_close;
 
   ///
   // Closes this browser window.
   ///
-  void (CEF_CALLBACK *close_browser)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) close_browser;
 
   ///
   // Returns true (1) if the browser can navigate backwards.
   ///
-  int (CEF_CALLBACK *can_go_back)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) can_go_back;
 
   ///
   // Navigate backwards.
   ///
-  void (CEF_CALLBACK *go_back)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) go_back;
 
   ///
   // Returns true (1) if the browser can navigate forwards.
   ///
-  int (CEF_CALLBACK *can_go_forward)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) can_go_forward;
 
   ///
   // Navigate forwards.
   ///
-  void (CEF_CALLBACK *go_forward)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) go_forward;
 
   ///
   // Reload the current page.
   ///
-  void (CEF_CALLBACK *reload)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) reload;
 
   ///
   // Reload the current page ignoring any cached data.
   ///
-  void (CEF_CALLBACK *reload_ignore_cache)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) reload_ignore_cache;
 
   ///
   // Stop loading the page.
   ///
-  void (CEF_CALLBACK *stop_load)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) stop_load;
 
   ///
   // Set focus for the browser window. If |enable| is true (1) focus will be set
   // to the window. Otherwise, focus will be removed.
   ///
-  void (CEF_CALLBACK *set_focus)(struct _cef_browser_t* self, int enable);
+  extern(System) void function(cef_browser_t* self, int enable) set_focus;
 
   ///
   // Retrieve the window handle for this browser.
   ///
-  cef_window_handle_t (CEF_CALLBACK *get_window_handle)(
-      struct _cef_browser_t* self);
+  extern(System) cef_window_handle_t function(cef_browser_t* self) get_window_handle;
 
   ///
   // Retrieve the window handle of the browser that opened this browser. Will
   // return NULL for non-popup windows. This function can be used in combination
   // with custom handling of modal windows.
   ///
-  cef_window_handle_t (CEF_CALLBACK *get_opener_window_handle)(
-      struct _cef_browser_t* self);
+  extern(System) cef_window_handle_t function(cef_browser_t* self) get_opener_window_handle;
 
   ///
   // Returns true (1) if the window is a popup window.
   ///
-  int (CEF_CALLBACK *is_popup)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) is_popup;
 
   // Returns true (1) if a document has been loaded in the browser.
-  int (CEF_CALLBACK *has_document)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) has_document;
 
   ///
   // Returns the client for this browser.
   ///
-  struct _cef_client_t* (CEF_CALLBACK *get_client)(struct _cef_browser_t* self);
+  extern(System) cef_client_t* function(cef_browser_t* self) get_client;
 
   ///
   // Returns the main (top-level) frame for the browser window.
   ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_main_frame)(
-      struct _cef_browser_t* self);
+  extern(System) cef_frame_t* function(cef_browser_t* self) get_main_frame;
 
   ///
   // Returns the focused frame for the browser window. This function should only
   // be called on the UI thread.
   ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_focused_frame)(
-      struct _cef_browser_t* self);
+  extern(System) cef_frame_t* function(cef_browser_t* self) get_focused_frame;
 
   ///
   // Returns the frame with the specified name, or NULL if not found. This
   // function should only be called on the UI thread.
   ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_frame)(struct _cef_browser_t* self,
-      const cef_string_t* name);
+  extern(System) cef_frame_t* function(cef_browser_t* self, const(cef_string_t)* name) get_frame;
 
   ///
   // Returns the names of all existing frames. This function should only be
   // called on the UI thread.
   ///
-  void (CEF_CALLBACK *get_frame_names)(struct _cef_browser_t* self,
-      cef_string_list_t names);
+  extern(System) void function(cef_browser_t* self, cef_string_list_t names) get_frame_names;
 
   ///
   // Search for |searchText|. |identifier| can be used to have multiple searches
@@ -169,82 +164,75 @@ typedef struct _cef_browser_t {
   // be case-sensitive. |findNext| indicates whether this is the first request
   // or a follow-up.
   ///
-  void (CEF_CALLBACK *find)(struct _cef_browser_t* self, int identifier,
-      const cef_string_t* searchText, int forward, int matchCase,
-      int findNext);
+  extern(System) void function(cef_browser_t* self, int identifier, const(cef_string_t)* searchText, int forward, int matchCase, int findNext) find;
 
   ///
   // Cancel all searches that are currently going on.
   ///
-  void (CEF_CALLBACK *stop_finding)(struct _cef_browser_t* self,
-      int clearSelection);
+  extern(System) void function(cef_browser_t* self, int clearSelection) stop_finding;
 
   ///
   // Get the current zoom level. The default zoom level is 0.0. This function
   // can only be called on the UI thread.
   ///
-  double (CEF_CALLBACK *get_zoom_level)(struct _cef_browser_t* self);
+  extern(System) double function(cef_browser_t* self) get_zoom_level;
 
   ///
   // Change the zoom level to the specified value. Specify 0.0 to reset the zoom
   // level. The change will be applied asynchronously on the UI thread.
   ///
-  void (CEF_CALLBACK *set_zoom_level)(struct _cef_browser_t* self,
-      double zoomLevel);
+  extern(System) void function(cef_browser_t* self, double zoomLevel) set_zoom_level;
 
   ///
   // Clear the back/forward browsing history.
   ///
-  void (CEF_CALLBACK *clear_history)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) clear_history;
 
   ///
   // Open developer tools in its own window.
   ///
-  void (CEF_CALLBACK *show_dev_tools)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) show_dev_tools;
 
   ///
   // Explicitly close the developer tools window if one exists for this browser
   // instance.
   ///
-  void (CEF_CALLBACK *close_dev_tools)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) close_dev_tools;
 
   ///
   // Returns true (1) if window rendering is disabled.
   ///
-  int (CEF_CALLBACK *is_window_rendering_disabled)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) is_window_rendering_disabled;
 
   ///
   // Get the size of the specified element. This function should only be called
   // on the UI thread.
   ///
-  int (CEF_CALLBACK *get_size)(struct _cef_browser_t* self,
-      enum cef_paint_element_type_t type, int* width, int* height);
+  extern(System) int function(cef_browser_t* self, cef_paint_element_type_t type, int* width, int* height) get_size;
 
   ///
   // Set the size of the specified element. This function is only used when
   // window rendering is disabled.
   ///
-  void (CEF_CALLBACK *set_size)(struct _cef_browser_t* self,
-      enum cef_paint_element_type_t type, int width, int height);
+  extern(System) void function(cef_browser_t* self, cef_paint_element_type_t type, int width, int height) set_size;
 
   ///
   // Returns true (1) if a popup is currently visible. This function should only
   // be called on the UI thread.
   ///
-  int (CEF_CALLBACK *is_popup_visible)(struct _cef_browser_t* self);
+  extern(System) int function(cef_browser_t* self) is_popup_visible;
 
   ///
   // Hide the currently visible popup, if any.
   ///
-  void (CEF_CALLBACK *hide_popup)(struct _cef_browser_t* self);
+  extern(System) void function(cef_browser_t* self) hide_popup;
 
   ///
   // Invalidate the |dirtyRect| region of the view. This function is only used
   // when window rendering is disabled and will result in a call to
   // HandlePaint().
   ///
-  void (CEF_CALLBACK *invalidate)(struct _cef_browser_t* self,
-      const cef_rect_t* dirtyRect);
+  extern(System) void function(cef_browser_t* self, const(cef_rect_t)* dirtyRect) invalidate;
 
   ///
   // Get the raw image data contained in the specified element without
@@ -253,51 +241,42 @@ typedef struct _cef_browser_t {
   // bytes in size and represents a BGRA image with an upper-left origin. This
   // function should only be called on the UI thread.
   ///
-  int (CEF_CALLBACK *get_image)(struct _cef_browser_t* self,
-      enum cef_paint_element_type_t type, int width, int height,
-      void* buffer);
+  extern(System) int function(cef_browser_t* self, cef_paint_element_type_t type, int width, int height, void* buffer) get_image;
 
   ///
   // Send a key event to the browser.
   ///
-  void (CEF_CALLBACK *send_key_event)(struct _cef_browser_t* self,
-      enum cef_key_type_t type, const struct _cef_key_info_t* keyInfo,
-      int modifiers);
+  extern(System) void function(cef_browser_t* self, cef_key_type_t type, const(cef_key_info_t)* keyInfo, int modifiers) send_key_event;
 
   ///
   // Send a mouse click event to the browser. The |x| and |y| coordinates are
   // relative to the upper-left corner of the view.
   ///
-  void (CEF_CALLBACK *send_mouse_click_event)(struct _cef_browser_t* self,
-      int x, int y, enum cef_mouse_button_type_t type, int mouseUp,
-      int clickCount);
+  extern(System) void function(cef_browser_t* self, int x, int y, cef_mouse_button_type_t type, int mouseUp, int clickCount) send_mouse_click_event;
 
   ///
   // Send a mouse move event to the browser. The |x| and |y| coordinates are
   // relative to the upper-left corner of the view.
   ///
-  void (CEF_CALLBACK *send_mouse_move_event)(struct _cef_browser_t* self, int x,
-      int y, int mouseLeave);
+  extern(System) void function(cef_browser_t* self, int x, int y, int mouseLeave) send_mouse_move_event;
 
   ///
   // Send a mouse wheel event to the browser. The |x| and |y| coordinates are
   // relative to the upper-left corner of the view. The |deltaX| and |deltaY|
   // values represent the movement delta in the X and Y directions respectively.
   ///
-  void (CEF_CALLBACK *send_mouse_wheel_event)(struct _cef_browser_t* self,
-      int x, int y, int deltaX, int deltaY);
+  extern(System) void function(cef_browser_t* self, int x, int y, int deltaX, int deltaY) send_mouse_wheel_event;
 
   ///
   // Send a focus event to the browser.
   ///
-  void (CEF_CALLBACK *send_focus_event)(struct _cef_browser_t* self,
-      int setFocus);
+  extern(System) void function(cef_browser_t* self, int setFocus) send_focus_event;
 
   ///
   // Send a capture lost event to the browser.
   ///
-  void (CEF_CALLBACK *send_capture_lost_event)(struct _cef_browser_t* self);
-} cef_browser_t;
+  extern(System) void function(cef_browser_t* self) send_capture_lost_event;
+}
 
 
 ///
@@ -305,21 +284,17 @@ typedef struct _cef_browser_t {
 // |windowInfo|. All values will be copied internally and the actual window will
 // be created on the UI thread. This function call will not block.
 ///
-CEF_EXPORT int cef_browser_create(cef_window_info_t* windowInfo,
-    struct _cef_client_t* client, const cef_string_t* url,
-    const struct _cef_browser_settings_t* settings);
+int cef_browser_create(cef_window_info_t* windowInfo, cef_client_t* client, const(cef_string_t)* url, const(cef_browser_settings_t)* settings);
 
 ///
 // Create a new browser window using the window parameters specified by
 // |windowInfo|. This function should only be called on the UI thread.
 ///
-CEF_EXPORT cef_browser_t* cef_browser_create_sync(cef_window_info_t* windowInfo,
-    struct _cef_client_t* client, const cef_string_t* url,
-    const struct _cef_browser_settings_t* settings);
+cef_browser_t* cef_browser_create_sync(cef_window_info_t* windowInfo, cef_client_t* client, const(cef_string_t)* url, const(cef_browser_settings_t)* settings);
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_BROWSER_CAPI_H_

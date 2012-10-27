@@ -1,3 +1,5 @@
+module deimos.cef1.url;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,34 +36,31 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Parse the specified |url| into its component parts. Returns false (0) if the
 // URL is NULL or invalid.
 ///
-CEF_EXPORT int cef_parse_url(const cef_string_t* url,
-    struct _cef_urlparts_t* parts);
+int cef_parse_url(const(cef_string_t)* url, cef_urlparts_t* parts);
 
 ///
 // Creates a URL from the specified |parts|, which must contain a non-NULL spec
 // or a non-NULL host and path (at a minimum), but not both. Returns false (0)
 // if |parts| isn't initialized as described.
 ///
-CEF_EXPORT int cef_create_url(const struct _cef_urlparts_t* parts,
-    cef_string_t* url);
+int cef_create_url(const(cef_urlparts_t)* parts, cef_string_t* url);
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_URL_CAPI_H_

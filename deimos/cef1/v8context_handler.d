@@ -1,3 +1,5 @@
+module deimos.cef1.v8context_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_V8CONTEXT_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_V8CONTEXT_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_V8CONTEXT_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle V8 context events. The functions of this
 // structure will be called on the UI thread.
 ///
-typedef struct _cef_v8context_handler_t {
+struct cef_v8context_handler_t {
   ///
   // Base structure.
   ///
@@ -60,33 +61,25 @@ typedef struct _cef_v8context_handler_t {
   // retrieve the JavaScript 'window' object use the
   // cef_v8context_t::get_global() function.
   ///
-  void (CEF_CALLBACK *on_context_created)(struct _cef_v8context_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      struct _cef_v8context_t* context);
+  extern(System) void function(cef_v8context_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context) on_context_created;
 
   ///
   // Called immediately before the V8 context for a frame is released. No
   // references to the context should be kept after this function is called.
   ///
-  void (CEF_CALLBACK *on_context_released)(
-      struct _cef_v8context_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, struct _cef_v8context_t* context);
+  extern(System) void function(cef_v8context_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context) on_context_released;
 
   ///
   // Called for global uncaught exceptions. Execution of this callback is
   // disabled by default. To enable set
   // CefSettings.uncaught_exception_stack_size > 0.
   ///
-  void (CEF_CALLBACK *on_uncaught_exception)(
-      struct _cef_v8context_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, struct _cef_v8context_t* context,
-      struct _cef_v8exception_t* exception,
-      struct _cef_v8stack_trace_t* stackTrace);
-} cef_v8context_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_v8context_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context, cef_v8exception_t* exception, cef_v8stack_trace_t* stackTrace) on_uncaught_exception;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_V8CONTEXT_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_V8CONTEXT_HANDLER_CAPI_H_

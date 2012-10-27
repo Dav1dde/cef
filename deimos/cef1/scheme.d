@@ -1,3 +1,5 @@
+module deimos.cef1.scheme;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_SCHEME_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_SCHEME_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_SCHEME_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -89,8 +90,7 @@ extern "C" {
 // unique |scheme_name| value. If |scheme_name| is already registered or if an
 // error occurs this function will return false (0).
 ///
-CEF_EXPORT int cef_register_custom_scheme(const cef_string_t* scheme_name,
-    int is_standard, int is_local, int is_display_isolated);
+int cef_register_custom_scheme(const(cef_string_t)* scheme_name, int is_standard, int is_local, int is_display_isolated);
 
 ///
 // Register a scheme handler factory for the specified |scheme_name| and
@@ -104,21 +104,19 @@ CEF_EXPORT int cef_register_custom_scheme(const cef_string_t* scheme_name,
 // matches the specified |scheme_name| and optional |domain_name|. Returns false
 // (0) if an error occurs. This function may be called on any thread.
 ///
-CEF_EXPORT int cef_register_scheme_handler_factory(
-    const cef_string_t* scheme_name, const cef_string_t* domain_name,
-    struct _cef_scheme_handler_factory_t* factory);
+int cef_register_scheme_handler_factory(const(cef_string_t)* scheme_name, const(cef_string_t)* domain_name, cef_scheme_handler_factory_t* factory);
 
 ///
 // Clear all registered scheme handler factories. Returns false (0) on error.
 // This function may be called on any thread.
 ///
-CEF_EXPORT int cef_clear_scheme_handler_factories();
+int cef_clear_scheme_handler_factories();
 
 ///
 // Structure that creates cef_scheme_handler_t instances. The functions of this
 // structure will always be called on the IO thread.
 ///
-typedef struct _cef_scheme_handler_factory_t {
+struct cef_scheme_handler_factory_t {
   ///
   // Base structure.
   ///
@@ -130,18 +128,15 @@ typedef struct _cef_scheme_handler_factory_t {
   // initiated using the cef_web_urlrequest_t API |browser| will be NULL. The
   // |request| object passed to this function will not contain cookie data.
   ///
-  struct _cef_scheme_handler_t* (CEF_CALLBACK *create)(
-      struct _cef_scheme_handler_factory_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* scheme_name,
-      struct _cef_request_t* request);
-} cef_scheme_handler_factory_t;
+  extern(System) cef_scheme_handler_t* function(cef_scheme_handler_factory_t* self, cef_browser_t* browser, const(cef_string_t)* scheme_name, cef_request_t* request) create;
+}
 
 
 ///
 // Structure used to facilitate asynchronous responses to custom scheme handler
 // requests. The functions of this structure may be called on any thread.
 ///
-typedef struct _cef_scheme_handler_callback_t {
+struct cef_scheme_handler_callback_t {
   ///
   // Base structure.
   ///
@@ -150,27 +145,25 @@ typedef struct _cef_scheme_handler_callback_t {
   ///
   // Notify that header information is now available for retrieval.
   ///
-  void (CEF_CALLBACK *headers_available)(
-      struct _cef_scheme_handler_callback_t* self);
+  extern(System) void function(cef_scheme_handler_callback_t* self) headers_available;
 
   ///
   // Notify that response data is now available for reading.
   ///
-  void (CEF_CALLBACK *bytes_available)(
-      struct _cef_scheme_handler_callback_t* self);
+  extern(System) void function(cef_scheme_handler_callback_t* self) bytes_available;
 
   ///
   // Cancel processing of the request.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_scheme_handler_callback_t* self);
-} cef_scheme_handler_callback_t;
+  extern(System) void function(cef_scheme_handler_callback_t* self) cancel;
+}
 
 
 ///
 // Structure used to implement a custom scheme handler structure. The functions
 // of this structure will always be called on the IO thread.
 ///
-typedef struct _cef_scheme_handler_t {
+struct cef_scheme_handler_t {
   ///
   // Base structure.
   ///
@@ -183,9 +176,7 @@ typedef struct _cef_scheme_handler_t {
   // information is available immediately). To cancel the request return false
   // (0).
   ///
-  int (CEF_CALLBACK *process_request)(struct _cef_scheme_handler_t* self,
-      struct _cef_request_t* request,
-      struct _cef_scheme_handler_callback_t* callback);
+  extern(System) int function(cef_scheme_handler_t* self, cef_request_t* request, cef_scheme_handler_callback_t* callback) process_request;
 
   ///
   // Retrieve response header information. If the response length is not known
@@ -197,9 +188,7 @@ typedef struct _cef_scheme_handler_t {
   // values. To redirect the request to a new URL set |redirectUrl| to the new
   // URL.
   ///
-  void (CEF_CALLBACK *get_response_headers)(struct _cef_scheme_handler_t* self,
-      struct _cef_response_t* response, int64* response_length,
-      cef_string_t* redirectUrl);
+  extern(System) void function(cef_scheme_handler_t* self, cef_response_t* response, int64* response_length, cef_string_t* redirectUrl) get_response_headers;
 
   ///
   // Read response data. If data is available immediately copy up to
@@ -208,19 +197,17 @@ typedef struct _cef_scheme_handler_t {
   // |bytes_read| to 0, return true (1) and call bytes_available() when the data
   // is available. To indicate response completion return false (0).
   ///
-  int (CEF_CALLBACK *read_response)(struct _cef_scheme_handler_t* self,
-      void* data_out, int bytes_to_read, int* bytes_read,
-      struct _cef_scheme_handler_callback_t* callback);
+  extern(System) int function(cef_scheme_handler_t* self, void* data_out, int bytes_to_read, int* bytes_read, cef_scheme_handler_callback_t* callback) read_response;
 
   ///
   // Request processing has been canceled.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_scheme_handler_t* self);
-} cef_scheme_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_scheme_handler_t* self) cancel;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_SCHEME_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_SCHEME_CAPI_H_

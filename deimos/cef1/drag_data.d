@@ -1,3 +1,5 @@
+module deimos.cef1.drag_dat;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_DRAG_DATA_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_DRAG_DATA_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_DRAG_DATA_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure used to represent drag data. The functions of this structure may be
 // called on any thread.
 ///
-typedef struct _cef_drag_data_t {
+struct cef_drag_data_t {
   ///
   // Base structure.
   ///
@@ -58,79 +59,71 @@ typedef struct _cef_drag_data_t {
   ///
   // Returns true (1) if the drag data is a link.
   ///
-  int (CEF_CALLBACK *is_link)(struct _cef_drag_data_t* self);
+  extern(System) int function(cef_drag_data_t* self) is_link;
 
   ///
   // Returns true (1) if the drag data is a text or html fragment.
   ///
-  int (CEF_CALLBACK *is_fragment)(struct _cef_drag_data_t* self);
+  extern(System) int function(cef_drag_data_t* self) is_fragment;
 
   ///
   // Returns true (1) if the drag data is a file.
   ///
-  int (CEF_CALLBACK *is_file)(struct _cef_drag_data_t* self);
+  extern(System) int function(cef_drag_data_t* self) is_file;
 
   ///
   // Return the link URL that is being dragged.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_link_url)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_link_url;
 
   ///
   // Return the title associated with the link being dragged.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_link_title)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_link_title;
 
   ///
   // Return the metadata, if any, associated with the link being dragged.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_link_metadata)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_link_metadata;
 
   ///
   // Return the plain text fragment that is being dragged.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_fragment_text)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_fragment_text;
 
   ///
   // Return the text/html fragment that is being dragged.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_fragment_html)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_fragment_html;
 
   ///
   // Return the base URL that the fragment came from. This value is used for
   // resolving relative URLs and may be NULL.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_fragment_base_url)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_fragment_base_url;
 
   ///
   // Return the name of the file being dragged out of the browser window.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_file_name)(
-      struct _cef_drag_data_t* self);
+  extern(System) cef_string_userfree_t function(cef_drag_data_t* self) get_file_name;
 
   ///
   // Retrieve the list of file names that are being dragged into the browser
   // window.
   ///
-  int (CEF_CALLBACK *get_file_names)(struct _cef_drag_data_t* self,
-      cef_string_list_t names);
-} cef_drag_data_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_drag_data_t* self, cef_string_list_t names) get_file_names;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_DRAG_DATA_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_DRAG_DATA_CAPI_H_

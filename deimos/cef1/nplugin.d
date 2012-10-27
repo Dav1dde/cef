@@ -1,3 +1,5 @@
+module deimos.cef1.nplugin;
+
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,22 +30,21 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#ifndef CEF_INCLUDE_CAPI_CEF_NPLUGIN_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_NPLUGIN_CAPI_H_
+// #ifndef CEF_INCLUDE_CAPI_CEF_NPLUGIN_CAPI_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/internal/cef_nplugin_types.h"
+import deimos.cef1.internal.nplugin_types;
 
 ///
 // Register a plugin with the system.  Returns true (1) on success.
 ///
-CEF_EXPORT int cef_register_plugin(const cef_plugin_info_t* plugin_info);
+int cef_register_plugin(const(cef_plugin_info_t)* plugin_info);
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_NPLUGIN_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_NPLUGIN_CAPI_H_

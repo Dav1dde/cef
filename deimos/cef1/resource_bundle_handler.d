@@ -1,3 +1,5 @@
+module deimos.cef1.resource_bundle_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure used to implement a custom resource bundle structure. The functions
 // of this structure may be called on multiple threads.
 ///
-typedef struct _cef_resource_bundle_handler_t {
+struct cef_resource_bundle_handler_t {
   ///
   // Base structure.
   ///
@@ -66,9 +67,7 @@ typedef struct _cef_resource_bundle_handler_t {
   // values can be discovered by searching for *_strings.h in the
   // "obj/global_intermediate" build output directory.
   ///
-  int (CEF_CALLBACK *get_localized_string)(
-      struct _cef_resource_bundle_handler_t* self, int message_id,
-      cef_string_t* string);
+  extern(System) int function(cef_resource_bundle_handler_t* self, int message_id, cef_string_t* string) get_localized_string;
 
   ///
   // Called to retrieve data for the resource specified by |resource_id|. To
@@ -82,14 +81,12 @@ typedef struct _cef_resource_bundle_handler_t {
   // values can be discovered by searching for *_resources.h in the
   // "obj/global_intermediate" build output directory.
   ///
-  int (CEF_CALLBACK *get_data_resource)(
-      struct _cef_resource_bundle_handler_t* self, int resource_id, void** data,
-      size_t* data_size);
-} cef_resource_bundle_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_resource_bundle_handler_t* self, int resource_id, void** data, size_t* data_size) get_data_resource;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_RESOURCE_BUNDLE_HANDLER_CAPI_H_

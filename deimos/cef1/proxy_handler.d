@@ -1,3 +1,5 @@
+module deimos.cef1.proxy_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,21 +36,20 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_PROXY_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_PROXY_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_PROXY_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle proxy resolution events.
 ///
-typedef struct _cef_proxy_handler_t {
+struct cef_proxy_handler_t {
   ///
   // Base structure.
   ///
@@ -57,13 +58,12 @@ typedef struct _cef_proxy_handler_t {
   ///
   // Called to retrieve proxy information for the specified |url|.
   ///
-  void (CEF_CALLBACK *get_proxy_for_url)(struct _cef_proxy_handler_t* self,
-      const cef_string_t* url, struct _cef_proxy_info_t* proxy_info);
-} cef_proxy_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_proxy_handler_t* self, const(cef_string_t)* url, cef_proxy_info_t* proxy_info) get_proxy_for_url;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_PROXY_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_PROXY_HANDLER_CAPI_H_

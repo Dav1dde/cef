@@ -1,3 +1,5 @@
+module deimos.cef1.stream;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure the client can implement to provide a custom stream reader. The
 // functions of this structure may be called on any thread.
 ///
-typedef struct _cef_read_handler_t {
+struct cef_read_handler_t {
   ///
   // Base structure.
   ///
@@ -58,33 +59,31 @@ typedef struct _cef_read_handler_t {
   ///
   // Read raw binary data.
   ///
-  size_t (CEF_CALLBACK *read)(struct _cef_read_handler_t* self, void* ptr,
-      size_t size, size_t n);
+  extern(System) size_t function(cef_read_handler_t* self, void* ptr, size_t size, size_t n) read;
 
   ///
   // Seek to the specified offset position. |whence| may be any one of SEEK_CUR,
   // SEEK_END or SEEK_SET. Return zero on success and non-zero on failure.
   ///
-  int (CEF_CALLBACK *seek)(struct _cef_read_handler_t* self, int64 offset,
-      int whence);
+  extern(System) int function(cef_read_handler_t* self, int64 offset, int whence) seek;
 
   ///
   // Return the current offset position.
   ///
-  int64 (CEF_CALLBACK *tell)(struct _cef_read_handler_t* self);
+  extern(System) int64 function(cef_read_handler_t* self) tell;
 
   ///
   // Return non-zero if at end of file.
   ///
-  int (CEF_CALLBACK *eof)(struct _cef_read_handler_t* self);
-} cef_read_handler_t;
+  extern(System) int function(cef_read_handler_t* self) eof;
+}
 
 
 ///
 // Structure used to read data from a stream. The functions of this structure
 // may be called on any thread.
 ///
-typedef struct _cef_stream_reader_t {
+struct cef_stream_reader_t {
   ///
   // Base structure.
   ///
@@ -93,52 +92,47 @@ typedef struct _cef_stream_reader_t {
   ///
   // Read raw binary data.
   ///
-  size_t (CEF_CALLBACK *read)(struct _cef_stream_reader_t* self, void* ptr,
-      size_t size, size_t n);
+  extern(System) size_t function(cef_stream_reader_t* self, void* ptr, size_t size, size_t n) read;
 
   ///
   // Seek to the specified offset position. |whence| may be any one of SEEK_CUR,
   // SEEK_END or SEEK_SET. Returns zero on success and non-zero on failure.
   ///
-  int (CEF_CALLBACK *seek)(struct _cef_stream_reader_t* self, int64 offset,
-      int whence);
+  extern(System) int function(cef_stream_reader_t* self, int64 offset, int whence) seek;
 
   ///
   // Return the current offset position.
   ///
-  int64 (CEF_CALLBACK *tell)(struct _cef_stream_reader_t* self);
+  extern(System) int64 function(cef_stream_reader_t* self) tell;
 
   ///
   // Return non-zero if at end of file.
   ///
-  int (CEF_CALLBACK *eof)(struct _cef_stream_reader_t* self);
-} cef_stream_reader_t;
+  extern(System) int function(cef_stream_reader_t* self) eof;
+}
 
 
 ///
 // Create a new cef_stream_reader_t object from a file.
 ///
-CEF_EXPORT cef_stream_reader_t* cef_stream_reader_create_for_file(
-    const cef_string_t* fileName);
+cef_stream_reader_t* cef_stream_reader_create_for_file(const(cef_string_t)* fileName);
 
 ///
 // Create a new cef_stream_reader_t object from data.
 ///
-CEF_EXPORT cef_stream_reader_t* cef_stream_reader_create_for_data(void* data,
-    size_t size);
+cef_stream_reader_t* cef_stream_reader_create_for_data(void* data, size_t size);
 
 ///
 // Create a new cef_stream_reader_t object from a custom handler.
 ///
-CEF_EXPORT cef_stream_reader_t* cef_stream_reader_create_for_handler(
-    cef_read_handler_t* handler);
+cef_stream_reader_t* cef_stream_reader_create_for_handler(cef_read_handler_t* handler);
 
 
 ///
 // Structure the client can implement to provide a custom stream writer. The
 // functions of this structure may be called on any thread.
 ///
-typedef struct _cef_write_handler_t {
+struct cef_write_handler_t {
   ///
   // Base structure.
   ///
@@ -147,33 +141,31 @@ typedef struct _cef_write_handler_t {
   ///
   // Write raw binary data.
   ///
-  size_t (CEF_CALLBACK *write)(struct _cef_write_handler_t* self,
-      const void* ptr, size_t size, size_t n);
+  extern(System) size_t function(cef_write_handler_t* self, const(void)* ptr, size_t size, size_t n) write;
 
   ///
   // Seek to the specified offset position. |whence| may be any one of SEEK_CUR,
   // SEEK_END or SEEK_SET. Return zero on success and non-zero on failure.
   ///
-  int (CEF_CALLBACK *seek)(struct _cef_write_handler_t* self, int64 offset,
-      int whence);
+  extern(System) int function(cef_write_handler_t* self, int64 offset, int whence) seek;
 
   ///
   // Return the current offset position.
   ///
-  int64 (CEF_CALLBACK *tell)(struct _cef_write_handler_t* self);
+  extern(System) int64 function(cef_write_handler_t* self) tell;
 
   ///
   // Flush the stream.
   ///
-  int (CEF_CALLBACK *flush)(struct _cef_write_handler_t* self);
-} cef_write_handler_t;
+  extern(System) int function(cef_write_handler_t* self) flush;
+}
 
 
 ///
 // Structure used to write data to a stream. The functions of this structure may
 // be called on any thread.
 ///
-typedef struct _cef_stream_writer_t {
+struct cef_stream_writer_t {
   ///
   // Base structure.
   ///
@@ -182,43 +174,39 @@ typedef struct _cef_stream_writer_t {
   ///
   // Write raw binary data.
   ///
-  size_t (CEF_CALLBACK *write)(struct _cef_stream_writer_t* self,
-      const void* ptr, size_t size, size_t n);
+  extern(System) size_t function(cef_stream_writer_t* self, const(void)* ptr, size_t size, size_t n) write;
 
   ///
   // Seek to the specified offset position. |whence| may be any one of SEEK_CUR,
   // SEEK_END or SEEK_SET. Returns zero on success and non-zero on failure.
   ///
-  int (CEF_CALLBACK *seek)(struct _cef_stream_writer_t* self, int64 offset,
-      int whence);
+  extern(System) int function(cef_stream_writer_t* self, int64 offset, int whence) seek;
 
   ///
   // Return the current offset position.
   ///
-  int64 (CEF_CALLBACK *tell)(struct _cef_stream_writer_t* self);
+  extern(System) int64 function(cef_stream_writer_t* self) tell;
 
   ///
   // Flush the stream.
   ///
-  int (CEF_CALLBACK *flush)(struct _cef_stream_writer_t* self);
-} cef_stream_writer_t;
+  extern(System) int function(cef_stream_writer_t* self) flush;
+}
 
 
 ///
 // Create a new cef_stream_writer_t object for a file.
 ///
-CEF_EXPORT cef_stream_writer_t* cef_stream_writer_create_for_file(
-    const cef_string_t* fileName);
+cef_stream_writer_t* cef_stream_writer_create_for_file(const(cef_string_t)* fileName);
 
 ///
 // Create a new cef_stream_writer_t object for a custom handler.
 ///
-CEF_EXPORT cef_stream_writer_t* cef_stream_writer_create_for_handler(
-    cef_write_handler_t* handler);
+cef_stream_writer_t* cef_stream_writer_create_for_handler(cef_write_handler_t* handler);
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_STREAM_CAPI_H_

@@ -1,3 +1,5 @@
+module deimos.cef1.download_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_DOWNLOAD_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_DOWNLOAD_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_DOWNLOAD_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Structure used to handle file downloads. The functions of this structure will
 // always be called on the UI thread.
 ///
-typedef struct _cef_download_handler_t {
+struct cef_download_handler_t {
   ///
   // Base structure.
   ///
@@ -60,18 +61,17 @@ typedef struct _cef_download_handler_t {
   // called multiple times until the download is complete. Return |true (1)| to
   // continue receiving data and |false (0)| to cancel.
   ///
-  int (CEF_CALLBACK *received_data)(struct _cef_download_handler_t* self,
-      void* data, int data_size);
+  extern(System) int function(cef_download_handler_t* self, void* data, int data_size) received_data;
 
   ///
   // The download is complete.
   ///
-  void (CEF_CALLBACK *complete)(struct _cef_download_handler_t* self);
-} cef_download_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_download_handler_t* self) complete;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_DOWNLOAD_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_DOWNLOAD_HANDLER_CAPI_H_

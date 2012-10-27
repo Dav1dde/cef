@@ -1,3 +1,5 @@
+module deimos.cef1.base;
+
 // Copyright (c) 2011 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,25 +30,24 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#ifndef CEF_INCLUDE_CAPI_CEF_BASE_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_BASE_CAPI_H_
+// #ifndef CEF_INCLUDE_CAPI_CEF_BASE_CAPI_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/internal/cef_export.h"
-#include "include/internal/cef_string.h"
-#include "include/internal/cef_string_list.h"
-#include "include/internal/cef_string_map.h"
-#include "include/internal/cef_string_multimap.h"
-#include "include/internal/cef_types.h"
+import deimos.cef1.internal.xport;
+import deimos.cef1.internal.string;
+import deimos.cef1.internal.string_list;
+import deimos.cef1.internal.string_m;
+import deimos.cef1.internal.string_multim;
+import deimos.cef1.internal.types;
 
 ///
 // Structure defining the reference count implementation functions. All
 // framework structures must include the cef_base_t structure first.
 ///
-typedef struct _cef_base_t {
+struct cef_base_t {
   ///
   // Size of the data structure.
   ///
@@ -55,31 +56,29 @@ typedef struct _cef_base_t {
   ///
   // Increment the reference count.
   ///
-  int (CEF_CALLBACK *add_ref)(struct _cef_base_t* self);
+  extern(System) int function(cef_base_t* self) add_ref;
 
   ///
   // Decrement the reference count.  Delete this object when no references
   // remain.
   ///
-  int (CEF_CALLBACK *release)(struct _cef_base_t* self);
+  extern(System) int function(cef_base_t* self) release;
 
   ///
   // Returns the current number of references.
   ///
-  int (CEF_CALLBACK *get_refct)(struct _cef_base_t* self);
-} cef_base_t;
+  extern(System) int function(cef_base_t* self) get_refct;
+}
 
 
 // Check that the structure |s|, which is defined with a cef_base_t member named
 // |base|, is large enough to contain the specified member |f|.
-#define CEF_MEMBER_EXISTS(s, f)   \
   ((intptr_t)&((s)->f) - (intptr_t)(s) + sizeof((s)->f) <= (s)->base.size)
 
-#define CEF_MEMBER_MISSING(s, f)  (!CEF_MEMBER_EXISTS(s, f) || !((s)->f))
 
 
-#ifdef __cplusplus
+// #ifdef __cplusplus
 }
-#endif
+// #endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_BASE_CAPI_H_
+// #endif CEF_INCLUDE_CAPI_CEF_BASE_CAPI_H_

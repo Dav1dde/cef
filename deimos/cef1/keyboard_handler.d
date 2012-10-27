@@ -1,3 +1,5 @@
+module deimos.cef1.keyboard_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_KEYBOARD_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_KEYBOARD_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_KEYBOARD_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to keyboard input. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_keyboard_handler_t {
+struct cef_keyboard_handler_t {
   ///
   // Base structure.
   ///
@@ -69,14 +70,12 @@ typedef struct _cef_keyboard_handler_t {
   // Return true (1) if the keyboard event was handled or false (0) to allow
   // continued handling of the event by the renderer.
   ///
-  int (CEF_CALLBACK *on_key_event)(struct _cef_keyboard_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_handler_keyevent_type_t type,
-      int code, int modifiers, int isSystemKey, int isAfterJavaScript);
-} cef_keyboard_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_keyboard_handler_t* self, cef_browser_t* browser, cef_handler_keyevent_type_t type, int code, int modifiers, int isSystemKey, int isAfterJavaScript) on_key_event;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_KEYBOARD_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_KEYBOARD_HANDLER_CAPI_H_

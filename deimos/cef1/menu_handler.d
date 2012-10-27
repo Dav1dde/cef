@@ -1,3 +1,5 @@
+module deimos.cef1.menu_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_MENU_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_MENU_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_MENU_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to browser context menus.
 // The functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_menu_handler_t {
+struct cef_menu_handler_t {
   ///
   // Base structure.
   ///
@@ -59,30 +60,25 @@ typedef struct _cef_menu_handler_t {
   // Called before a context menu is displayed. Return false (0) to display the
   // default context menu or true (1) to cancel the display.
   ///
-  int (CEF_CALLBACK *on_before_menu)(struct _cef_menu_handler_t* self,
-      struct _cef_browser_t* browser,
-      const struct _cef_menu_info_t* menuInfo);
+  extern(System) int function(cef_menu_handler_t* self, cef_browser_t* browser, const(cef_menu_info_t)* menuInfo) on_before_menu;
 
   ///
   // Called to optionally override the default text for a context menu item.
   // |label| contains the default text and may be modified to substitute
   // alternate text.
   ///
-  void (CEF_CALLBACK *get_menu_label)(struct _cef_menu_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_menu_id_t menuId,
-      cef_string_t* label);
+  extern(System) void function(cef_menu_handler_t* self, cef_browser_t* browser, cef_menu_id_t menuId, cef_string_t* label) get_menu_label;
 
   ///
   // Called when an option is selected from the default context menu. Return
   // false (0) to execute the default action or true (1) to cancel the action.
   ///
-  int (CEF_CALLBACK *on_menu_action)(struct _cef_menu_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_menu_id_t menuId);
-} cef_menu_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_menu_handler_t* self, cef_browser_t* browser, cef_menu_id_t menuId) on_menu_action;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_MENU_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_MENU_HANDLER_CAPI_H_

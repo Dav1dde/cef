@@ -1,3 +1,5 @@
+module deimos.cef1.web_urlrequest;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_WEB_URLREQUEST_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_WEB_URLREQUEST_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_WEB_URLREQUEST_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -50,7 +51,7 @@ extern "C" {
 // with a browser instance so no cef_client_t callbacks will be executed. The
 // functions of this structure may be called on any thread.
 ///
-typedef struct _cef_web_urlrequest_t {
+struct cef_web_urlrequest_t {
   ///
   // Base structure.
   ///
@@ -59,29 +60,26 @@ typedef struct _cef_web_urlrequest_t {
   ///
   // Cancels the request.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_web_urlrequest_t* self);
+  extern(System) void function(cef_web_urlrequest_t* self) cancel;
 
   ///
   // Returns the current ready state of the request.
   ///
-  enum cef_weburlrequest_state_t (CEF_CALLBACK *get_state)(
-      struct _cef_web_urlrequest_t* self);
-} cef_web_urlrequest_t;
+  extern(System) cef_weburlrequest_state_t function(cef_web_urlrequest_t* self) get_state;
+}
 
 
 ///
 // Create a new CefWebUrlRequest object.
 ///
-CEF_EXPORT cef_web_urlrequest_t* cef_web_urlrequest_create(
-    struct _cef_request_t* request,
-    struct _cef_web_urlrequest_client_t* client);
+cef_web_urlrequest_t* cef_web_urlrequest_create(cef_request_t* request, cef_web_urlrequest_client_t* client);
 
 
 ///
 // Structure that should be implemented by the cef_web_urlrequest_t client. The
 // functions of this structure will always be called on the UI thread.
 ///
-typedef struct _cef_web_urlrequest_client_t {
+struct cef_web_urlrequest_client_t {
   ///
   // Base structure.
   ///
@@ -92,52 +90,38 @@ typedef struct _cef_web_urlrequest_client_t {
   // notifications will always be sent before the below notification functions
   // are called.
   ///
-  void (CEF_CALLBACK *on_state_change)(
-      struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester,
-      enum cef_weburlrequest_state_t state);
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, cef_weburlrequest_state_t state) on_state_change;
 
   ///
   // Notifies the client that the request has been redirected and  provides a
   // chance to change the request parameters.
   ///
-  void (CEF_CALLBACK *on_redirect)(struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester, struct _cef_request_t* request,
-      struct _cef_response_t* response);
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, cef_request_t* request, cef_response_t* response) on_redirect;
 
   ///
   // Notifies the client of the response data.
   ///
-  void (CEF_CALLBACK *on_headers_received)(
-      struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester,
-      struct _cef_response_t* response);
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, cef_response_t* response) on_headers_received;
 
   ///
   // Notifies the client of the upload progress.
   ///
-  void (CEF_CALLBACK *on_progress)(struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester, uint64 bytesSent,
-      uint64 totalBytesToBeSent);
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, uint64 bytesSent, uint64 totalBytesToBeSent) on_progress;
 
   ///
   // Notifies the client that content has been received.
   ///
-  void (CEF_CALLBACK *on_data)(struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester, const void* data,
-      int dataLength);
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, const(void)* data, int dataLength) on_data;
 
   ///
   // Notifies the client that the request ended with an error.
   ///
-  void (CEF_CALLBACK *on_error)(struct _cef_web_urlrequest_client_t* self,
-      struct _cef_web_urlrequest_t* requester,
-      enum cef_handler_errorcode_t errorCode);
-} cef_web_urlrequest_client_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_web_urlrequest_client_t* self, cef_web_urlrequest_t* requester, cef_handler_errorcode_t errorCode) on_error;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_WEB_URLREQUEST_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_WEB_URLREQUEST_CAPI_H_

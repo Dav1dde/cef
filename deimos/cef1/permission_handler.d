@@ -1,3 +1,5 @@
+module deimos.cef1.permission_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_PERMISSION_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_PERMISSION_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_PERMISSION_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to browser permissions. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_permission_handler_t {
+struct cef_permission_handler_t {
   ///
   // Base structure.
   ///
@@ -59,14 +60,12 @@ typedef struct _cef_permission_handler_t {
   // Called on the UI thread before a script extension is loaded. Return false
   // (0) to let the extension load normally.
   ///
-  int (CEF_CALLBACK *on_before_script_extension_load)(
-      struct _cef_permission_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, const cef_string_t* extensionName);
-} cef_permission_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_permission_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* extensionName) on_before_script_extension_load;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_PERMISSION_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_PERMISSION_HANDLER_CAPI_H_

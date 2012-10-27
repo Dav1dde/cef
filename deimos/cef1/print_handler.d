@@ -1,3 +1,5 @@
+module deimos.cef1.print_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to printing. The functions
 // of this structure will be called on the UI thread.
 ///
-typedef struct _cef_print_handler_t {
+struct cef_print_handler_t {
   ///
   // Base structure.
   ///
@@ -63,9 +64,7 @@ typedef struct _cef_print_handler_t {
   // inches. Return false (0) to display the default print options or true (1)
   // to display the modified |printOptions|.
   ///
-  int (CEF_CALLBACK *get_print_options)(struct _cef_print_handler_t* self,
-      struct _cef_browser_t* browser,
-      struct _cef_print_options_t* printOptions);
+  extern(System) int function(cef_print_handler_t* self, cef_browser_t* browser, cef_print_options_t* printOptions) get_print_options;
 
   ///
   // Called to format print headers and footers. |printInfo| contains platform-
@@ -79,18 +78,12 @@ typedef struct _cef_print_handler_t {
   // return true (1). Otherwise, populate the approprate variables and return
   // false (0).
   ///
-  int (CEF_CALLBACK *get_print_header_footer)(struct _cef_print_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const struct _cef_print_info_t* printInfo, const cef_string_t* url,
-      const cef_string_t* title, int currentPage, int maxPages,
-      cef_string_t* topLeft, cef_string_t* topCenter, cef_string_t* topRight,
-      cef_string_t* bottomLeft, cef_string_t* bottomCenter,
-      cef_string_t* bottomRight);
-} cef_print_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_print_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_print_info_t)* printInfo, const(cef_string_t)* url, const(cef_string_t)* title, int currentPage, int maxPages, cef_string_t* topLeft, cef_string_t* topCenter, cef_string_t* topRight, cef_string_t* bottomLeft, cef_string_t* bottomCenter, cef_string_t* bottomRight) get_print_header_footer;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_PRINT_HANDLER_CAPI_H_

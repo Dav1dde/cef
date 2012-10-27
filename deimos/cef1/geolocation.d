@@ -1,3 +1,5 @@
+module deimos.cef1.geolocation;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_GEOLOCATION_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_GEOLOCATION_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_GEOLOCATION_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -50,14 +51,13 @@ extern "C" {
 // permission checks so should only be used by code that is allowed to access
 // location information.
 ///
-CEF_EXPORT int cef_get_geolocation(
-    struct _cef_get_geolocation_callback_t* callback);
+int cef_get_geolocation(cef_get_geolocation_callback_t* callback);
 
 ///
 // Implement this structure to receive geolocation updates. The functions of
 // this structure will be called on the browser process UI thread.
 ///
-typedef struct _cef_get_geolocation_callback_t {
+struct cef_get_geolocation_callback_t {
   ///
   // Base structure.
   ///
@@ -67,14 +67,12 @@ typedef struct _cef_get_geolocation_callback_t {
   // Called with the 'best available' location information or, if the location
   // update failed, with error information.
   ///
-  void (CEF_CALLBACK *on_location_update)(
-      struct _cef_get_geolocation_callback_t* self,
-      const struct _cef_geoposition_t* position);
-} cef_get_geolocation_callback_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_get_geolocation_callback_t* self, const(cef_geoposition_t)* position) on_location_update;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_GEOLOCATION_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_GEOLOCATION_CAPI_H_

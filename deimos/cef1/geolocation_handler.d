@@ -1,3 +1,5 @@
+module deimos.cef1.geolocation_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_GEOLOCATION_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_GEOLOCATION_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_GEOLOCATION_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Callback structure used for asynchronous continuation of geolocation
 // permission requests.
 ///
-typedef struct _cef_geolocation_callback_t {
+struct cef_geolocation_callback_t {
   ///
   // Base structure.
   ///
@@ -58,9 +59,8 @@ typedef struct _cef_geolocation_callback_t {
   ///
   // Call to allow or deny geolocation access.
   ///
-  void (CEF_CALLBACK *cont)(struct _cef_geolocation_callback_t* self,
-      int allow);
-} cef_geolocation_callback_t;
+  extern(System) void function(cef_geolocation_callback_t* self, int allow) cont;
+}
 
 
 ///
@@ -68,7 +68,7 @@ typedef struct _cef_geolocation_callback_t {
 // requests. The functions of this structure will be called on the browser
 // process UI thread.
 ///
-typedef struct _cef_geolocation_handler_t {
+struct cef_geolocation_handler_t {
   ///
   // Base structure.
   ///
@@ -81,24 +81,19 @@ typedef struct _cef_geolocation_handler_t {
   // cef_geolocation_callback_t::Continue to allow or deny the permission
   // request.
   ///
-  void (CEF_CALLBACK *on_request_geolocation_permission)(
-      struct _cef_geolocation_handler_t* self, struct _cef_browser_t* browser,
-      const cef_string_t* requesting_url, int request_id,
-      struct _cef_geolocation_callback_t* callback);
+  extern(System) void function(cef_geolocation_handler_t* self, cef_browser_t* browser, const(cef_string_t)* requesting_url, int request_id, cef_geolocation_callback_t* callback) on_request_geolocation_permission;
 
   ///
   // Called when a geolocation access request is canceled. |requesting_url| is
   // the URL that originally requested permission and |request_id| is the unique
   // ID for the permission request.
   ///
-  void (CEF_CALLBACK *on_cancel_geolocation_permission)(
-      struct _cef_geolocation_handler_t* self, struct _cef_browser_t* browser,
-      const cef_string_t* requesting_url, int request_id);
-} cef_geolocation_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_geolocation_handler_t* self, cef_browser_t* browser, const(cef_string_t)* requesting_url, int request_id) on_cancel_geolocation_permission;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_GEOLOCATION_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_GEOLOCATION_HANDLER_CAPI_H_

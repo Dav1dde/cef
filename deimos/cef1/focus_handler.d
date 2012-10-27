@@ -1,3 +1,5 @@
+module deimos.cef1.ocus_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to focus. The functions of
 // this structure will be called on the UI thread.
 ///
-typedef struct _cef_focus_handler_t {
+struct cef_focus_handler_t {
   ///
   // Base structure.
   ///
@@ -61,16 +62,14 @@ typedef struct _cef_focus_handler_t {
   // will be true (1) if the browser is giving focus to the next component and
   // false (0) if the browser is giving focus to the previous component.
   ///
-  void (CEF_CALLBACK *on_take_focus)(struct _cef_focus_handler_t* self,
-      struct _cef_browser_t* browser, int next);
+  extern(System) void function(cef_focus_handler_t* self, cef_browser_t* browser, int next) on_take_focus;
 
   ///
   // Called when the browser component is requesting focus. |source| indicates
   // where the focus request is originating from. Return false (0) to allow the
   // focus to be set or true (1) to cancel setting the focus.
   ///
-  int (CEF_CALLBACK *on_set_focus)(struct _cef_focus_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_handler_focus_source_t source);
+  extern(System) int function(cef_focus_handler_t* self, cef_browser_t* browser, cef_handler_focus_source_t source) on_set_focus;
 
   ///
   // Called when a new node in the the browser gets focus. The |node| value may
@@ -80,14 +79,12 @@ typedef struct _cef_focus_handler_t {
   // keep references to or attempt to access any DOM objects outside the scope
   // of this function.
   ///
-  void (CEF_CALLBACK *on_focused_node_changed)(
-      struct _cef_focus_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, struct _cef_domnode_t* node);
-} cef_focus_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_focus_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_domnode_t* node) on_focused_node_changed;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_FOCUS_HANDLER_CAPI_H_

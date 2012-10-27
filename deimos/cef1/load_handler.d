@@ -1,3 +1,5 @@
+module deimos.cef1.load_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_LOAD_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_LOAD_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_LOAD_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to browser load status. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_load_handler_t {
+struct cef_load_handler_t {
   ///
   // Base structure.
   ///
@@ -63,8 +64,7 @@ typedef struct _cef_load_handler_t {
   // function may not be called for a particular frame if the load request for
   // that frame fails.
   ///
-  void (CEF_CALLBACK *on_load_start)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame) on_load_start;
 
   ///
   // Called when the browser is done loading a frame. The |frame| value will
@@ -74,9 +74,7 @@ typedef struct _cef_load_handler_t {
   // function will always be called for all frames irrespective of whether the
   // request completes successfully.
   ///
-  void (CEF_CALLBACK *on_load_end)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      int httpStatusCode);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int httpStatusCode) on_load_end;
 
   ///
   // Called when the browser fails to load a resource. |errorCode| is the error
@@ -85,15 +83,12 @@ typedef struct _cef_load_handler_t {
   // Otherwise, return false (0) for the default error text. See
   // net\base\net_error_list.h for complete descriptions of the error codes.
   ///
-  int (CEF_CALLBACK *on_load_error)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      enum cef_handler_errorcode_t errorCode, const cef_string_t* failedUrl,
-      cef_string_t* errorText);
-} cef_load_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) int function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_handler_errorcode_t errorCode, const(cef_string_t)* failedUrl, cef_string_t* errorText) on_load_error;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_LOAD_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_LOAD_HANDLER_CAPI_H_

@@ -25,7 +25,7 @@ def preprocess_sub(match):
     all_, instruction, other = match.group(0, 'instruction', 'other')
 
     if instruction == 'define':
-        if 'CEF_INCLUDE' in all_:
+        if 'CEF_' in other:
             return ''
         elif len(all_.split()) == 3:
             _, new, old = all_.split()
@@ -104,6 +104,7 @@ def replace_all(s):
     s = CALLBACK_RE.sub(callback_sub, s)
     s = CONST_RE.sub(const_sub, s)
     s = BRACKET_RE.sub(bracket_sub, s)
+    s = re.sub('\#endif\s+//', '// #endif', s) #hacky
 
     return s
 

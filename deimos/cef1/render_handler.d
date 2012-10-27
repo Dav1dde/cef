@@ -1,3 +1,5 @@
+module deimos.cef1.render_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_RENDER_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_RENDER_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_RENDER_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events when window rendering is disabled.
 // The functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_render_handler_t {
+struct cef_render_handler_t {
   ///
   // Base structure.
   ///
@@ -59,37 +60,31 @@ typedef struct _cef_render_handler_t {
   // Called to retrieve the view rectangle which is relative to screen
   // coordinates. Return true (1) if the rectangle was provided.
   ///
-  int (CEF_CALLBACK *get_view_rect)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, cef_rect_t* rect);
+  extern(System) int function(cef_render_handler_t* self, cef_browser_t* browser, cef_rect_t* rect) get_view_rect;
 
   ///
   // Called to retrieve the simulated screen rectangle. Return true (1) if the
   // rectangle was provided.
   ///
-  int (CEF_CALLBACK *get_screen_rect)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, cef_rect_t* rect);
+  extern(System) int function(cef_render_handler_t* self, cef_browser_t* browser, cef_rect_t* rect) get_screen_rect;
 
   ///
   // Called to retrieve the translation from view coordinates to actual screen
   // coordinates. Return true (1) if the screen coordinates were provided.
   ///
-  int (CEF_CALLBACK *get_screen_point)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, int viewX, int viewY, int* screenX,
-      int* screenY);
+  extern(System) int function(cef_render_handler_t* self, cef_browser_t* browser, int viewX, int viewY, int* screenX, int* screenY) get_screen_point;
 
   ///
   // Called when the browser wants to show or hide the popup widget. The popup
   // should be shown if |show| is true (1) and hidden if |show| is false (0).
   ///
-  void (CEF_CALLBACK *on_popup_show)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, int show);
+  extern(System) void function(cef_render_handler_t* self, cef_browser_t* browser, int show) on_popup_show;
 
   ///
   // Called when the browser wants to move or resize the popup widget. |rect|
   // contains the new location and size.
   ///
-  void (CEF_CALLBACK *on_popup_size)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, const cef_rect_t* rect);
+  extern(System) void function(cef_render_handler_t* self, cef_browser_t* browser, const(cef_rect_t)* rect) on_popup_size;
 
   ///
   // Called when an element should be painted. |type| indicates whether the
@@ -100,21 +95,17 @@ typedef struct _cef_render_handler_t {
   // cef_browser_tSettings.animation_frame_rate value controls the rate at which
   // this function is called.
   ///
-  void (CEF_CALLBACK *on_paint)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_paint_element_type_t type,
-      size_t dirtyRectsCount, cef_rect_t const* dirtyRects,
-      const void* buffer);
+  extern(System) void function(cef_render_handler_t* self, cef_browser_t* browser, cef_paint_element_type_t type, size_t dirtyRectsCount, cef_rect_t const* dirtyRects, const(void)* buffer) on_paint;
 
   ///
   // Called when the browser window's cursor has changed.
   ///
-  void (CEF_CALLBACK *on_cursor_change)(struct _cef_render_handler_t* self,
-      struct _cef_browser_t* browser, cef_cursor_handle_t cursor);
-} cef_render_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_render_handler_t* self, cef_browser_t* browser, cef_cursor_handle_t cursor) on_cursor_change;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_RENDER_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_RENDER_HANDLER_CAPI_H_

@@ -1,3 +1,5 @@
+module deimos.cef1.task;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,15 +36,14 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_TASK_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_TASK_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_TASK_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
@@ -55,27 +56,25 @@ extern "C" {
 // thread is used for the application cache and other miscellaneous activities.
 // This function will return true (1) if called on the specified thread.
 ///
-CEF_EXPORT int cef_currently_on(cef_thread_id_t threadId);
+int cef_currently_on(cef_thread_id_t threadId);
 
 ///
 // Post a task for execution on the specified thread. This function may be
 // called on any thread.
 ///
-CEF_EXPORT int cef_post_task(cef_thread_id_t threadId,
-    struct _cef_task_t* task);
+int cef_post_task(cef_thread_id_t threadId, cef_task_t* task);
 
 ///
 // Post a task for delayed execution on the specified thread. This function may
 // be called on any thread.
 ///
-CEF_EXPORT int cef_post_delayed_task(cef_thread_id_t threadId,
-    struct _cef_task_t* task, int64 delay_ms);
+int cef_post_delayed_task(cef_thread_id_t threadId, cef_task_t* task, int64 delay_ms);
 
 ///
 // Implement this structure for task execution. The functions of this structure
 // may be called on any thread.
 ///
-typedef struct _cef_task_t {
+struct cef_task_t {
   ///
   // Base structure.
   ///
@@ -84,13 +83,12 @@ typedef struct _cef_task_t {
   ///
   // Method that will be executed. |threadId| is the thread executing the call.
   ///
-  void (CEF_CALLBACK *execute)(struct _cef_task_t* self,
-      cef_thread_id_t threadId);
-} cef_task_t;
-
-
-#ifdef __cplusplus
+  extern(System) void function(cef_task_t* self, cef_thread_id_t threadId) execute;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_TASK_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_TASK_CAPI_H_

@@ -1,3 +1,5 @@
+module deimos.cef1.request_handler;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,22 +36,21 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_REQUEST_HANDLER_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_REQUEST_HANDLER_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_REQUEST_HANDLER_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to handle events related to browser requests. The
 // functions of this structure will be called on the thread indicated.
 ///
-typedef struct _cef_request_handler_t {
+struct cef_request_handler_t {
   ///
   // Base structure.
   ///
@@ -59,10 +60,7 @@ typedef struct _cef_request_handler_t {
   // Called on the UI thread before browser navigation. Return true (1) to
   // cancel the navigation or false (0) to allow the navigation to proceed.
   ///
-  int (CEF_CALLBACK *on_before_browse)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      struct _cef_request_t* request, enum cef_handler_navtype_t navType,
-      int isRedirect);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_handler_navtype_t navType, int isRedirect) on_before_browse;
 
   ///
   // Called on the IO thread before a resource is loaded.  To allow the resource
@@ -75,30 +73,21 @@ typedef struct _cef_request_handler_t {
   // |request| is changed and |redirectUrl| is also set, the URL in |request|
   // will be used.
   ///
-  int (CEF_CALLBACK *on_before_resource_load)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_request_t* request, cef_string_t* redirectUrl,
-      struct _cef_stream_reader_t** resourceStream,
-      struct _cef_response_t* response, int loadFlags);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, cef_request_t* request, cef_string_t* redirectUrl, cef_stream_reader_t** resourceStream, cef_response_t* response, int loadFlags) on_before_resource_load;
 
   ///
   // Called on the IO thread when a resource load is redirected. The |old_url|
   // parameter will contain the old URL. The |new_url| parameter will contain
   // the new URL and can be changed if desired.
   ///
-  void (CEF_CALLBACK *on_resource_redirect)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* old_url,
-      cef_string_t* new_url);
+  extern(System) void function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* old_url, cef_string_t* new_url) on_resource_redirect;
 
   ///
   // Called on the UI thread after a response to the resource request is
   // received. Set |filter| if response content needs to be monitored and/or
   // modified as it arrives.
   ///
-  void (CEF_CALLBACK *on_resource_response)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* url,
-      struct _cef_response_t* response,
-      struct _cef_content_filter_t** filter);
+  extern(System) void function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, cef_response_t* response, cef_content_filter_t** filter) on_resource_response;
 
   ///
   // Called on the IO thread to handle requests for URLs with an unknown
@@ -111,9 +100,7 @@ typedef struct _cef_request_handler_t {
   // SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR
   // OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
   ///
-  int (CEF_CALLBACK *on_protocol_execution)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* url,
-      int* allowOSExecution);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, int* allowOSExecution) on_protocol_execution;
 
   ///
   // Called on the UI thread when a server indicates via the 'Content-
@@ -124,10 +111,7 @@ typedef struct _cef_request_handler_t {
   // cef_download_handler_t instance that will recieve the file contents. Return
   // true (1) to download the file or false (0) to cancel the file download.
   ///
-  int (CEF_CALLBACK *get_download_handler)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* mimeType,
-      const cef_string_t* fileName, int64 contentLength,
-      struct _cef_download_handler_t** handler);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* mimeType, const(cef_string_t)* fileName, int64 contentLength, cef_download_handler_t** handler) get_download_handler;
 
   ///
   // Called on the IO thread when the browser needs credentials from the user.
@@ -135,10 +119,7 @@ typedef struct _cef_request_handler_t {
   // hostname and port number. Set |username| and |password| and return true (1)
   // to handle the request. Return false (0) to cancel the request.
   ///
-  int (CEF_CALLBACK *get_auth_credentials)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, int isProxy, const cef_string_t* host,
-      int port, const cef_string_t* realm, const cef_string_t* scheme,
-      cef_string_t* username, cef_string_t* password);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, int isProxy, const(cef_string_t)* host, int port, const(cef_string_t)* realm, const(cef_string_t)* scheme, cef_string_t* username, cef_string_t* password) get_auth_credentials;
 
   ///
   // Called on the IO thread to retrieve the cookie manager. |main_url| is the
@@ -146,14 +127,12 @@ typedef struct _cef_request_handler_t {
   // shared across multiple browsers. The global cookie manager will be used if
   // this function returns NULL.
   ///
-  struct _cef_cookie_manager_t* (CEF_CALLBACK *get_cookie_manager)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      const cef_string_t* main_url);
-} cef_request_handler_t;
-
-
-#ifdef __cplusplus
+  extern(System) cef_cookie_manager_t* function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* main_url) get_cookie_manager;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_REQUEST_HANDLER_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_REQUEST_HANDLER_CAPI_H_

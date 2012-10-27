@@ -1,3 +1,5 @@
+module deimos.cef1.lient;
+
 // Copyright (c) 2012 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,21 +36,20 @@
 // more information.
 //
 
-#ifndef CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
-#define CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
-#pragma once
+// #ifndef CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
+// #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+extern(C) {
+// #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef1.base;
 
 
 ///
 // Implement this structure to provide handler implementations.
 ///
-typedef struct _cef_client_t {
+struct cef_client_t {
   ///
   // Base structure.
   ///
@@ -57,105 +58,89 @@ typedef struct _cef_client_t {
   ///
   // Return the handler for browser life span events.
   ///
-  struct _cef_life_span_handler_t* (CEF_CALLBACK *get_life_span_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_life_span_handler_t* function(cef_client_t* self) get_life_span_handler;
 
   ///
   // Return the handler for browser load status events.
   ///
-  struct _cef_load_handler_t* (CEF_CALLBACK *get_load_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_load_handler_t* function(cef_client_t* self) get_load_handler;
 
   ///
   // Return the handler for browser request events.
   ///
-  struct _cef_request_handler_t* (CEF_CALLBACK *get_request_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_request_handler_t* function(cef_client_t* self) get_request_handler;
 
   ///
   // Return the handler for browser display state events.
   ///
-  struct _cef_display_handler_t* (CEF_CALLBACK *get_display_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_display_handler_t* function(cef_client_t* self) get_display_handler;
 
   ///
   // Return the handler for focus events.
   ///
-  struct _cef_focus_handler_t* (CEF_CALLBACK *get_focus_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_focus_handler_t* function(cef_client_t* self) get_focus_handler;
 
   ///
   // Return the handler for keyboard events.
   ///
-  struct _cef_keyboard_handler_t* (CEF_CALLBACK *get_keyboard_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_keyboard_handler_t* function(cef_client_t* self) get_keyboard_handler;
 
   ///
   // Return the handler for context menu events.
   ///
-  struct _cef_menu_handler_t* (CEF_CALLBACK *get_menu_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_menu_handler_t* function(cef_client_t* self) get_menu_handler;
 
   ///
   // Return the handler for browser permission events.
   ///
-  struct _cef_permission_handler_t* (CEF_CALLBACK *get_permission_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_permission_handler_t* function(cef_client_t* self) get_permission_handler;
 
   ///
   // Return the handler for printing events.
   ///
-  struct _cef_print_handler_t* (CEF_CALLBACK *get_print_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_print_handler_t* function(cef_client_t* self) get_print_handler;
 
   ///
   // Return the handler for find result events.
   ///
-  struct _cef_find_handler_t* (CEF_CALLBACK *get_find_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_find_handler_t* function(cef_client_t* self) get_find_handler;
 
   ///
   // Return the handler for JavaScript dialog events.
   ///
-  struct _cef_jsdialog_handler_t* (CEF_CALLBACK *get_jsdialog_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_jsdialog_handler_t* function(cef_client_t* self) get_jsdialog_handler;
 
   ///
   // Return the handler for V8 context events.
   ///
-  struct _cef_v8context_handler_t* (CEF_CALLBACK *get_v8context_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_v8context_handler_t* function(cef_client_t* self) get_v8context_handler;
 
   ///
   // Return the handler for off-screen rendering events.
   ///
-  struct _cef_render_handler_t* (CEF_CALLBACK *get_render_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_render_handler_t* function(cef_client_t* self) get_render_handler;
 
   ///
   // Return the handler for drag events.
   ///
-  struct _cef_drag_handler_t* (CEF_CALLBACK *get_drag_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_drag_handler_t* function(cef_client_t* self) get_drag_handler;
 
   ///
   // Return the handler for geolocation permissions requests. If no handler is
   // provided geolocation access will be denied by default.
   ///
-  struct _cef_geolocation_handler_t* (CEF_CALLBACK *get_geolocation_handler)(
-      struct _cef_client_t* self);
+  extern(System) cef_geolocation_handler_t* function(cef_client_t* self) get_geolocation_handler;
 
   ///
   // Return the handler for zoom events. If no handler is provided the default
   // zoom behavior will be used.
   ///
-  struct _cef_zoom_handler_t* (CEF_CALLBACK *get_zoom_handler)(
-      struct _cef_client_t* self);
-} cef_client_t;
-
-
-#ifdef __cplusplus
+  extern(System) cef_zoom_handler_t* function(cef_client_t* self) get_zoom_handler;
 }
-#endif
 
-#endif  // CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
+
+// #ifdef __cplusplus
+}
+// #endif
+
+// #endif CEF_INCLUDE_CAPI_CEF_CLIENT_CAPI_H_
