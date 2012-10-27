@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Retrieve the path associated with the specified |key|. Returns true (1) on
 // success. Can be called on any thread in the browser process.
 ///
-CEF_EXPORT int cef_get_path(enum cef_path_key_t key, cef_string_t* path);
+int cef_get_path( cef_path_key_t key, cef_string_t* path);
 
 #ifdef __cplusplus
 }

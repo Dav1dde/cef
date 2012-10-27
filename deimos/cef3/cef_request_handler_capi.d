@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Callback structure used for asynchronous continuation of authentication
 // requests.
 ///
-typedef struct _cef_auth_callback_t {
+struct cef_auth_callback_t {
   ///
   // Base structure.
   ///
@@ -58,20 +58,19 @@ typedef struct _cef_auth_callback_t {
   ///
   // Continue the authentication request.
   ///
-  void (CEF_CALLBACK *cont)(struct _cef_auth_callback_t* self,
-      const cef_string_t* username, const cef_string_t* password);
+  extern(System) void function(cef_auth_callback_t* self, const(cef_string_t)* username, const(cef_string_t)* password) cont;
 
   ///
   // Cancel the authentication request.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_auth_callback_t* self);
-} cef_auth_callback_t;
+  extern(System) void function(cef_auth_callback_t* self) cancel;
+}
 
 
 ///
 // Callback structure used for asynchronous continuation of quota requests.
 ///
-typedef struct _cef_quota_callback_t {
+struct cef_quota_callback_t {
   ///
   // Base structure.
   ///
@@ -81,20 +80,20 @@ typedef struct _cef_quota_callback_t {
   // Continue the quota request. If |allow| is true (1) the request will be
   // allowed. Otherwise, the request will be denied.
   ///
-  void (CEF_CALLBACK *cont)(struct _cef_quota_callback_t* self, int allow);
+  extern(System) void function(cef_quota_callback_t* self, int allow) cont;
 
   ///
   // Cancel the quota request.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_quota_callback_t* self);
-} cef_quota_callback_t;
+  extern(System) void function(cef_quota_callback_t* self) cancel;
+}
 
 
 ///
 // Implement this structure to handle events related to browser requests. The
 // functions of this structure will be called on the thread indicated.
 ///
-typedef struct _cef_request_handler_t {
+struct cef_request_handler_t {
   ///
   // Base structure.
   ///
@@ -105,9 +104,7 @@ typedef struct _cef_request_handler_t {
   // object may be modified. To cancel the request return true (1) otherwise
   // return false (0).
   ///
-  int (CEF_CALLBACK *on_before_resource_load)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, struct _cef_request_t* request);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request) on_before_resource_load;
 
   ///
   // Called on the IO thread before a resource is loaded. To allow the resource
@@ -115,18 +112,14 @@ typedef struct _cef_request_handler_t {
   // a cef_resource_handler_t object. The |request| object should not be
   // modified in this callback.
   ///
-  struct _cef_resource_handler_t* (CEF_CALLBACK *get_resource_handler)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      struct _cef_frame_t* frame, struct _cef_request_t* request);
+  extern(System) cef_resource_handler_t* function(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request) get_resource_handler;
 
   ///
   // Called on the IO thread when a resource load is redirected. The |old_url|
   // parameter will contain the old URL. The |new_url| parameter will contain
   // the new URL and can be changed if desired.
   ///
-  void (CEF_CALLBACK *on_resource_redirect)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* old_url, cef_string_t* new_url);
+  extern(System) void function(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* old_url, cef_string_t* new_url) on_resource_redirect;
 
   ///
   // Called on the IO thread when the browser needs credentials from the user.
@@ -136,10 +129,7 @@ typedef struct _cef_request_handler_t {
   // authentication information is available. Return false (0) to cancel the
   // request.
   ///
-  int (CEF_CALLBACK *get_auth_credentials)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame, int isProxy,
-      const cef_string_t* host, int port, const cef_string_t* realm,
-      const cef_string_t* scheme, struct _cef_auth_callback_t* callback);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int isProxy, const(cef_string_t)* host, int port, const(cef_string_t)* realm, const(cef_string_t)* scheme, cef_auth_callback_t* callback) get_auth_credentials;
 
   ///
   // Called on the IO thread when JavaScript requests a specific storage quota
@@ -149,9 +139,7 @@ typedef struct _cef_request_handler_t {
   // either in this function or at a later time to grant or deny the request.
   // Return false (0) to cancel the request.
   ///
-  int (CEF_CALLBACK *on_quota_request)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* origin_url,
-      int64 new_size, struct _cef_quota_callback_t* callback);
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* origin_url, int64 new_size, cef_quota_callback_t* callback) on_quota_request;
 
   ///
   // Called on the IO thread to retrieve the cookie manager. |main_url| is the
@@ -159,9 +147,7 @@ typedef struct _cef_request_handler_t {
   // shared across multiple browsers. The global cookie manager will be used if
   // this function returns NULL.
   ///
-  struct _cef_cookie_manager_t* (CEF_CALLBACK *get_cookie_manager)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      const cef_string_t* main_url);
+  extern(System) cef_cookie_manager_t* function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* main_url) get_cookie_manager;
 
   ///
   // Called on the UI thread to handle requests for URLs with an unknown
@@ -170,18 +156,14 @@ typedef struct _cef_request_handler_t {
   // YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR
   // OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
   ///
-  void (CEF_CALLBACK *on_protocol_execution)(
-      struct _cef_request_handler_t* self, struct _cef_browser_t* browser,
-      const cef_string_t* url, int* allow_os_execution);
+  extern(System) void function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, int* allow_os_execution) on_protocol_execution;
 
   ///
   // Called on the browser process IO thread before a plugin is loaded. Return
   // true (1) to block loading of the plugin.
   ///
-  int (CEF_CALLBACK *on_before_plugin_load)(struct _cef_request_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* url,
-      const cef_string_t* policy_url, struct _cef_web_plugin_info_t* info);
-} cef_request_handler_t;
+  extern(System) int function(cef_request_handler_t* self, cef_browser_t* browser, const(cef_string_t)* url, const(cef_string_t)* policy_url, cef_web_plugin_info_t* info) on_before_plugin_load;
+}
 
 
 #ifdef __cplusplus

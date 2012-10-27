@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -51,7 +51,7 @@ extern "C" {
 // unless otherwise indicated in the comments. When used in the render process
 // the functions of this structure may only be called on the main thread.
 ///
-typedef struct _cef_frame_t {
+struct cef_frame_t {
   ///
   // Base structure.
   ///
@@ -60,81 +60,76 @@ typedef struct _cef_frame_t {
   ///
   // True if this object is currently attached to a valid frame.
   ///
-  int (CEF_CALLBACK *is_valid)(struct _cef_frame_t* self);
+  extern(System) int function(cef_frame_t* self) is_valid;
 
   ///
   // Execute undo in this frame.
   ///
-  void (CEF_CALLBACK *undo)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) undo;
 
   ///
   // Execute redo in this frame.
   ///
-  void (CEF_CALLBACK *redo)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) redo;
 
   ///
   // Execute cut in this frame.
   ///
-  void (CEF_CALLBACK *cut)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) cut;
 
   ///
   // Execute copy in this frame.
   ///
-  void (CEF_CALLBACK *copy)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) copy;
 
   ///
   // Execute paste in this frame.
   ///
-  void (CEF_CALLBACK *paste)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) paste;
 
   ///
   // Execute delete in this frame.
   ///
-  void (CEF_CALLBACK *del)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) del;
 
   ///
   // Execute select all in this frame.
   ///
-  void (CEF_CALLBACK *select_all)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) select_all;
 
   ///
   // Save this frame's HTML source to a temporary file and open it in the
   // default text viewing application. This function can only be called from the
   // browser process.
   ///
-  void (CEF_CALLBACK *view_source)(struct _cef_frame_t* self);
+  extern(System) void function(cef_frame_t* self) view_source;
 
   ///
   // Retrieve this frame's HTML source as a string sent to the specified
   // visitor.
   ///
-  void (CEF_CALLBACK *get_source)(struct _cef_frame_t* self,
-      struct _cef_string_visitor_t* visitor);
+  extern(System) void function(cef_frame_t* self, cef_string_visitor_t* visitor) get_source;
 
   ///
   // Retrieve this frame's display text as a string sent to the specified
   // visitor.
   ///
-  void (CEF_CALLBACK *get_text)(struct _cef_frame_t* self,
-      struct _cef_string_visitor_t* visitor);
+  extern(System) void function(cef_frame_t* self, cef_string_visitor_t* visitor) get_text;
 
   ///
   // Load the request represented by the |request| object.
   ///
-  void (CEF_CALLBACK *load_request)(struct _cef_frame_t* self,
-      struct _cef_request_t* request);
+  extern(System) void function(cef_frame_t* self, cef_request_t* request) load_request;
 
   ///
   // Load the specified |url|.
   ///
-  void (CEF_CALLBACK *load_url)(struct _cef_frame_t* self,
-      const cef_string_t* url);
+  extern(System) void function(cef_frame_t* self, const(cef_string_t)* url) load_url;
 
   ///
   // Load the contents of |string_val| with the optional dummy target |url|.
   ///
-  void (CEF_CALLBACK *load_string)(struct _cef_frame_t* self,
-      const cef_string_t* string_val, const cef_string_t* url);
+  extern(System) void function(cef_frame_t* self, const(cef_string_t)* string_val, const(cef_string_t)* url) load_string;
 
   ///
   // Execute a string of JavaScript code in this frame. The |script_url|
@@ -143,19 +138,17 @@ typedef struct _cef_frame_t {
   // error.  The |start_line| parameter is the base line number to use for error
   // reporting.
   ///
-  void (CEF_CALLBACK *execute_java_script)(struct _cef_frame_t* self,
-      const cef_string_t* code, const cef_string_t* script_url,
-      int start_line);
+  extern(System) void function(cef_frame_t* self, const(cef_string_t)* code, const(cef_string_t)* script_url, int start_line) execute_java_script;
 
   ///
   // Returns true (1) if this is the main (top-level) frame.
   ///
-  int (CEF_CALLBACK *is_main)(struct _cef_frame_t* self);
+  extern(System) int function(cef_frame_t* self) is_main;
 
   ///
   // Returns true (1) if this is the focused frame.
   ///
-  int (CEF_CALLBACK *is_focused)(struct _cef_frame_t* self);
+  extern(System) int function(cef_frame_t* self) is_focused;
 
   ///
   // Returns the name for this frame. If the frame has an assigned name (for
@@ -165,44 +158,42 @@ typedef struct _cef_frame_t {
   // value.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_name)(struct _cef_frame_t* self);
+  extern(System) cef_string_userfree_t function(cef_frame_t* self) get_name;
 
   ///
   // Returns the globally unique identifier for this frame.
   ///
-  int64 (CEF_CALLBACK *get_identifier)(struct _cef_frame_t* self);
+  extern(System) int64 function(cef_frame_t* self) get_identifier;
 
   ///
   // Returns the parent of this frame or NULL if this is the main (top-level)
   // frame.
   ///
-  struct _cef_frame_t* (CEF_CALLBACK *get_parent)(struct _cef_frame_t* self);
+  extern(System) cef_frame_t* function(cef_frame_t* self) get_parent;
 
   ///
   // Returns the URL currently loaded in this frame.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_url)(struct _cef_frame_t* self);
+  extern(System) cef_string_userfree_t function(cef_frame_t* self) get_url;
 
   ///
   // Returns the browser that this frame belongs to.
   ///
-  struct _cef_browser_t* (CEF_CALLBACK *get_browser)(struct _cef_frame_t* self);
+  extern(System) cef_browser_t* function(cef_frame_t* self) get_browser;
 
   ///
   // Get the V8 context associated with the frame. This function can only be
   // called from the render process.
   ///
-  struct _cef_v8context_t* (CEF_CALLBACK *get_v8context)(
-      struct _cef_frame_t* self);
+  extern(System) cef_v8context_t* function(cef_frame_t* self) get_v8context;
 
   ///
   // Visit the DOM document. This function can only be called from the render
   // process.
   ///
-  void (CEF_CALLBACK *visit_dom)(struct _cef_frame_t* self,
-      struct _cef_domvisitor_t* visitor);
-} cef_frame_t;
+  extern(System) void function(cef_frame_t* self, cef_domvisitor_t* visitor) visit_dom;
+}
 
 
 #ifdef __cplusplus

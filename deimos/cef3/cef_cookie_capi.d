@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Structure used for managing cookies. The functions of this structure may be
 // called on any thread unless otherwise indicated.
 ///
-typedef struct _cef_cookie_manager_t {
+struct cef_cookie_manager_t {
   ///
   // Base structure.
   ///
@@ -60,15 +60,13 @@ typedef struct _cef_cookie_manager_t {
   // "https" schemes are supported. Must be called before any cookies are
   // accessed.
   ///
-  void (CEF_CALLBACK *set_supported_schemes)(struct _cef_cookie_manager_t* self,
-      cef_string_list_t schemes);
+  extern(System) void function(cef_cookie_manager_t* self, cef_string_list_t schemes) set_supported_schemes;
 
   ///
   // Visit all cookies. The returned cookies are ordered by longest path, then
   // by earliest creation date. Returns false (0) if cookies cannot be accessed.
   ///
-  int (CEF_CALLBACK *visit_all_cookies)(struct _cef_cookie_manager_t* self,
-      struct _cef_cookie_visitor_t* visitor);
+  extern(System) int function(cef_cookie_manager_t* self, cef_cookie_visitor_t* visitor) visit_all_cookies;
 
   ///
   // Visit a subset of cookies. The results are filtered by the given url
@@ -77,9 +75,7 @@ typedef struct _cef_cookie_manager_t {
   // ordered by longest path, then by earliest creation date. Returns false (0)
   // if cookies cannot be accessed.
   ///
-  int (CEF_CALLBACK *visit_url_cookies)(struct _cef_cookie_manager_t* self,
-      const cef_string_t* url, int includeHttpOnly,
-      struct _cef_cookie_visitor_t* visitor);
+  extern(System) int function(cef_cookie_manager_t* self, const(cef_string_t)* url, int includeHttpOnly, cef_cookie_visitor_t* visitor) visit_url_cookies;
 
   ///
   // Sets a cookie given a valid URL and explicit user-provided cookie
@@ -89,8 +85,7 @@ typedef struct _cef_cookie_manager_t {
   // setting the cookie if such characters are found. This function must be
   // called on the IO thread.
   ///
-  int (CEF_CALLBACK *set_cookie)(struct _cef_cookie_manager_t* self,
-      const cef_string_t* url, const struct _cef_cookie_t* cookie);
+  extern(System) int function(cef_cookie_manager_t* self, const(cef_string_t)* url, const(cef_cookie_t)* cookie) set_cookie;
 
   ///
   // Delete all cookies that match the specified parameters. If both |url| and
@@ -101,38 +96,35 @@ typedef struct _cef_cookie_manager_t {
   // non- NULL invalid URL is specified or if cookies cannot be accessed. This
   // function must be called on the IO thread.
   ///
-  int (CEF_CALLBACK *delete_cookies)(struct _cef_cookie_manager_t* self,
-      const cef_string_t* url, const cef_string_t* cookie_name);
+  extern(System) int function(cef_cookie_manager_t* self, const(cef_string_t)* url, const(cef_string_t)* cookie_name) delete_cookies;
 
   ///
   // Sets the directory path that will be used for storing cookie data. If
   // |path| is NULL data will be stored in memory only. Returns false (0) if
   // cookies cannot be accessed.
   ///
-  int (CEF_CALLBACK *set_storage_path)(struct _cef_cookie_manager_t* self,
-      const cef_string_t* path);
-} cef_cookie_manager_t;
+  extern(System) int function(cef_cookie_manager_t* self, const(cef_string_t)* path) set_storage_path;
+}
 
 
 ///
 // Returns the global cookie manager. By default data will be stored at
 // CefSettings.cache_path if specified or in memory otherwise.
 ///
-CEF_EXPORT cef_cookie_manager_t* cef_cookie_manager_get_global_manager();
+cef_cookie_manager_t* cef_cookie_manager_get_global_manager();
 
 ///
 // Creates a new cookie manager. If |path| is NULL data will be stored in memory
 // only. Returns NULL if creation fails.
 ///
-CEF_EXPORT cef_cookie_manager_t* cef_cookie_manager_create_manager(
-    const cef_string_t* path);
+cef_cookie_manager_t* cef_cookie_manager_create_manager(const(cef_string_t)* path);
 
 
 ///
 // Structure to implement for visiting cookie values. The functions of this
 // structure will always be called on the IO thread.
 ///
-typedef struct _cef_cookie_visitor_t {
+struct cef_cookie_visitor_t {
   ///
   // Base structure.
   ///
@@ -145,10 +137,8 @@ typedef struct _cef_cookie_visitor_t {
   // Return false (0) to stop visiting cookies. This function may never be
   // called if no cookies are found.
   ///
-  int (CEF_CALLBACK *visit)(struct _cef_cookie_visitor_t* self,
-      const struct _cef_cookie_t* cookie, int count, int total,
-      int* deleteCookie);
-} cef_cookie_visitor_t;
+  extern(System) int function(cef_cookie_visitor_t* self, const(cef_cookie_t)* cookie, int count, int total, int* deleteCookie) visit;
+}
 
 
 #ifdef __cplusplus

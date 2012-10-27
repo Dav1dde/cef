@@ -39,16 +39,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Structure representing a message. Can be used on any process and thread.
 ///
-typedef struct _cef_process_message_t {
+struct cef_process_message_t {
   ///
   // Base structure.
   ///
@@ -58,40 +58,36 @@ typedef struct _cef_process_message_t {
   // Returns true (1) if this object is valid. Do not call any other functions
   // if this function returns false (0).
   ///
-  int (CEF_CALLBACK *is_valid)(struct _cef_process_message_t* self);
+  extern(System) int function(cef_process_message_t* self) is_valid;
 
   ///
   // Returns true (1) if the values of this object are read-only. Some APIs may
   // expose read-only objects.
   ///
-  int (CEF_CALLBACK *is_read_only)(struct _cef_process_message_t* self);
+  extern(System) int function(cef_process_message_t* self) is_read_only;
 
   ///
   // Returns a writable copy of this object.
   ///
-  struct _cef_process_message_t* (CEF_CALLBACK *copy)(
-      struct _cef_process_message_t* self);
+  extern(System) cef_process_message_t* function(cef_process_message_t* self) copy;
 
   ///
   // Returns the message name.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_name)(
-      struct _cef_process_message_t* self);
+  extern(System) cef_string_userfree_t function(cef_process_message_t* self) get_name;
 
   ///
   // Returns the list of arguments.
   ///
-  struct _cef_list_value_t* (CEF_CALLBACK *get_argument_list)(
-      struct _cef_process_message_t* self);
-} cef_process_message_t;
+  extern(System) cef_list_value_t* function(cef_process_message_t* self) get_argument_list;
+}
 
 
 ///
 // Create a new cef_process_message_t object with the specified name.
 ///
-CEF_EXPORT cef_process_message_t* cef_process_message_create(
-    const cef_string_t* name);
+cef_process_message_t* cef_process_message_create(const(cef_string_t)* name);
 
 
 #ifdef __cplusplus

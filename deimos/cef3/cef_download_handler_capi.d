@@ -39,16 +39,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Callback structure used to asynchronously continue a download.
 ///
-typedef struct _cef_before_download_callback_t {
+struct cef_before_download_callback_t {
   ///
   // Base structure.
   ///
@@ -60,15 +60,14 @@ typedef struct _cef_before_download_callback_t {
   // suggested name and the default temp directory. Set |show_dialog| to true
   // (1) if you do wish to show the default "Save As" dialog.
   ///
-  void (CEF_CALLBACK *cont)(struct _cef_before_download_callback_t* self,
-      const cef_string_t* download_path, int show_dialog);
-} cef_before_download_callback_t;
+  extern(System) void function(cef_before_download_callback_t* self, const(cef_string_t)* download_path, int show_dialog) cont;
+}
 
 
 ///
 // Callback structure used to asynchronously cancel a download.
 ///
-typedef struct _cef_download_item_callback_t {
+struct cef_download_item_callback_t {
   ///
   // Base structure.
   ///
@@ -77,15 +76,15 @@ typedef struct _cef_download_item_callback_t {
   ///
   // Call to cancel the download.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_download_item_callback_t* self);
-} cef_download_item_callback_t;
+  extern(System) void function(cef_download_item_callback_t* self) cancel;
+}
 
 
 ///
 // Structure used to handle file downloads. The functions of this structure will
 // called on the browser process UI thread.
 ///
-typedef struct _cef_download_handler_t {
+struct cef_download_handler_t {
   ///
   // Base structure.
   ///
@@ -98,11 +97,7 @@ typedef struct _cef_download_handler_t {
   // download if desired. Do not keep a reference to |download_item| outside of
   // this function.
   ///
-  void (CEF_CALLBACK *on_before_download)(struct _cef_download_handler_t* self,
-      struct _cef_browser_t* browser,
-      struct _cef_download_item_t* download_item,
-      const cef_string_t* suggested_name,
-      struct _cef_before_download_callback_t* callback);
+  extern(System) void function(cef_download_handler_t* self, cef_browser_t* browser, cef_download_item_t* download_item, const(cef_string_t)* suggested_name, cef_before_download_callback_t* callback) on_before_download;
 
   ///
   // Called when a download's status or progress information has been updated.
@@ -110,11 +105,8 @@ typedef struct _cef_download_handler_t {
   // download if desired. Do not keep a reference to |download_item| outside of
   // this function.
   ///
-  void (CEF_CALLBACK *on_download_updated)(struct _cef_download_handler_t* self,
-      struct _cef_browser_t* browser,
-      struct _cef_download_item_t* download_item,
-      struct _cef_download_item_callback_t* callback);
-} cef_download_handler_t;
+  extern(System) void function(cef_download_handler_t* self, cef_browser_t* browser, cef_download_item_t* download_item, cef_download_item_callback_t* callback) on_download_updated;
+}
 
 
 #ifdef __cplusplus

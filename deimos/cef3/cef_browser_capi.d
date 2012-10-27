@@ -174,7 +174,7 @@ extern(C) {
         ///
         extern(System) void function(cef_run_file_dialog_callback_t* self, cef_browser_host_t* browser_host,
                                     cef_string_list_t file_paths) cont;
-        };
+        }
 
 
         ///

@@ -39,16 +39,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to handle proxy resolution events.
 ///
-typedef struct _cef_proxy_handler_t {
+struct cef_proxy_handler_t {
   ///
   // Base structure.
   ///
@@ -57,9 +57,8 @@ typedef struct _cef_proxy_handler_t {
   ///
   // Called to retrieve proxy information for the specified |url|.
   ///
-  void (CEF_CALLBACK *get_proxy_for_url)(struct _cef_proxy_handler_t* self,
-      const cef_string_t* url, struct _cef_proxy_info_t* proxy_info);
-} cef_proxy_handler_t;
+  extern(System) void function(cef_proxy_handler_t* self, const(cef_string_t)* url, cef_proxy_info_t* proxy_info) get_proxy_for_url;
+}
 
 
 #ifdef __cplusplus

@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -51,7 +51,7 @@ extern "C" {
 // should be between MENU_ID_USER_FIRST and MENU_ID_USER_LAST. The functions of
 // this structure can only be accessed on the browser process the UI thread.
 ///
-typedef struct _cef_menu_model_t {
+struct cef_menu_model_t {
   ///
   // Base structure.
   ///
@@ -60,325 +60,278 @@ typedef struct _cef_menu_model_t {
   ///
   // Clears the menu. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *clear)(struct _cef_menu_model_t* self);
+  extern(System) int function(cef_menu_model_t* self) clear;
 
   ///
   // Returns the number of items in this menu.
   ///
-  int (CEF_CALLBACK *get_count)(struct _cef_menu_model_t* self);
+  extern(System) int function(cef_menu_model_t* self) get_count;
 
   //
   // Add a separator to the menu. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *add_separator)(struct _cef_menu_model_t* self);
+  extern(System) int function(cef_menu_model_t* self) add_separator;
 
   //
   // Add an item to the menu. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *add_item)(struct _cef_menu_model_t* self, int command_id,
-      const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int command_id, const(cef_string_t)* label) add_item;
 
   //
   // Add a check item to the menu. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *add_check_item)(struct _cef_menu_model_t* self,
-      int command_id, const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int command_id, const(cef_string_t)* label) add_check_item;
 
   //
   // Add a radio item to the menu. Only a single item with the specified
   // |group_id| can be checked at a time. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *add_radio_item)(struct _cef_menu_model_t* self,
-      int command_id, const cef_string_t* label, int group_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id, const(cef_string_t)* label, int group_id) add_radio_item;
 
   //
   // Add a sub-menu to the menu. The new sub-menu is returned.
   ///
-  struct _cef_menu_model_t* (CEF_CALLBACK *add_sub_menu)(
-      struct _cef_menu_model_t* self, int command_id,
-      const cef_string_t* label);
+  extern(System) cef_menu_model_t* function(cef_menu_model_t* self, int command_id, const(cef_string_t)* label) add_sub_menu;
 
   //
   // Insert a separator in the menu at the specified |index|. Returns true (1)
   // on success.
   ///
-  int (CEF_CALLBACK *insert_separator_at)(struct _cef_menu_model_t* self,
-      int index);
+  extern(System) int function(cef_menu_model_t* self, int index) insert_separator_at;
 
   //
   // Insert an item in the menu at the specified |index|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *insert_item_at)(struct _cef_menu_model_t* self, int index,
-      int command_id, const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int index, int command_id, const(cef_string_t)* label) insert_item_at;
 
   //
   // Insert a check item in the menu at the specified |index|. Returns true (1)
   // on success.
   ///
-  int (CEF_CALLBACK *insert_check_item_at)(struct _cef_menu_model_t* self,
-      int index, int command_id, const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int index, int command_id, const(cef_string_t)* label) insert_check_item_at;
 
   //
   // Insert a radio item in the menu at the specified |index|. Only a single
   // item with the specified |group_id| can be checked at a time. Returns true
   // (1) on success.
   ///
-  int (CEF_CALLBACK *insert_radio_item_at)(struct _cef_menu_model_t* self,
-      int index, int command_id, const cef_string_t* label, int group_id);
+  extern(System) int function(cef_menu_model_t* self, int index, int command_id, const(cef_string_t)* label, int group_id) insert_radio_item_at;
 
   //
   // Insert a sub-menu in the menu at the specified |index|. The new sub-menu is
   // returned.
   ///
-  struct _cef_menu_model_t* (CEF_CALLBACK *insert_sub_menu_at)(
-      struct _cef_menu_model_t* self, int index, int command_id,
-      const cef_string_t* label);
+  extern(System) cef_menu_model_t* function(cef_menu_model_t* self, int index, int command_id, const(cef_string_t)* label) insert_sub_menu_at;
 
   ///
   // Removes the item with the specified |command_id|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *remove)(struct _cef_menu_model_t* self, int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) remove;
 
   ///
   // Removes the item at the specified |index|. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *remove_at)(struct _cef_menu_model_t* self, int index);
+  extern(System) int function(cef_menu_model_t* self, int index) remove_at;
 
   ///
   // Returns the index associated with the specified |command_id| or -1 if not
   // found due to the command id not existing in the menu.
   ///
-  int (CEF_CALLBACK *get_index_of)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) get_index_of;
 
   ///
   // Returns the command id at the specified |index| or -1 if not found due to
   // invalid range or the index being a separator.
   ///
-  int (CEF_CALLBACK *get_command_id_at)(struct _cef_menu_model_t* self,
-      int index);
+  extern(System) int function(cef_menu_model_t* self, int index) get_command_id_at;
 
   ///
   // Sets the command id at the specified |index|. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_command_id_at)(struct _cef_menu_model_t* self,
-      int index, int command_id);
+  extern(System) int function(cef_menu_model_t* self, int index, int command_id) set_command_id_at;
 
   ///
   // Returns the label for the specified |command_id| or NULL if not found.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_label)(
-      struct _cef_menu_model_t* self, int command_id);
+  extern(System) cef_string_userfree_t function(cef_menu_model_t* self, int command_id) get_label;
 
   ///
   // Returns the label at the specified |index| or NULL if not found due to
   // invalid range or the index being a separator.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_label_at)(
-      struct _cef_menu_model_t* self, int index);
+  extern(System) cef_string_userfree_t function(cef_menu_model_t* self, int index) get_label_at;
 
   ///
   // Sets the label for the specified |command_id|. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_label)(struct _cef_menu_model_t* self, int command_id,
-      const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int command_id, const(cef_string_t)* label) set_label;
 
   ///
   // Set the label at the specified |index|. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_label_at)(struct _cef_menu_model_t* self, int index,
-      const cef_string_t* label);
+  extern(System) int function(cef_menu_model_t* self, int index, const(cef_string_t)* label) set_label_at;
 
   ///
   // Returns the item type for the specified |command_id|.
   ///
-  enum cef_menu_item_type_t (CEF_CALLBACK *get_type)(
-      struct _cef_menu_model_t* self, int command_id);
+  extern(System)  cef_menu_item_type_t function(cef_menu_model_t* self, int command_id) get_type;
 
   ///
   // Returns the item type at the specified |index|.
   ///
-  enum cef_menu_item_type_t (CEF_CALLBACK *get_type_at)(
-      struct _cef_menu_model_t* self, int index);
+  extern(System)  cef_menu_item_type_t function(cef_menu_model_t* self, int index) get_type_at;
 
   ///
   // Returns the group id for the specified |command_id| or -1 if invalid.
   ///
-  int (CEF_CALLBACK *get_group_id)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) get_group_id;
 
   ///
   // Returns the group id at the specified |index| or -1 if invalid.
   ///
-  int (CEF_CALLBACK *get_group_id_at)(struct _cef_menu_model_t* self,
-      int index);
+  extern(System) int function(cef_menu_model_t* self, int index) get_group_id_at;
 
   ///
   // Sets the group id for the specified |command_id|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *set_group_id)(struct _cef_menu_model_t* self,
-      int command_id, int group_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int group_id) set_group_id;
 
   ///
   // Sets the group id at the specified |index|. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_group_id_at)(struct _cef_menu_model_t* self, int index,
-      int group_id);
+  extern(System) int function(cef_menu_model_t* self, int index, int group_id) set_group_id_at;
 
   ///
   // Returns the submenu for the specified |command_id| or NULL if invalid.
   ///
-  struct _cef_menu_model_t* (CEF_CALLBACK *get_sub_menu)(
-      struct _cef_menu_model_t* self, int command_id);
+  extern(System) cef_menu_model_t* function(cef_menu_model_t* self, int command_id) get_sub_menu;
 
   ///
   // Returns the submenu at the specified |index| or NULL if invalid.
   ///
-  struct _cef_menu_model_t* (CEF_CALLBACK *get_sub_menu_at)(
-      struct _cef_menu_model_t* self, int index);
+  extern(System) cef_menu_model_t* function(cef_menu_model_t* self, int index) get_sub_menu_at;
 
   //
   // Returns true (1) if the specified |command_id| is visible.
   ///
-  int (CEF_CALLBACK *is_visible)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) is_visible;
 
   //
   // Returns true (1) if the specified |index| is visible.
   ///
-  int (CEF_CALLBACK *is_visible_at)(struct _cef_menu_model_t* self, int index);
+  extern(System) int function(cef_menu_model_t* self, int index) is_visible_at;
 
   //
   // Change the visibility of the specified |command_id|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *set_visible)(struct _cef_menu_model_t* self,
-      int command_id, int visible);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int visible) set_visible;
 
   //
   // Change the visibility at the specified |index|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *set_visible_at)(struct _cef_menu_model_t* self, int index,
-      int visible);
+  extern(System) int function(cef_menu_model_t* self, int index, int visible) set_visible_at;
 
   //
   // Returns true (1) if the specified |command_id| is enabled.
   ///
-  int (CEF_CALLBACK *is_enabled)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) is_enabled;
 
   //
   // Returns true (1) if the specified |index| is enabled.
   ///
-  int (CEF_CALLBACK *is_enabled_at)(struct _cef_menu_model_t* self, int index);
+  extern(System) int function(cef_menu_model_t* self, int index) is_enabled_at;
 
   //
   // Change the enabled status of the specified |command_id|. Returns true (1)
   // on success.
   ///
-  int (CEF_CALLBACK *set_enabled)(struct _cef_menu_model_t* self,
-      int command_id, int enabled);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int enabled) set_enabled;
 
   //
   // Change the enabled status at the specified |index|. Returns true (1) on
   // success.
   ///
-  int (CEF_CALLBACK *set_enabled_at)(struct _cef_menu_model_t* self, int index,
-      int enabled);
+  extern(System) int function(cef_menu_model_t* self, int index, int enabled) set_enabled_at;
 
   //
   // Returns true (1) if the specified |command_id| is checked. Only applies to
   // check and radio items.
   ///
-  int (CEF_CALLBACK *is_checked)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) is_checked;
 
   //
   // Returns true (1) if the specified |index| is checked. Only applies to check
   // and radio items.
   ///
-  int (CEF_CALLBACK *is_checked_at)(struct _cef_menu_model_t* self, int index);
+  extern(System) int function(cef_menu_model_t* self, int index) is_checked_at;
 
   //
   // Check the specified |command_id|. Only applies to check and radio items.
   // Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_checked)(struct _cef_menu_model_t* self,
-      int command_id, int checked);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int checked) set_checked;
 
   //
   // Check the specified |index|. Only applies to check and radio items. Returns
   // true (1) on success.
   ///
-  int (CEF_CALLBACK *set_checked_at)(struct _cef_menu_model_t* self, int index,
-      int checked);
+  extern(System) int function(cef_menu_model_t* self, int index, int checked) set_checked_at;
 
   //
   // Returns true (1) if the specified |command_id| has a keyboard accelerator
   // assigned.
   ///
-  int (CEF_CALLBACK *has_accelerator)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) has_accelerator;
 
   //
   // Returns true (1) if the specified |index| has a keyboard accelerator
   // assigned.
   ///
-  int (CEF_CALLBACK *has_accelerator_at)(struct _cef_menu_model_t* self,
-      int index);
+  extern(System) int function(cef_menu_model_t* self, int index) has_accelerator_at;
 
   //
   // Set the keyboard accelerator for the specified |command_id|. |key_code| can
   // be any virtual key or character value. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_accelerator)(struct _cef_menu_model_t* self,
-      int command_id, int key_code, int shift_pressed, int ctrl_pressed,
-      int alt_pressed);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int key_code, int shift_pressed, int ctrl_pressed, int alt_pressed) set_accelerator;
 
   //
   // Set the keyboard accelerator at the specified |index|. |key_code| can be
   // any virtual key or character value. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_accelerator_at)(struct _cef_menu_model_t* self,
-      int index, int key_code, int shift_pressed, int ctrl_pressed,
-      int alt_pressed);
+  extern(System) int function(cef_menu_model_t* self, int index, int key_code, int shift_pressed, int ctrl_pressed, int alt_pressed) set_accelerator_at;
 
   //
   // Remove the keyboard accelerator for the specified |command_id|. Returns
   // true (1) on success.
   ///
-  int (CEF_CALLBACK *remove_accelerator)(struct _cef_menu_model_t* self,
-      int command_id);
+  extern(System) int function(cef_menu_model_t* self, int command_id) remove_accelerator;
 
   //
   // Remove the keyboard accelerator at the specified |index|. Returns true (1)
   // on success.
   ///
-  int (CEF_CALLBACK *remove_accelerator_at)(struct _cef_menu_model_t* self,
-      int index);
+  extern(System) int function(cef_menu_model_t* self, int index) remove_accelerator_at;
 
   //
   // Retrieves the keyboard accelerator for the specified |command_id|. Returns
   // true (1) on success.
   ///
-  int (CEF_CALLBACK *get_accelerator)(struct _cef_menu_model_t* self,
-      int command_id, int* key_code, int* shift_pressed, int* ctrl_pressed,
-      int* alt_pressed);
+  extern(System) int function(cef_menu_model_t* self, int command_id, int* key_code, int* shift_pressed, int* ctrl_pressed, int* alt_pressed) get_accelerator;
 
   //
   // Retrieves the keyboard accelerator for the specified |index|. Returns true
   // (1) on success.
   ///
-  int (CEF_CALLBACK *get_accelerator_at)(struct _cef_menu_model_t* self,
-      int index, int* key_code, int* shift_pressed, int* ctrl_pressed,
-      int* alt_pressed);
-} cef_menu_model_t;
+  extern(System) int function(cef_menu_model_t* self, int index, int* key_code, int* shift_pressed, int* ctrl_pressed, int* alt_pressed) get_accelerator_at;
+}
 
 
 #ifdef __cplusplus

@@ -39,16 +39,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to receive string values asynchronously.
 ///
-typedef struct _cef_string_visitor_t {
+struct cef_string_visitor_t {
   ///
   // Base structure.
   ///
@@ -57,9 +57,8 @@ typedef struct _cef_string_visitor_t {
   ///
   // Method that will be executed.
   ///
-  void (CEF_CALLBACK *visit)(struct _cef_string_visitor_t* self,
-      const cef_string_t* string);
-} cef_string_visitor_t;
+  extern(System) void function(cef_string_visitor_t* self, const(cef_string_t)* string) visit;
+}
 
 
 #ifdef __cplusplus

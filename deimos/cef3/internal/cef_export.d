@@ -34,7 +34,7 @@ module deimos.cef3.internal.export;
 // #define CEF_INCLUDE_INTERNAL_CEF_EXPORT_H_
 // #pragma once
 // 
-// #include "include/internal/cef_build.h"
+// import deimos.cef3.internal.build;
 // 
 // #if defined(COMPILER_MSVC)
 // 

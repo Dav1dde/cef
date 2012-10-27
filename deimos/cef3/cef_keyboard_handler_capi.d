@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to handle events related to keyboard input. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_keyboard_handler_t {
+struct cef_keyboard_handler_t {
   ///
   // Base structure.
   ///
@@ -60,9 +60,7 @@ typedef struct _cef_keyboard_handler_t {
   // event message, if any. Return true (1) if the event was handled or false
   // (0) otherwise. If the event will be handled in on_key_event() as a keyboard
   // shortcut set |is_keyboard_shortcut| to true (1) and return false (0).
-  int (CEF_CALLBACK *on_pre_key_event)(struct _cef_keyboard_handler_t* self,
-      struct _cef_browser_t* browser, const struct _cef_key_event_t* event,
-      cef_event_handle_t os_event, int* is_keyboard_shortcut);
+  extern(System) int function(cef_keyboard_handler_t* self, cef_browser_t* browser, const(cef_key_event_t)* event, cef_event_handle_t os_event, int* is_keyboard_shortcut) on_pre_key_event;
 
   ///
   // Called after the renderer and JavaScript in the page has had a chance to
@@ -70,10 +68,8 @@ typedef struct _cef_keyboard_handler_t {
   // |os_event| is the operating system event message, if any. Return true (1)
   // if the keyboard event was handled or false (0) otherwise.
   ///
-  int (CEF_CALLBACK *on_key_event)(struct _cef_keyboard_handler_t* self,
-      struct _cef_browser_t* browser, const struct _cef_key_event_t* event,
-      cef_event_handle_t os_event);
-} cef_keyboard_handler_t;
+  extern(System) int function(cef_keyboard_handler_t* self, cef_browser_t* browser, const(cef_key_event_t)* event, cef_event_handle_t os_event) on_key_event;
+}
 
 
 #ifdef __cplusplus

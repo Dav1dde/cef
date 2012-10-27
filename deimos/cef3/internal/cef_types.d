@@ -611,7 +611,7 @@ enum cef_path_key_t {
 enum cef_storage_type_t {
   ST_LOCALSTORAGE = 0,
   ST_SESSIONSTORAGE,
-};
+}
 
 ///
 // Supported error code values. See net\base\net_error_list.h for complete
@@ -750,7 +750,7 @@ enum cef_urlrequest_flags_t {
   // originated in the browser process.
   ///
   UR_FLAG_NO_RETRY_ON_5XX           = 1 << 7,
-};
+}
 
 ///
 // Flags that represent CefURLRequest status.
@@ -781,7 +781,7 @@ enum cef_urlrequest_status_t {
   // Request failed for some reason.
   ///
   UR_FAILED,
-};
+}
 
 ///
 // Structure representing a rectangle.
@@ -1193,7 +1193,7 @@ enum cef_proxy_type_t {
   CEF_PROXY_TYPE_DIRECT = 0,
   CEF_PROXY_TYPE_NAMED,
   CEF_PROXY_TYPE_PAC_STRING,
-};
+}
 
 ///
 // Proxy information.
@@ -1211,7 +1211,7 @@ enum cef_dom_document_type_t {
   DOM_DOCUMENT_TYPE_HTML,
   DOM_DOCUMENT_TYPE_XHTML,
   DOM_DOCUMENT_TYPE_PLUGIN,
-};
+}
 
 ///
 // DOM event category flags.
@@ -1237,7 +1237,7 @@ enum cef_dom_event_category_t {
   DOM_EVENT_CATEGORY_WEBKIT_ANIMATION = 0x10000,
   DOM_EVENT_CATEGORY_WEBKIT_TRANSITION = 0x20000,
   DOM_EVENT_CATEGORY_BEFORE_LOAD = 0x40000,
-};
+}
 
 ///
 // DOM event processing phases.
@@ -1247,7 +1247,7 @@ enum cef_dom_event_phase_t {
   DOM_EVENT_PHASE_CAPTURING,
   DOM_EVENT_PHASE_AT_TARGET,
   DOM_EVENT_PHASE_BUBBLING,
-};
+}
 
 ///
 // DOM node types.
@@ -1267,7 +1267,7 @@ enum cef_dom_node_type_t {
   DOM_NODE_TYPE_DOCUMENT_FRAGMENT,
   DOM_NODE_TYPE_NOTATION,
   DOM_NODE_TYPE_XPATH_NAMESPACE,
-};
+}
 
 ///
 // Supported file dialog modes.

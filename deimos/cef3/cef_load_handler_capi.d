@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to handle events related to browser load status. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_load_handler_t {
+struct cef_load_handler_t {
   ///
   // Base structure.
   ///
@@ -63,8 +63,7 @@ typedef struct _cef_load_handler_t {
   // function may not be called for a particular frame if the load request for
   // that frame fails.
   ///
-  void (CEF_CALLBACK *on_load_start)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame) on_load_start;
 
   ///
   // Called when the browser is done loading a frame. The |frame| value will
@@ -74,9 +73,7 @@ typedef struct _cef_load_handler_t {
   // function will always be called for all frames irrespective of whether the
   // request completes successfully.
   ///
-  void (CEF_CALLBACK *on_load_end)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      int httpStatusCode);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int httpStatusCode) on_load_end;
 
   ///
   // Called when the browser fails to load a resource. |errorCode| is the error
@@ -84,26 +81,20 @@ typedef struct _cef_load_handler_t {
   // that failed to load. See net\base\net_error_list.h for complete
   // descriptions of the error codes.
   ///
-  void (CEF_CALLBACK *on_load_error)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      enum cef_errorcode_t errorCode, const cef_string_t* errorText,
-      const cef_string_t* failedUrl);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, cef_frame_t* frame,  cef_errorcode_t errorCode, const(cef_string_t)* errorText, const(cef_string_t)* failedUrl) on_load_error;
 
   ///
   // Called when the render process terminates unexpectedly. |status| indicates
   // how the process terminated.
   ///
-  void (CEF_CALLBACK *on_render_process_terminated)(
-      struct _cef_load_handler_t* self, struct _cef_browser_t* browser,
-      enum cef_termination_status_t status);
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser,  cef_termination_status_t status) on_render_process_terminated;
 
   ///
   // Called when a plugin has crashed. |plugin_path| is the path of the plugin
   // that crashed.
   ///
-  void (CEF_CALLBACK *on_plugin_crashed)(struct _cef_load_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* plugin_path);
-} cef_load_handler_t;
+  extern(System) void function(cef_load_handler_t* self, cef_browser_t* browser, const(cef_string_t)* plugin_path) on_plugin_crashed;
+}
 
 
 #ifdef __cplusplus

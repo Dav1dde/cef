@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to handle events related to browser life span. The
 // functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_life_span_handler_t {
+struct cef_life_span_handler_t {
   ///
   // Base structure.
   ///
@@ -66,26 +66,19 @@ typedef struct _cef_life_span_handler_t {
   // modify the object that |client| points to. To change the settings for the
   // new window modify the |settings| structure.
   ///
-  int (CEF_CALLBACK *on_before_popup)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* parentBrowser,
-      const struct _cef_popup_features_t* popupFeatures,
-      struct _cef_window_info_t* windowInfo, const cef_string_t* url,
-      struct _cef_client_t** client,
-      struct _cef_browser_settings_t* settings);
+  extern(System) int function(cef_life_span_handler_t* self, cef_browser_t* parentBrowser, const(cef_popup_features_t)* popupFeatures, cef_window_info_t* windowInfo, const(cef_string_t)* url, cef_client_t** client, cef_browser_settings_t* settings) on_before_popup;
 
   ///
   // Called after a new window is created.
   ///
-  void (CEF_CALLBACK *on_after_created)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  extern(System) void function(cef_life_span_handler_t* self, cef_browser_t* browser) on_after_created;
 
   ///
   // Called when a modal window is about to display and the modal loop should
   // begin running. Return false (0) to use the default modal loop
   // implementation or true (1) to use a custom implementation.
   ///
-  int (CEF_CALLBACK *run_modal)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  extern(System) int function(cef_life_span_handler_t* self, cef_browser_t* browser) run_modal;
 
   ///
   // Called when a window has recieved a request to close. Return false (0) to
@@ -94,17 +87,15 @@ typedef struct _cef_life_span_handler_t {
   // in run_modal() this callback should be used to restore the opener window to
   // a usable state.
   ///
-  int (CEF_CALLBACK *do_close)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
+  extern(System) int function(cef_life_span_handler_t* self, cef_browser_t* browser) do_close;
 
   ///
   // Called just before a window is closed. If this is a modal window and a
   // custom modal loop implementation was provided in run_modal() this callback
   // should be used to exit the custom modal loop.
   ///
-  void (CEF_CALLBACK *on_before_close)(struct _cef_life_span_handler_t* self,
-      struct _cef_browser_t* browser);
-} cef_life_span_handler_t;
+  extern(System) void function(cef_life_span_handler_t* self, cef_browser_t* browser) on_before_close;
+}
 
 
 #ifdef __cplusplus

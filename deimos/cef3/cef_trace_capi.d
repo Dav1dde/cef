@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -62,8 +62,7 @@ extern "C" {
 //
 // This function must be called on the browser process UI thread.
 ///
-CEF_EXPORT int cef_begin_tracing(struct _cef_trace_client_t* client,
-    const cef_string_t* categories);
+int cef_begin_tracing(cef_trace_client_t* client, const(cef_string_t)* categories);
 
 ///
 // Get the maximum trace buffer percent full state across all processes.
@@ -78,7 +77,7 @@ CEF_EXPORT int cef_begin_tracing(struct _cef_trace_client_t* client,
 //
 // This function must be called on the browser process UI thread.
 ///
-CEF_EXPORT int cef_get_trace_buffer_percent_full_async();
+int cef_get_trace_buffer_percent_full_async();
 
 ///
 // Stop tracing events on all processes.
@@ -88,13 +87,13 @@ CEF_EXPORT int cef_get_trace_buffer_percent_full_async();
 //
 // This function must be called on the browser process UI thread.
 ///
-CEF_EXPORT int cef_end_tracing_async();
+int cef_end_tracing_async();
 
 ///
 // Implement this structure to receive trace notifications. The functions of
 // this structure will be called on the browser process UI thread.
 ///
-typedef struct _cef_trace_client_t {
+struct cef_trace_client_t {
   ///
   // Base structure.
   ///
@@ -105,21 +104,18 @@ typedef struct _cef_trace_client_t {
   // with a UTF8 JSON |fragment| of the specified |fragment_size|. Do not keep a
   // reference to |fragment|.
   ///
-  void (CEF_CALLBACK *on_trace_data_collected)(struct _cef_trace_client_t* self,
-      const char* fragment, size_t fragment_size);
+  extern(System) void function(cef_trace_client_t* self, const(char)* fragment, size_t fragment_size) on_trace_data_collected;
 
   ///
   // Called in response to CefGetTraceBufferPercentFullAsync.
   ///
-  void (CEF_CALLBACK *on_trace_buffer_percent_full_reply)(
-      struct _cef_trace_client_t* self, float percent_full);
+  extern(System) void function(cef_trace_client_t* self, float percent_full) on_trace_buffer_percent_full_reply;
 
   ///
   // Called after all processes have sent their trace data.
   ///
-  void (CEF_CALLBACK *on_end_tracing_complete)(
-      struct _cef_trace_client_t* self);
-} cef_trace_client_t;
+  extern(System) void function(cef_trace_client_t* self) on_end_tracing_complete;
+}
 
 
 #ifdef __cplusplus

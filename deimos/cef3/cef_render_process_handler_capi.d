@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Structure used to implement render process callbacks. The functions of this
 // structure will always be called on the render process main thread.
 ///
-typedef struct _cef_render_process_handler_t {
+struct cef_render_process_handler_t {
   ///
   // Base structure.
   ///
@@ -58,47 +58,35 @@ typedef struct _cef_render_process_handler_t {
   ///
   // Called after the render process main thread has been created.
   ///
-  void (CEF_CALLBACK *on_render_thread_created)(
-      struct _cef_render_process_handler_t* self);
+  extern(System) void function(cef_render_process_handler_t* self) on_render_thread_created;
 
   ///
   // Called after WebKit has been initialized.
   ///
-  void (CEF_CALLBACK *on_web_kit_initialized)(
-      struct _cef_render_process_handler_t* self);
+  extern(System) void function(cef_render_process_handler_t* self) on_web_kit_initialized;
 
   ///
   // Called after a browser has been created.
   ///
-  void (CEF_CALLBACK *on_browser_created)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser);
+  extern(System) void function(cef_render_process_handler_t* self, cef_browser_t* browser) on_browser_created;
 
   ///
   // Called before a browser is destroyed.
   ///
-  void (CEF_CALLBACK *on_browser_destroyed)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser);
+  extern(System) void function(cef_render_process_handler_t* self, cef_browser_t* browser) on_browser_destroyed;
 
   ///
   // Called immediately after the V8 context for a frame has been created. To
   // retrieve the JavaScript 'window' object use the
   // cef_v8context_t::get_global() function.
   ///
-  void (CEF_CALLBACK *on_context_created)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      struct _cef_v8context_t* context);
+  extern(System) void function(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context) on_context_created;
 
   ///
   // Called immediately before the V8 context for a frame is released. No
   // references to the context should be kept after this function is called.
   ///
-  void (CEF_CALLBACK *on_context_released)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      struct _cef_v8context_t* context);
+  extern(System) void function(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context) on_context_released;
 
   ///
   // Called when a new node in the the browser gets focus. The |node| value may
@@ -108,21 +96,15 @@ typedef struct _cef_render_process_handler_t {
   // keep references to or attempt to access any DOM objects outside the scope
   // of this function.
   ///
-  void (CEF_CALLBACK *on_focused_node_changed)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      struct _cef_domnode_t* node);
+  extern(System) void function(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_domnode_t* node) on_focused_node_changed;
 
   ///
   // Called when a new message is received from a different process. Return true
   // (1) if the message was handled or false (0) otherwise. Do not keep a
   // reference to or attempt to access the message outside of this callback.
   ///
-  int (CEF_CALLBACK *on_process_message_received)(
-      struct _cef_render_process_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_process_id_t source_process,
-      struct _cef_process_message_t* message);
-} cef_render_process_handler_t;
+  extern(System) int function(cef_render_process_handler_t* self, cef_browser_t* browser,  cef_process_id_t source_process, cef_process_message_t* message) on_process_message_received;
+}
 
 
 #ifdef __cplusplus

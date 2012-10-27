@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Structure used to implement a custom resource bundle structure. The functions
 // of this structure may be called on multiple threads.
 ///
-typedef struct _cef_resource_bundle_handler_t {
+struct cef_resource_bundle_handler_t {
   ///
   // Base structure.
   ///
@@ -61,9 +61,7 @@ typedef struct _cef_resource_bundle_handler_t {
   // string and return true (1). To use the default translation return false
   // (0). Supported message IDs are listed in cef_pack_strings.h.
   ///
-  int (CEF_CALLBACK *get_localized_string)(
-      struct _cef_resource_bundle_handler_t* self, int message_id,
-      cef_string_t* string);
+  extern(System) int function(cef_resource_bundle_handler_t* self, int message_id, cef_string_t* string) get_localized_string;
 
   ///
   // Called to retrieve data for the resource specified by |resource_id|. To
@@ -73,10 +71,8 @@ typedef struct _cef_resource_bundle_handler_t {
   // resident in memory. Supported resource IDs are listed in
   // cef_pack_resources.h.
   ///
-  int (CEF_CALLBACK *get_data_resource)(
-      struct _cef_resource_bundle_handler_t* self, int resource_id, void** data,
-      size_t* data_size);
-} cef_resource_bundle_handler_t;
+  extern(System) int function(cef_resource_bundle_handler_t* self, int resource_id, void** data, size_t* data_size) get_data_resource;
+}
 
 
 #ifdef __cplusplus

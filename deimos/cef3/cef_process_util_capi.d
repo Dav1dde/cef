@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -55,7 +55,7 @@ extern "C" {
 // - If the first argument on the command line does not contain a slash,
 //   PATH will be searched. (See man execvp.)
 ///
-CEF_EXPORT int cef_launch_process(struct _cef_command_line_t* command_line);
+int cef_launch_process(cef_command_line_t* command_line);
 
 #ifdef __cplusplus
 }

@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Implement this structure to handle events related to browser display state.
 // The functions of this structure will be called on the UI thread.
 ///
-typedef struct _cef_display_handler_t {
+struct cef_display_handler_t {
   ///
   // Base structure.
   ///
@@ -58,22 +58,17 @@ typedef struct _cef_display_handler_t {
   ///
   // Called when the loading state has changed.
   ///
-  void (CEF_CALLBACK *on_loading_state_change)(
-      struct _cef_display_handler_t* self, struct _cef_browser_t* browser,
-      int isLoading, int canGoBack, int canGoForward);
+  extern(System) void function(cef_display_handler_t* self, cef_browser_t* browser, int isLoading, int canGoBack, int canGoForward) on_loading_state_change;
 
   ///
   // Called when a frame's address has changed.
   ///
-  void (CEF_CALLBACK *on_address_change)(struct _cef_display_handler_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* url);
+  extern(System) void function(cef_display_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* url) on_address_change;
 
   ///
   // Called when the page title changes.
   ///
-  void (CEF_CALLBACK *on_title_change)(struct _cef_display_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* title);
+  extern(System) void function(cef_display_handler_t* self, cef_browser_t* browser, const(cef_string_t)* title) on_title_change;
 
   ///
   // Called when the browser is about to display a tooltip. |text| contains the
@@ -82,25 +77,21 @@ typedef struct _cef_display_handler_t {
   // |text| and then return false (0) to allow the browser to display the
   // tooltip.
   ///
-  int (CEF_CALLBACK *on_tooltip)(struct _cef_display_handler_t* self,
-      struct _cef_browser_t* browser, cef_string_t* text);
+  extern(System) int function(cef_display_handler_t* self, cef_browser_t* browser, cef_string_t* text) on_tooltip;
 
   ///
   // Called when the browser receives a status message. |text| contains the text
   // that will be displayed in the status message and |type| indicates the
   // status message type.
   ///
-  void (CEF_CALLBACK *on_status_message)(struct _cef_display_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* value);
+  extern(System) void function(cef_display_handler_t* self, cef_browser_t* browser, const(cef_string_t)* value) on_status_message;
 
   ///
   // Called to display a console message. Return true (1) to stop the message
   // from being output to the console.
   ///
-  int (CEF_CALLBACK *on_console_message)(struct _cef_display_handler_t* self,
-      struct _cef_browser_t* browser, const cef_string_t* message,
-      const cef_string_t* source, int line);
-} cef_display_handler_t;
+  extern(System) int function(cef_display_handler_t* self, cef_browser_t* browser, const(cef_string_t)* message, const(cef_string_t)* source, int line) on_console_message;
+}
 
 
 #ifdef __cplusplus

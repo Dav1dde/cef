@@ -39,16 +39,16 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Callback structure for asynchronous continuation of file dialog requests.
 ///
-typedef struct _cef_file_dialog_callback_t {
+struct cef_file_dialog_callback_t {
   ///
   // Base structure.
   ///
@@ -59,21 +59,20 @@ typedef struct _cef_file_dialog_callback_t {
   // single value or a list of values depending on the dialog mode. An NULL
   // value is treated the same as calling cancel().
   ///
-  void (CEF_CALLBACK *cont)(struct _cef_file_dialog_callback_t* self,
-      cef_string_list_t file_paths);
+  extern(System) void function(cef_file_dialog_callback_t* self, cef_string_list_t file_paths) cont;
 
   ///
   // Cancel the file selection.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_file_dialog_callback_t* self);
-} cef_file_dialog_callback_t;
+  extern(System) void function(cef_file_dialog_callback_t* self) cancel;
+}
 
 
 ///
 // Implement this structure to handle dialog events. The functions of this
 // structure will be called on the browser process UI thread.
 ///
-typedef struct _cef_dialog_handler_t {
+struct cef_dialog_handler_t {
   ///
   // Base structure.
   ///
@@ -90,12 +89,8 @@ typedef struct _cef_dialog_handler_t {
   // |callback| either inline or at a later time. To display the default dialog
   // return false (0).
   ///
-  int (CEF_CALLBACK *on_file_dialog)(struct _cef_dialog_handler_t* self,
-      struct _cef_browser_t* browser, enum cef_file_dialog_mode_t mode,
-      const cef_string_t* title, const cef_string_t* default_file_name,
-      cef_string_list_t accept_types,
-      struct _cef_file_dialog_callback_t* callback);
-} cef_dialog_handler_t;
+  extern(System) int function(cef_dialog_handler_t* self, cef_browser_t* browser,  cef_file_dialog_mode_t mode, const(cef_string_t)* title, const(cef_string_t)* default_file_name, cef_string_list_t accept_types, cef_file_dialog_callback_t* callback) on_file_dialog;
+}
 
 
 #ifdef __cplusplus

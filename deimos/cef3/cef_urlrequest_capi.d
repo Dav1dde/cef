@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -52,7 +52,7 @@ extern "C" {
 // process. Once created the functions of the URL request object must be
 // accessed on the same thread that created it.
 ///
-typedef struct _cef_urlrequest_t {
+struct cef_urlrequest_t {
   ///
   // Base structure.
   ///
@@ -62,41 +62,36 @@ typedef struct _cef_urlrequest_t {
   // Returns the request object used to create this URL request. The returned
   // object is read-only and should not be modified.
   ///
-  struct _cef_request_t* (CEF_CALLBACK *get_request)(
-      struct _cef_urlrequest_t* self);
+  extern(System) cef_request_t* function(cef_urlrequest_t* self) get_request;
 
   ///
   // Returns the client.
   ///
-  struct _cef_urlrequest_client_t* (CEF_CALLBACK *get_client)(
-      struct _cef_urlrequest_t* self);
+  extern(System) cef_urlrequest_client_t* function(cef_urlrequest_t* self) get_client;
 
   ///
   // Returns the request status.
   ///
-  enum cef_urlrequest_status_t (CEF_CALLBACK *get_request_status)(
-      struct _cef_urlrequest_t* self);
+  extern(System)  cef_urlrequest_status_t function(cef_urlrequest_t* self) get_request_status;
 
   ///
   // Returns the request error if status is UR_CANCELED or UR_FAILED, or 0
   // otherwise.
   ///
-  enum cef_errorcode_t (CEF_CALLBACK *get_request_error)(
-      struct _cef_urlrequest_t* self);
+  extern(System)  cef_errorcode_t function(cef_urlrequest_t* self) get_request_error;
 
   ///
   // Returns the response, or NULL if no response information is available.
   // Response information will only be available after the upload has completed.
   // The returned object is read-only and should not be modified.
   ///
-  struct _cef_response_t* (CEF_CALLBACK *get_response)(
-      struct _cef_urlrequest_t* self);
+  extern(System) cef_response_t* function(cef_urlrequest_t* self) get_response;
 
   ///
   // Cancel the request.
   ///
-  void (CEF_CALLBACK *cancel)(struct _cef_urlrequest_t* self);
-} cef_urlrequest_t;
+  extern(System) void function(cef_urlrequest_t* self) cancel;
+}
 
 
 ///
@@ -104,8 +99,7 @@ typedef struct _cef_urlrequest_t {
 // functions are supported. The |request| object will be marked as read-only
 // after calling this function.
 ///
-CEF_EXPORT cef_urlrequest_t* cef_urlrequest_create(
-    struct _cef_request_t* request, struct _cef_urlrequest_client_t* client);
+cef_urlrequest_t* cef_urlrequest_create(cef_request_t* request, cef_urlrequest_client_t* client);
 
 
 ///
@@ -113,7 +107,7 @@ CEF_EXPORT cef_urlrequest_t* cef_urlrequest_create(
 // functions of this structure will be called on the same thread that created
 // the request.
 ///
-typedef struct _cef_urlrequest_client_t {
+struct cef_urlrequest_client_t {
   ///
   // Base structure.
   ///
@@ -124,9 +118,7 @@ typedef struct _cef_urlrequest_client_t {
   // cef_urlrequest_t::GetRequestStatus function to determine if the request was
   // successful or not.
   ///
-  void (CEF_CALLBACK *on_request_complete)(
-      struct _cef_urlrequest_client_t* self,
-      struct _cef_urlrequest_t* request);
+  extern(System) void function(cef_urlrequest_client_t* self, cef_urlrequest_t* request) on_request_complete;
 
   ///
   // Notifies the client of upload progress. |current| denotes the number of
@@ -134,27 +126,22 @@ typedef struct _cef_urlrequest_client_t {
   // chunked upload is enabled). This function will only be called if the
   // UR_FLAG_REPORT_UPLOAD_PROGRESS flag is set on the request.
   ///
-  void (CEF_CALLBACK *on_upload_progress)(struct _cef_urlrequest_client_t* self,
-      struct _cef_urlrequest_t* request, uint64 current, uint64 total);
+  extern(System) void function(cef_urlrequest_client_t* self, cef_urlrequest_t* request, uint64 current, uint64 total) on_upload_progress;
 
   ///
   // Notifies the client of download progress. |current| denotes the number of
   // bytes received up to the call and |total| is the expected total size of the
   // response (or -1 if not determined).
   ///
-  void (CEF_CALLBACK *on_download_progress)(
-      struct _cef_urlrequest_client_t* self, struct _cef_urlrequest_t* request,
-      uint64 current, uint64 total);
+  extern(System) void function(cef_urlrequest_client_t* self, cef_urlrequest_t* request, uint64 current, uint64 total) on_download_progress;
 
   ///
   // Called when some part of the response is read. |data| contains the current
   // bytes received since the last call. This function will not be called if the
   // UR_FLAG_NO_DOWNLOAD_DATA flag is set on the request.
   ///
-  void (CEF_CALLBACK *on_download_data)(struct _cef_urlrequest_client_t* self,
-      struct _cef_urlrequest_t* request, const void* data,
-      size_t data_length);
-} cef_urlrequest_client_t;
+  extern(System) void function(cef_urlrequest_client_t* self, cef_urlrequest_t* request, const(void)* data, size_t data_length) on_download_data;
+}
 
 
 #ifdef __cplusplus

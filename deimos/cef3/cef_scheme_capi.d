@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -57,20 +57,18 @@ extern "C" {
 // matches the specified |scheme_name| and optional |domain_name|. Returns false
 // (0) if an error occurs. This function may be called on any thread.
 ///
-CEF_EXPORT int cef_register_scheme_handler_factory(
-    const cef_string_t* scheme_name, const cef_string_t* domain_name,
-    struct _cef_scheme_handler_factory_t* factory);
+int cef_register_scheme_handler_factory(const(cef_string_t)* scheme_name, const(cef_string_t)* domain_name, cef_scheme_handler_factory_t* factory);
 
 ///
 // Clear all registered scheme handler factories. Returns false (0) on error.
 // This function may be called on any thread.
 ///
-CEF_EXPORT int cef_clear_scheme_handler_factories();
+int cef_clear_scheme_handler_factories();
 
 ///
 // Structure that manages custom scheme registrations.
 ///
-typedef struct _cef_scheme_registrar_t {
+struct cef_scheme_registrar_t {
   ///
   // Base structure.
   ///
@@ -122,10 +120,8 @@ typedef struct _cef_scheme_registrar_t {
   // per unique |scheme_name| value. If |scheme_name| is already registered or
   // if an error occurs this function will return false (0).
   ///
-  int (CEF_CALLBACK *add_custom_scheme)(struct _cef_scheme_registrar_t* self,
-      const cef_string_t* scheme_name, int is_standard, int is_local,
-      int is_display_isolated);
-} cef_scheme_registrar_t;
+  extern(System) int function(cef_scheme_registrar_t* self, const(cef_string_t)* scheme_name, int is_standard, int is_local, int is_display_isolated) add_custom_scheme;
+}
 
 
 ///
@@ -133,7 +129,7 @@ typedef struct _cef_scheme_registrar_t {
 // requests. The functions of this structure will always be called on the IO
 // thread.
 ///
-typedef struct _cef_scheme_handler_factory_t {
+struct cef_scheme_handler_factory_t {
   ///
   // Base structure.
   ///
@@ -146,11 +142,8 @@ typedef struct _cef_scheme_handler_factory_t {
   // (for example, if the request came from cef_urlrequest_t). The |request|
   // object passed to this function will not contain cookie data.
   ///
-  struct _cef_resource_handler_t* (CEF_CALLBACK *create)(
-      struct _cef_scheme_handler_factory_t* self,
-      struct _cef_browser_t* browser, struct _cef_frame_t* frame,
-      const cef_string_t* scheme_name, struct _cef_request_t* request);
-} cef_scheme_handler_factory_t;
+  extern(System) cef_resource_handler_t* function(cef_scheme_handler_factory_t* self, cef_browser_t* browser, cef_frame_t* frame, const(cef_string_t)* scheme_name, cef_request_t* request) create;
+}
 
 
 #ifdef __cplusplus

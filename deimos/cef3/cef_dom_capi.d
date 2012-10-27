@@ -39,17 +39,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
 // Structure to implement for visiting the DOM. The functions of this structure
 // will be called on the render process main thread.
 ///
-typedef struct _cef_domvisitor_t {
+struct cef_domvisitor_t {
   ///
   // Base structure.
   ///
@@ -62,16 +62,15 @@ typedef struct _cef_domvisitor_t {
   // keep references to or attempt to access any DOM objects outside the scope
   // of this function.
   ///
-  void (CEF_CALLBACK *visit)(struct _cef_domvisitor_t* self,
-      struct _cef_domdocument_t* document);
-} cef_domvisitor_t;
+  extern(System) void function(cef_domvisitor_t* self, cef_domdocument_t* document) visit;
+}
 
 
 ///
 // Structure used to represent a DOM document. The functions of this structure
 // should only be called on the render process main thread thread.
 ///
-typedef struct _cef_domdocument_t {
+struct cef_domdocument_t {
   ///
   // Base structure.
   ///
@@ -80,110 +79,96 @@ typedef struct _cef_domdocument_t {
   ///
   // Returns the document type.
   ///
-  enum cef_dom_document_type_t (CEF_CALLBACK *get_type)(
-      struct _cef_domdocument_t* self);
+  extern(System)  cef_dom_document_type_t function(cef_domdocument_t* self) get_type;
 
   ///
   // Returns the root document node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_document)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_document;
 
   ///
   // Returns the BODY node of an HTML document.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_body)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_body;
 
   ///
   // Returns the HEAD node of an HTML document.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_head)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_head;
 
   ///
   // Returns the title of an HTML document.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_title)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_string_userfree_t function(cef_domdocument_t* self) get_title;
 
   ///
   // Returns the document element with the specified ID value.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_element_by_id)(
-      struct _cef_domdocument_t* self, const cef_string_t* id);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self, const(cef_string_t)* id) get_element_by_id;
 
   ///
   // Returns the node that currently has keyboard focus.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_focused_node)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_focused_node;
 
   ///
   // Returns true (1) if a portion of the document is selected.
   ///
-  int (CEF_CALLBACK *has_selection)(struct _cef_domdocument_t* self);
+  extern(System) int function(cef_domdocument_t* self) has_selection;
 
   ///
   // Returns the selection start node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_selection_start_node)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_selection_start_node;
 
   ///
   // Returns the selection offset within the start node.
   ///
-  int (CEF_CALLBACK *get_selection_start_offset)(
-      struct _cef_domdocument_t* self);
+  extern(System) int function(cef_domdocument_t* self) get_selection_start_offset;
 
   ///
   // Returns the selection end node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_selection_end_node)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_domnode_t* function(cef_domdocument_t* self) get_selection_end_node;
 
   ///
   // Returns the selection offset within the end node.
   ///
-  int (CEF_CALLBACK *get_selection_end_offset)(struct _cef_domdocument_t* self);
+  extern(System) int function(cef_domdocument_t* self) get_selection_end_offset;
 
   ///
   // Returns the contents of this selection as markup.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_selection_as_markup)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_string_userfree_t function(cef_domdocument_t* self) get_selection_as_markup;
 
   ///
   // Returns the contents of this selection as text.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_selection_as_text)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_string_userfree_t function(cef_domdocument_t* self) get_selection_as_text;
 
   ///
   // Returns the base URL for the document.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_base_url)(
-      struct _cef_domdocument_t* self);
+  extern(System) cef_string_userfree_t function(cef_domdocument_t* self) get_base_url;
 
   ///
   // Returns a complete URL based on the document base URL and the specified
   // partial URL.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_complete_url)(
-      struct _cef_domdocument_t* self, const cef_string_t* partialURL);
-} cef_domdocument_t;
+  extern(System) cef_string_userfree_t function(cef_domdocument_t* self, const(cef_string_t)* partialURL) get_complete_url;
+}
 
 
 ///
 // Structure used to represent a DOM node. The functions of this structure
 // should only be called on the render process main thread.
 ///
-typedef struct _cef_domnode_t {
+struct cef_domnode_t {
   ///
   // Base structure.
   ///
@@ -192,108 +177,97 @@ typedef struct _cef_domnode_t {
   ///
   // Returns the type for this node.
   ///
-  enum cef_dom_node_type_t (CEF_CALLBACK *get_type)(
-      struct _cef_domnode_t* self);
+  extern(System)  cef_dom_node_type_t function(cef_domnode_t* self) get_type;
 
   ///
   // Returns true (1) if this is a text node.
   ///
-  int (CEF_CALLBACK *is_text)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) is_text;
 
   ///
   // Returns true (1) if this is an element node.
   ///
-  int (CEF_CALLBACK *is_element)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) is_element;
 
   ///
   // Returns true (1) if this is an editable node.
   ///
-  int (CEF_CALLBACK *is_editable)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) is_editable;
 
   ///
   // Returns true (1) if this is a form control element node.
   ///
-  int (CEF_CALLBACK *is_form_control_element)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) is_form_control_element;
 
   ///
   // Returns the type of this form control element node.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_form_control_element_type)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_form_control_element_type;
 
   ///
   // Returns true (1) if this object is pointing to the same handle as |that|
   // object.
   ///
-  int (CEF_CALLBACK *is_same)(struct _cef_domnode_t* self,
-      struct _cef_domnode_t* that);
+  extern(System) int function(cef_domnode_t* self, cef_domnode_t* that) is_same;
 
   ///
   // Returns the name of this node.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_name)(struct _cef_domnode_t* self);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_name;
 
   ///
   // Returns the value of this node.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_value)(struct _cef_domnode_t* self);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_value;
 
   ///
   // Set the value of this node. Returns true (1) on success.
   ///
-  int (CEF_CALLBACK *set_value)(struct _cef_domnode_t* self,
-      const cef_string_t* value);
+  extern(System) int function(cef_domnode_t* self, const(cef_string_t)* value) set_value;
 
   ///
   // Returns the contents of this node as markup.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_as_markup)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_as_markup;
 
   ///
   // Returns the document associated with this node.
   ///
-  struct _cef_domdocument_t* (CEF_CALLBACK *get_document)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domdocument_t* function(cef_domnode_t* self) get_document;
 
   ///
   // Returns the parent node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_parent)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domnode_t* function(cef_domnode_t* self) get_parent;
 
   ///
   // Returns the previous sibling node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_previous_sibling)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domnode_t* function(cef_domnode_t* self) get_previous_sibling;
 
   ///
   // Returns the next sibling node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_next_sibling)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domnode_t* function(cef_domnode_t* self) get_next_sibling;
 
   ///
   // Returns true (1) if this node has child nodes.
   ///
-  int (CEF_CALLBACK *has_children)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) has_children;
 
   ///
   // Return the first child node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_first_child)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domnode_t* function(cef_domnode_t* self) get_first_child;
 
   ///
   // Returns the last child node.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_last_child)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_domnode_t* function(cef_domnode_t* self) get_last_child;
 
   ///
   // Add an event listener to this node for the specified event type. If
@@ -305,9 +279,7 @@ typedef struct _cef_domnode_t {
   // can be used to register the same listener with and without capture. See
   // WebCore/dom/EventNames.h for the list of supported event types.
   ///
-  void (CEF_CALLBACK *add_event_listener)(struct _cef_domnode_t* self,
-      const cef_string_t* eventType, struct _cef_domevent_listener_t* listener,
-      int useCapture);
+  extern(System) void function(cef_domnode_t* self, const(cef_string_t)* eventType, cef_domevent_listener_t* listener, int useCapture) add_event_listener;
 
 
   // The following functions are valid only for element nodes.
@@ -316,54 +288,48 @@ typedef struct _cef_domnode_t {
   // Returns the tag name of this element.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_element_tag_name)(
-      struct _cef_domnode_t* self);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_element_tag_name;
 
   ///
   // Returns true (1) if this element has attributes.
   ///
-  int (CEF_CALLBACK *has_element_attributes)(struct _cef_domnode_t* self);
+  extern(System) int function(cef_domnode_t* self) has_element_attributes;
 
   ///
   // Returns true (1) if this element has an attribute named |attrName|.
   ///
-  int (CEF_CALLBACK *has_element_attribute)(struct _cef_domnode_t* self,
-      const cef_string_t* attrName);
+  extern(System) int function(cef_domnode_t* self, const(cef_string_t)* attrName) has_element_attribute;
 
   ///
   // Returns the element attribute named |attrName|.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_element_attribute)(
-      struct _cef_domnode_t* self, const cef_string_t* attrName);
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self, const(cef_string_t)* attrName) get_element_attribute;
 
   ///
   // Returns a map of all element attributes.
   ///
-  void (CEF_CALLBACK *get_element_attributes)(struct _cef_domnode_t* self,
-      cef_string_map_t attrMap);
+  extern(System) void function(cef_domnode_t* self, cef_string_map_t attrMap) get_element_attributes;
 
   ///
   // Set the value for the element attribute named |attrName|. Returns true (1)
   // on success.
   ///
-  int (CEF_CALLBACK *set_element_attribute)(struct _cef_domnode_t* self,
-      const cef_string_t* attrName, const cef_string_t* value);
+  extern(System) int function(cef_domnode_t* self, const(cef_string_t)* attrName, const(cef_string_t)* value) set_element_attribute;
 
   ///
   // Returns the inner text of the element.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_element_inner_text)(
-      struct _cef_domnode_t* self);
-} cef_domnode_t;
+  extern(System) cef_string_userfree_t function(cef_domnode_t* self) get_element_inner_text;
+}
 
 
 ///
 // Structure used to represent a DOM event. The functions of this structure
 // should only be called on the render process main thread.
 ///
-typedef struct _cef_domevent_t {
+struct cef_domevent_t {
   ///
   // Base structure.
   ///
@@ -373,55 +339,50 @@ typedef struct _cef_domevent_t {
   // Returns the event type.
   ///
   // The resulting string must be freed by calling cef_string_userfree_free().
-  cef_string_userfree_t (CEF_CALLBACK *get_type)(struct _cef_domevent_t* self);
+  extern(System) cef_string_userfree_t function(cef_domevent_t* self) get_type;
 
   ///
   // Returns the event category.
   ///
-  enum cef_dom_event_category_t (CEF_CALLBACK *get_category)(
-      struct _cef_domevent_t* self);
+  extern(System)  cef_dom_event_category_t function(cef_domevent_t* self) get_category;
 
   ///
   // Returns the event processing phase.
   ///
-  enum cef_dom_event_phase_t (CEF_CALLBACK *get_phase)(
-      struct _cef_domevent_t* self);
+  extern(System)  cef_dom_event_phase_t function(cef_domevent_t* self) get_phase;
 
   ///
   // Returns true (1) if the event can bubble up the tree.
   ///
-  int (CEF_CALLBACK *can_bubble)(struct _cef_domevent_t* self);
+  extern(System) int function(cef_domevent_t* self) can_bubble;
 
   ///
   // Returns true (1) if the event can be canceled.
   ///
-  int (CEF_CALLBACK *can_cancel)(struct _cef_domevent_t* self);
+  extern(System) int function(cef_domevent_t* self) can_cancel;
 
   ///
   // Returns the document associated with this event.
   ///
-  struct _cef_domdocument_t* (CEF_CALLBACK *get_document)(
-      struct _cef_domevent_t* self);
+  extern(System) cef_domdocument_t* function(cef_domevent_t* self) get_document;
 
   ///
   // Returns the target of the event.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_target)(
-      struct _cef_domevent_t* self);
+  extern(System) cef_domnode_t* function(cef_domevent_t* self) get_target;
 
   ///
   // Returns the current target of the event.
   ///
-  struct _cef_domnode_t* (CEF_CALLBACK *get_current_target)(
-      struct _cef_domevent_t* self);
-} cef_domevent_t;
+  extern(System) cef_domnode_t* function(cef_domevent_t* self) get_current_target;
+}
 
 
 ///
 // Structure to implement for handling DOM events. The functions of this
 // structure will be called on the render process main thread.
 ///
-typedef struct _cef_domevent_listener_t {
+struct cef_domevent_listener_t {
   ///
   // Base structure.
   ///
@@ -434,9 +395,8 @@ typedef struct _cef_domevent_listener_t {
   // references to or attempt to access any DOM objects outside the scope of
   // this function.
   ///
-  void (CEF_CALLBACK *handle_event)(struct _cef_domevent_listener_t* self,
-      struct _cef_domevent_t* event);
-} cef_domevent_listener_t;
+  extern(System) void function(cef_domevent_listener_t* self, cef_domevent_t* event) handle_event;
+}
 
 
 #ifdef __cplusplus

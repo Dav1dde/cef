@@ -39,10 +39,10 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern(C) {
 #endif
 
-#include "include/capi/cef_base_capi.h"
+import deimos.cef3.base;
 
 
 ///
@@ -52,29 +52,27 @@ extern "C" {
 // called on the specified thread. It is an error to request a thread from the
 // wrong process.
 ///
-CEF_EXPORT int cef_currently_on(cef_thread_id_t threadId);
+int cef_currently_on(cef_thread_id_t threadId);
 
 ///
 // Post a task for execution on the specified thread. This function may be
 // called on any thread. It is an error to request a thread from the wrong
 // process.
 ///
-CEF_EXPORT int cef_post_task(cef_thread_id_t threadId,
-    struct _cef_task_t* task);
+int cef_post_task(cef_thread_id_t threadId, cef_task_t* task);
 
 ///
 // Post a task for delayed execution on the specified thread. This function may
 // be called on any thread. It is an error to request a thread from the wrong
 // process.
 ///
-CEF_EXPORT int cef_post_delayed_task(cef_thread_id_t threadId,
-    struct _cef_task_t* task, int64 delay_ms);
+int cef_post_delayed_task(cef_thread_id_t threadId, cef_task_t* task, int64 delay_ms);
 
 ///
 // Implement this structure for task execution. The functions of this structure
 // may be called on any thread.
 ///
-typedef struct _cef_task_t {
+struct cef_task_t {
   ///
   // Base structure.
   ///
@@ -83,9 +81,8 @@ typedef struct _cef_task_t {
   ///
   // Method that will be executed. |threadId| is the thread executing the call.
   ///
-  void (CEF_CALLBACK *execute)(struct _cef_task_t* self,
-      cef_thread_id_t threadId);
-} cef_task_t;
+  extern(System) void function(cef_task_t* self, cef_thread_id_t threadId) execute;
+}
 
 
 #ifdef __cplusplus
